@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/scrollViw"
+    android:orientation="vertical"
+    tools:context="ir.elevin.mykotlinapplication.ProductDetailActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/productToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_collapseMode="pin"
+            app:layout_constraintTop_toTopOf="parent"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cc1"
+            android:layout_width="0dp"
+            android:layout_height="320dp"
+            app:layout_constraintTop_toBottomOf="@+id/productToolbar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:transitionName="cardview"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="72dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="0dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
+                        android:transitionName="poster"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <com.smarteist.autoimageslider.SliderView
+                        android:id="@+id/imageSlider"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/productPriceTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:paddingRight="12dp"
+            android:paddingLeft="12dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:alpha="0"
+            android:scaleY="0"
+            android:background="@drawable/round_20_primary"
+            android:textColor="@color/colorWhiteSecondary"
+            app:layout_constraintTop_toTopOf="@+id/cc1"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="290dp"
+            android:layout_marginEnd="32dp"/>
+
+        <TextView
+            android:id="@+id/desTitleTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="74dp"
+            android:layout_marginTop="16dp"
+            android:text="درباره"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/productPriceTv"
+            app:layout_goneMarginTop="8dp" />
+
+        <ir.elevin.mykotlinapplication.Tools.TextViewEx
+            android:id="@+id/desTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="72dp"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/desTitleTv" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/orderCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/desTv"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="72dp"
+            android:layout_marginTop="16dp"
+            app:cardElevation="2dp"
+            app:cardCornerRadius="10dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/warrantyTextTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="10sp"
+                    android:gravity="center"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text="ضمانت بازگشت بدون قید و شرط وجه تا ۷۲ ساعت"
+                    android:padding="8dp"
+                    android:textColor="@color/colorWhite"
+                    android:background="#518A4A"
+                    tools:ignore="SmallSp" />
+
+                <View
+                    android:id="@+id/dividerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/colorWhite"
+                    app:layout_constraintTop_toBottomOf="@+id/warrantyTextTv"/>
+
+                <LinearLayout
+                    android:id="@+id/footerBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/colorGreen"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    app:layout_constraintTop_toBottomOf="@+id/dividerView"
+                    app:layout_constraintBottom_toBottomOf="parent">
+
+                    <TextView
+                        android:id="@+id/addToCartButton"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="افزودن به سبد خرید"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/colorWhite"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginStart="16dp"
+                        android:textSize="12sp"/>
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/plusButton"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        app:srcCompat="@drawable/ic_add_white_24dp"
+                        android:padding="8dp"
+                        android:tint="@color/colorGreenDark"
+                        android:background="@color/colorGreenMaxLight"/>
+
+                    <TextView
+                        android:id="@+id/numProductTv"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:text="1"
+                        android:textColor="@color/colorWhite"
+                        android:background="#518A4A"
+                        android:gravity="center"
+                        android:textSize="14sp"/>
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/minusButton"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        app:srcCompat="@drawable/ic_minus_24dp"
+                        android:tint="@color/colorGreenDark"
+                        android:background="@color/colorGreenMaxLight"
+                        android:padding="8dp"/>
+
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="-40dp"
+                        android:alpha="0"/>
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/maintenanceTitleTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="74dp"
+            android:layout_marginTop="24dp"
+            android:text="نگهداری"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/orderCardView"
+            app:layout_goneMarginTop="8dp" />
+
+        <ir.elevin.mykotlinapplication.Tools.TextViewEx
+            android:id="@+id/maintenanceTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="72dp"
+            android:layout_marginEnd="16dp"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/maintenanceTitleTv"
+            app:layout_goneMarginStart="16dp" />
+
+        <TextView
+            android:id="@+id/commentsTitleTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="74dp"
+            android:layout_marginTop="24dp"
+            android:text="نظرات"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/maintenanceTv"
+            app:layout_goneMarginTop="8dp" />
+
+        <ProgressBar
+            android:id="@+id/commentsProgressBar"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:layout_constraintTop_toTopOf="@+id/addCommentButton"
+            app:layout_constraintBottom_toBottomOf="@+id/addCommentButton"
+            app:layout_constraintEnd_toStartOf="@+id/addCommentButton"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/addCommentButton"
+            android:layout_width="74dp"
+            android:layout_height="35dp"
+            android:text="ثبت نظر"
+            android:textSize="12sp"
+            android:textColor="@color/colorWhite"
+            android:background="@drawable/orange_rounded_10"
+            app:layout_constraintTop_toTopOf="@+id/commentsTitleTv"
+            app:layout_constraintBottom_toBottomOf="@+id/commentsTitleTv"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="16dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/commentsRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/commentsTitleTv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:scrollbars="none"
+            android:nestedScrollingEnabled="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="72dp"
+            android:layout_marginTop="4dp">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

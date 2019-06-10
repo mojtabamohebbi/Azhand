@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/colorBackground"
+    tools:context="ir.elevin.mykotlinapplication.UpgradeActivity">
+
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:tint="@color/colorPrimaryDark"
+        app:srcCompat="@drawable/ic_keyboard_backspace_black_24dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/headerTitleTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ارتقای حساب کاربری"
+            android:gravity="center"
+            android:textSize="25sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_marginBottom="42dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/firstPlanCardView"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
+                android:layout_height="wrap_content"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/colorPrimary"
+                app:contentPadding="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorWhite"
+                    android:minHeight="125dp"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:gravity="center"
+                        android:textColor="@color/colorPrimaryText"
+                        android:text="۱۰۰ گفتگوی جدید"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:textColor="@color/colorPrimaryLight"
+                        android:text="۳۰ روز نمایش کارگزاری"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="10sp"
+                        tools:ignore="SmallSp"
+                        android:layout_marginTop="4dp"
+                        android:textColor="@color/colorSecondaryLightText"
+                        android:text="۱۹۰۰۰ تومان"/>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/secondPlanCardView"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
+                android:layout_height="wrap_content"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/colorWhite"
+                app:contentPadding="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorWhite"
+                    android:orientation="vertical"
+                    android:minHeight="125dp"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:gravity="center"
+                        android:textColor="@color/colorPrimaryText"
+                        android:text="۲۵۰ گفتگوی جدید"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:textColor="@color/colorPrimaryLight"
+                        android:text="۶۰ روز نمایش کارگزاری"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="10sp"
+                        tools:ignore="SmallSp"
+                        android:layout_marginTop="4dp"
+                        android:textColor="@color/colorSecondaryLightText"
+                        android:text="۳۹۰۰۰ تومان" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/thirdPlanCardView"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
+                android:layout_height="wrap_content"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/colorWhite"
+                app:contentPadding="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorWhite"
+                    android:minHeight="125dp"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:gravity="center"
+                        android:textColor="@color/colorPrimaryText"
+                        android:text="۵۰۰ گفتگوی جدید"/>
+
+                    <TextView
+                        android:id="@+id/thirdTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:textColor="@color/colorPrimaryLight"
+                        android:text="۱۲۰ روز نمایش کارگزاری"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="10sp"
+                        android:layout_marginTop="4dp"
+                        android:textColor="@color/colorSecondaryLightText"
+                        android:text="۷۹۰۰۰ تومان"
+                        tools:ignore="SmallSp" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/fourthPlanCardView"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
+                android:layout_height="wrap_content"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/colorWhite"
+                app:contentPadding="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorWhite"
+                    android:minHeight="125dp"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:gravity="center"
+                        android:textColor="@color/colorPrimaryText"
+                        android:text="۱۰۰۰ گفتگوی جدید"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:textColor="@color/colorPrimaryLight"
+                        android:text="۱۸۰ روز نمایش کارگزاری"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="10sp"
+                        tools:ignore="SmallSp"
+                        android:layout_marginTop="4dp"
+                        android:textColor="@color/colorSecondaryLightText"
+                        android:text="۱۴۹۰۰۰ تومان"/>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/payButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="32dp"
+            android:textColor="@color/colorWhite"
+            android:background="@drawable/round_10_black"
+            android:text="پرداخت"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

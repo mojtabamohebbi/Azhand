@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_cart"
+            android:icon="@drawable/ic_shopping_cart_white_24dp"
+            android:title="سبد خرید" />
+        <item
+            android:id="@+id/nav_receipts"
+            android:icon="@drawable/ic_receipt_white_24dp"
+            android:title="رسیدهای خرید" />
+        <item
+            android:id="@+id/nav_account"
+            android:icon="@drawable/ic_account_circle_black_24dp"
+            android:title="اطلاعات کاربری" />
+        <item
+            android:visible="false"
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_exit_to_app_white_24dp"
+            android:title="خروج از حساب" />
+    </group>
+
+    <item android:title="فراز افراز مهر">
+        <menu>
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/ic_info_black_24dp"
+                android:title="درباره ما" />
+            <item
+                android:id="@+id/nav_contact_us"
+                android:icon="@drawable/ic_email_black_24dp"
+                android:title="ارتباط با ما" />
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="اشتراک گذاری" />
+        </menu>
+    </item>
+
+</menu>

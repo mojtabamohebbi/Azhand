@@ -1,0 +1,44 @@
+<resources>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textViewStyle">@style/AppTheme.Widget.TextView</item>
+        <item name="android:textColor">@color/colorPrimaryText</item>
+        <item name="android:textColorSecondary">@color/colorSecondaryText</item>
+        <item name="android:statusBarColor">@color/colorBlack</item>
+
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowActivityTransitions">true</item>
+        <!-- specify enter and exit transitions -->
+        <item name="android:windowEnterTransition">@transition/activity_slide</item>
+        <item name="android:windowExitTransition">@transition/activity_slide</item>
+
+        <!--&lt;!&ndash; specify shared element transitions &ndash;&gt;-->
+        <item name="android:windowSharedElementEnterTransition">@transition/activity_slide</item>
+        <item name="android:windowSharedElementExitTransition">@transition/activity_slide</item>
+
+        <item name="android:colorBackground">@color/colorWhite</item>
+        <item name="android:navigationBarColor">@color/colorBlack</item>
+    </style>
+
+
+    <style name="TextViewCustomFont">
+        <item name="fontPath">font/iransans_bold.ttf</item>
+    </style>
+
+    <style name="AppTheme.Widget.TextView" parent="android:Widget.Holo.Light.TextView">
+        <item name="fontPath">fonts/iransans_bold.ttf</item>
+    </style>
+
+</resources>

@@ -1,0 +1,96 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.gr00p.khanomgol"
+        minSdkVersion 19
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+        multiDexEnabled = true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.legacy:legacy-support-v13:1.0.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'androidx.fragment:fragment:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'de.hdodenhof:circleimageview:3.0.0'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+
+    implementation project(':imagepicker')
+    implementation project(':prettydialog')
+//    implementation project(':ucrop')
+//    implementation 'com.github.yalantis:ucrop:2.2.3-native'
+    implementation 'com.github.yalantis:ucrop:2.2.3'
+
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.github.smarteist:autoimageslider:1.3.1'
+
+    implementation group: 'androidx.vectordrawable', name: 'vectordrawable-animated', version: '1.1.0-beta01'
+
+    implementation 'com.nshmura:recyclertablayout:1.5.0'
+
+    implementation 'uk.co.chrisjenx:calligraphy:2.3.0'
+
+    implementation 'com.simmorsal.recolor:recolor:1.1.0'
+
+    implementation 'com.github.kittinunf.fuel:fuel:1.13.0' //for JVM
+    implementation 'com.github.kittinunf.fuel:fuel-android:1.13.0' //for Android
+    implementation 'com.github.kittinunf.fuel:fuel-livedata:1.13.0' //for LiveData support
+    implementation 'com.github.kittinunf.fuel:fuel-rxjava:1.13.0' //for RxJava support
+    implementation 'com.github.kittinunf.fuel:fuel-coroutines:1.13.0'
+
+    implementation 'com.github.kittinunf.fuel:fuel-gson:1.13.0' //for Gson support
+    implementation 'com.github.kittinunf.fuel:fuel-jackson:1.13.0' //for Jackson support
+    implementation 'com.github.kittinunf.fuel:fuel-moshi:1.13.0' //for Moshi support
+    implementation 'com.github.kittinunf.fuel:fuel-forge:1.13.0' //for Forge support
+
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.1'
+
+    implementation 'ru.superjob:kotlin-permissions:1.0.3'
+    implementation 'com.github.samanzamani.persiandate:PersianDate:0.2'
+    implementation 'com.mohamadamin:persianmaterialdatetimepicker:1.2.1'
+    implementation 'hari.bounceview:bounceview:0.1.0'
+    implementation "com.mlsdev.animatedrv:library:2.0.0"
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    implementation 'androidx.annotation:annotation:1.0.2'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+    implementation 'com.daimajia.easing:library:2.0@aar'
+    implementation 'com.daimajia.androidanimations:library:2.3@aar'
+
+    implementation "org.jetbrains.anko:anko-sqlite:0.10.8"
+//    implementation 'com.github.mjn1369:prettydialog:1.0.4'
+
+    implementation 'com.makeramen:roundedimageview:2.3.0'
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+    implementation "info.kimjihyok:voice-ripple-record-button:0.1.3"
+
+    implementation 'com.github.oxoooo:pull-back-layout:1.0.1'
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+
+}

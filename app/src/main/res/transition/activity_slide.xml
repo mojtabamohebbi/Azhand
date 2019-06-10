@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
+    android:repeatMode="reverse"
+    android:interpolator="@android:interpolator/bounce"
+    android:transitionOrdering="together"
+    android:duration="500">
+    <slide xmlns:android="http://schemas.android.com/apk/res/"
+        android:duration="500"
+        android:slideEdge="top|bottom"/>
+    <changeImageTransform
+        android:duration="500"/>
+    <changeBounds
+        android:duration="500"/>
+</transitionSet>

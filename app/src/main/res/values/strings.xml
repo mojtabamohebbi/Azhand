@@ -1,0 +1,75 @@
+<resources>
+    <string name="app_name">Azhand</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="account_des">برای حضور در قسمت کارگزاری نیاز به تمام اطلاعات است. لطفا در زمان مناسب اقدام به پر کردن فرم بالا کنید. در صورت درج اطلاعات نامرتبط حساب شما از دسترس خارج می شود. هدف ما ارائه اطلاعات کاربردی به کاربرانمان است.  از همکاری شما سپاس گزاریم.</string>
+    <string name="phone_des">لطفا شماره موبایل خود را برای مدیریت حساب کاربری وارد نمایید.</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="action_transaction">انتقال</string>
+    <string name="error">مشکل!</string>
+    <string name="try_again">تلاش دوباره</string>
+    <string name="network_error">اشکال در برقراری ارتباط</string>
+
+    <array name="cities">
+        <item>تهران</item>
+        <item>کرج</item>
+        <item>مشهد</item>
+        <item>اصفهان</item>
+        <item>تبریز</item>
+        <item>شیراز</item>
+        <item>اهواز</item>
+        <item>قم</item>
+        <item>کرمانشاه</item>
+        <item>ارومیه</item>
+        <item>زاهدان</item>
+        <item>رشت</item>
+        <item>کرمان</item>
+        <item>همدان</item>
+        <item>اراک</item>
+        <item>یزد</item>
+        <item>اردبیل</item>
+        <item>بندرعباس</item>
+        <item>قزوین</item>
+        <item>زنجان</item>
+        <item>گرگان</item>
+        <item>ساری</item>
+        <item>دزفول</item>
+        <item>آبادان</item>
+        <item>بوشهر</item>
+        <item>بروجرد</item>
+        <item>خرم آباد</item>
+        <item>سنندج</item>
+        <item>اسلام شهر</item>
+        <item>کاشان</item>
+        <item>نجف آباد</item>
+        <item>ایلام</item>
+        <item>کیش</item>
+        <item>بیرجند</item>
+        <item>سمنان</item>
+        <item>شهرکرد</item>
+        <item>بندر ماهشهر</item>
+        <item>یاسوج</item>
+        <item>بجنورد</item>
+        <item>شوشتر</item>
+        <item>بهبهان</item>
+        <item>سبزوار</item>
+        <item>مسجد سلیمان</item>
+        <item>نیشابور</item>
+        <item>قوچان</item>
+        <item>شیروان</item>
+        <item>قشم</item>
+        <item>بانه</item>
+        <item>آمل</item>
+        <item>بابل</item>
+        <item>قائم شهر</item>
+        <item>ساوه</item>
+        <item>زابل</item>
+    </array>
+
+</resources>
