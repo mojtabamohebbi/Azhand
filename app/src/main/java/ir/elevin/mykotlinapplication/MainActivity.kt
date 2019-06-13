@@ -82,7 +82,17 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
+        toggle.isDrawerIndicatorEnabled = false
+        toggle.setHomeAsUpIndicator(R.drawable.ic_menu_24dp)
         toggle.syncState()
+
+        toggle.setToolbarNavigationClickListener {
+            if (drawer_layout.isDrawerVisible(GravityCompat.START)){
+                drawer_layout.closeDrawer(GravityCompat.START)
+            }else {
+                drawer_layout.openDrawer(GravityCompat.START)
+            }
+        }
 
         nav_view.setNavigationItemSelectedListener(this)
 

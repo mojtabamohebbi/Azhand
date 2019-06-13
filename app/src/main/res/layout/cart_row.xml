@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_marginTop="12dp">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/productIv"
@@ -20,16 +21,70 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@+id/productIv"
         app:layout_constraintStart_toEndOf="@+id/productIv"
+        app:layout_constraintEnd_toStartOf="@+id/numProductTv"
         android:textSize="16sp"
         android:textColor="@color/colorPrimaryText"/>
 
     <TextView
-        android:id="@+id/priceTv"
+        android:id="@+id/basePriceTv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@+id/productIv"
+        app:layout_constraintTop_toBottomOf="@+id/nameTv"
         app:layout_constraintStart_toEndOf="@+id/productIv"
+        app:layout_constraintEnd_toStartOf="@+id/numProductTv"
         android:textSize="16sp"
         android:textColor="@color/colorPrimaryText"/>
+
+    <TextView
+        android:id="@+id/totalPriceTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/basePriceTv"
+        app:layout_constraintStart_toEndOf="@+id/productIv"
+        app:layout_constraintEnd_toStartOf="@+id/numProductTv"
+        android:textSize="16sp"
+        android:textColor="@color/colorPrimaryText"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/upNumButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintTop_toTopOf="@+id/productIv"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
+        app:srcCompat="@drawable/ic_arrow_drop_up_black_48dp" />
+
+    <TextView
+        android:id="@+id/numProductTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/upNumButton"
+        app:layout_constraintEnd_toEndOf="@+id/upNumButton"
+        app:layout_constraintStart_toStartOf="@+id/upNumButton"
+        android:textSize="22sp"
+        android:layout_marginTop="-6dp"
+        android:layout_marginBottom="-6dp"
+        android:textColor="@color/colorPrimaryText"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/downNumButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintTop_toBottomOf="@+id/numProductTv"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="16dp"
+        app:srcCompat="@drawable/ic_arrow_drop_down_black_48dp" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/colorDividerDark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

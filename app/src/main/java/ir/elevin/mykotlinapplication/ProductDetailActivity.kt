@@ -35,6 +35,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.kittinunf.result.failure
 import com.github.kittinunf.result.success
 import ir.elevin.mykotlinapplication.Adapters.CommentsAdapter
+import android.animation.ObjectAnimator
+import androidx.transition.Transition
 
 
 class ProductDetailActivity : CustomActivity() {
@@ -102,7 +104,10 @@ class ProductDetailActivity : CustomActivity() {
                 }
 
                 override fun onTransitionStart(transition: android.transition.Transition?) {
-
+                    val animator = ObjectAnimator
+                            .ofFloat(cardview, "radius", 10f)
+                    animator.duration = 250
+                    animator.start()
                 }
             })
 
@@ -269,7 +274,7 @@ class ProductDetailActivity : CustomActivity() {
 
     override fun onBackPressed() {
         cardview.cardElevation = 0f
-        productPriceTv.animate().alpha(0f).translationY(500f).duration = 400
+        productPriceTv.animate().alpha(0f).duration = 100
         iv.visibility = View.VISIBLE
         imageSlider.visibility = View.INVISIBLE
         super.onBackPressed()

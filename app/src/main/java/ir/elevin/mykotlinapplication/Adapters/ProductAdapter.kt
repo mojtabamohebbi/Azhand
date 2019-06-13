@@ -51,12 +51,12 @@ class ProductAdapter(private val activity: FragmentActivity, private val items: 
                 .into(holder.imageIv)
 
         holder.itemView.setOnClickListener {
-            getData(data.id, holder.imageIv, holder.progressBar, holder.priceTv)
+            getData(data.id, holder.imageIv, holder.progressBar, holder.priceTv, holder.cardView)
         }
     }
 
     @SuppressLint("SetTextI18n")
-    private fun getData(pid: Int, view: View, progressBar: ProgressBar, priceTv: TextView){
+    private fun getData(pid: Int, view: View, progressBar: ProgressBar, priceTv: TextView, cardView: CardView){
 //        val progressDialog = progressDialog(activity)
         progressBar.visibility = View.VISIBLE
         priceTv.visibility = View.GONE
@@ -72,8 +72,9 @@ class ProductAdapter(private val activity: FragmentActivity, private val items: 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
                     val pair1 = Pair.create<View, String>(view, view.transitionName)
+                    val pair2 = Pair.create<View, String>(cardView, view.transitionName)
                     val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                            activity, pair1)
+                            activity, pair1, pair2)
                     startActivity(activity, intent, options.toBundle())
                 } else {
                     startActivity(activity, intent, null)
@@ -88,7 +89,7 @@ class ProductAdapter(private val activity: FragmentActivity, private val items: 
                         .setMessage(activity.getString(R.string.network_error))
                         .addButton(activity.getString(R.string.try_again), R.color.colorWhite, R.color.colorRed) {
                             d.dismiss()
-                            getData(pid, view, progressBar, priceTv)
+                            getData(pid, view, progressBar, priceTv, cardView)
                         }
                         .show()
             }
@@ -102,5 +103,5 @@ class ViewHolderLawyer(view: View) : RecyclerView.ViewHolder(view) {
     val priceTv = view.priceTv!!
     val imageIv = view.imageIv!!
     val progressBar = view.progressBar!!
-//    val cardView = view.cardview!!
+    val cardView = view.cardview!!
 }
