@@ -1,24 +1,19 @@
-package ir.elevin.mykotlinapplication
+package ir.elevin.azhand
 
 import android.annotation.SuppressLint
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
 import com.github.kittinunf.fuel.httpPost
 import com.github.kittinunf.fuel.livedata.liveDataObject
 import com.github.kittinunf.result.failure
 import com.github.kittinunf.result.success
-import ir.elevin.mykotlinapplication.Adapters.CartAdapter
-import ir.elevin.mykotlinapplication.Adapters.ProductAdapter
+import ir.elevin.azhand.adapters.CartAdapter
 import kotlinx.android.synthetic.main.activity_cart.*
-import kotlinx.android.synthetic.main.recycler_fragment.*
 import kotlinx.android.synthetic.main.recycler_fragment.progressBar
 import kotlinx.android.synthetic.main.recycler_fragment.recyclerview
 import kotlinx.android.synthetic.main.recycler_fragment.swipeRefreshLayout
@@ -65,6 +60,11 @@ class CartActivity : CustomActivity(), CartAdapter.ChangeTotalPrice {
             topColorView.animate().alpha(1f).duration = 700
             YoYo.with(Techniques.SlideInRight).duration(1000).playOn(topLayout)
         }, 500)
+
+        payBar.setOnClickListener {
+            val intent = Intent(this, ChooseAddressActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     @SuppressLint("SetTextI18n")

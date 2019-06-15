@@ -1,4 +1,4 @@
-package ir.elevin.mykotlinapplication
+package ir.elevin.azhand
 import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.content.res.AppCompatResources

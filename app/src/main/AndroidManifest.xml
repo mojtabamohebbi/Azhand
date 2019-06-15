@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="ir.elevin.mykotlinapplication">
+    package="ir.elevin.azhand">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".AppController"
+        android:name="ir.elevin.azhand.AppController"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
@@ -15,32 +15,33 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
-        <activity android:name=".ChooseAddressActivity"></activity>
+        <activity android:name="ir.elevin.azhand.ChooseAddressActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".CartActivity"
+            android:name="ir.elevin.azhand.CartActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ProductDetailActivity"
+            android:name="ir.elevin.azhand.ProductDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".LoginActivity"
+            android:name="ir.elevin.azhand.LoginActivity"
             android:theme="@style/Dialogam" />
         <activity
-            android:name=".UpgradeActivity"
+            android:name="ir.elevin.azhand.UpgradeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".AccountActivity"
+            android:name="ir.elevin.azhand.AccountActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing|adjustPan|adjustResize" />
         <activity
-            android:name=".ImageViewerActivity"
+            android:name="ir.elevin.azhand.ImageViewerActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".MainActivity"
+            android:name="ir.elevin.azhand.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing">

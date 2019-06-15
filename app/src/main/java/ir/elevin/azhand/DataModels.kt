@@ -1,4 +1,4 @@
-package ir.elevin.mykotlinapplication
+package ir.elevin.azhand
 
 import android.os.Parcel
 import android.os.Parcelable
@@ -182,6 +182,89 @@ data class Cart(
         }
 
         override fun newArray(size: Int): Array<Cart?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
+
+
+data class Address(
+        val id: Int = 0,
+        val address: String = ""
+) : Parcelable {
+
+    class Deserializer : ResponseDeserializable<Address> {
+        override fun deserialize(reader: Reader) = Gson().fromJson(reader, Address::class.java)!!
+    }
+
+    class ListDeserializer : ResponseDeserializable<List<Address>> {
+
+        override fun deserialize(reader: Reader): List<Address> {
+            val type = object : TypeToken<List<Address>>() {}.type
+            return Gson().fromJson(reader, type)
+        }
+    }
+
+    constructor(parcel: Parcel) : this(
+            parcel.readInt(),
+            parcel.readString()!!)
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(id)
+        parcel.writeString(address)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<Address> {
+        override fun createFromParcel(parcel: Parcel): Address {
+            return Address(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Address?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
+
+data class Card(
+        val id: Int = 0,
+        val image: String = ""
+) : Parcelable {
+
+    class Deserializer : ResponseDeserializable<Card> {
+        override fun deserialize(reader: Reader) = Gson().fromJson(reader, Card::class.java)!!
+    }
+
+    class ListDeserializer : ResponseDeserializable<List<Card>> {
+
+        override fun deserialize(reader: Reader): List<Card> {
+            val type = object : TypeToken<List<Card>>() {}.type
+            return Gson().fromJson(reader, type)
+        }
+    }
+
+    constructor(parcel: Parcel) : this(
+            parcel.readInt(),
+            parcel.readString()!!)
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(id)
+        parcel.writeString(image)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<Card> {
+        override fun createFromParcel(parcel: Parcel): Card {
+            return Card(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Card?> {
             return arrayOfNulls(size)
         }
     }

@@ -1,4 +1,4 @@
-package ir.elevin.mykotlinapplication.Fragments
+package ir.elevin.azhand.fragments
 
 import android.os.Build
 import android.os.Bundle
@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.transition.Explode
@@ -16,16 +15,16 @@ import com.github.kittinunf.fuel.httpPost
 import com.github.kittinunf.fuel.livedata.liveDataObject
 import com.github.kittinunf.result.failure
 import com.github.kittinunf.result.success
-import ir.elevin.mykotlinapplication.Adapters.ProductAdapter
-import ir.elevin.mykotlinapplication.Product
-import ir.elevin.mykotlinapplication.R
-import ir.elevin.mykotlinapplication.Tools.SpacesItemDecoration
-import ir.elevin.mykotlinapplication.filterType
-import ir.elevin.mykotlinapplication.webserviceUrl
+import ir.elevin.azhand.adapters.ProductAdapter
+import ir.elevin.azhand.Product
+
+import ir.elevin.azhand.R
+import ir.elevin.azhand.filterType
+import ir.elevin.azhand.webserviceUrl
 import kotlinx.android.synthetic.main.recycler_fragment.*
 import libs.mjn.prettydialog.PrettyDialog
 
-class BunchOfFlowerFragment : androidx.fragment.app.Fragment() {
+class GardeningFragment : androidx.fragment.app.Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -105,7 +104,7 @@ class BunchOfFlowerFragment : androidx.fragment.app.Fragment() {
             swipeRefreshLayout.isRefreshing = true
         }
 
-        val params: List<Pair<String, Any?>> = listOf("func" to "get_products", "page" to page, "filterType" to filterType, "catId" to 2)
+        val params: List<Pair<String, Any?>> = listOf("func" to "get_products", "page" to page, "filterType" to filterType, "catId" to 7)
         webserviceUrl
                 .httpPost(params)
                 .liveDataObject(Product.ListDeserializer())

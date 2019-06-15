@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
-    tools:context="ir.elevin.mykotlinapplication.AccountActivity">
+    tools:context="ir.elevin.azhand.AccountActivity">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/avatarIv"
@@ -64,7 +64,7 @@
             android:layout_marginRight="16dp"
             android:orientation="vertical">
 
-            <ir.elevin.mykotlinapplication.Customs.EditTextLightLine
+            <ir.elevin.azhand.customs.EditTextLightLine
                 android:id="@+id/nameEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
                 android:textSize="14sp"
                 android:hint="نام و نام خانوادگی" />
 
-            <ir.elevin.mykotlinapplication.Customs.EditTextLightLine
+            <ir.elevin.azhand.customs.EditTextLightLine
                 android:id="@+id/expertEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -105,7 +105,7 @@
 
             </LinearLayout>
 
-            <ir.elevin.mykotlinapplication.Customs.EditTextLightLine
+            <ir.elevin.azhand.customs.EditTextLightLine
                 android:id="@+id/aboutEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -137,7 +137,7 @@
 
             </LinearLayout>
 
-            <ir.elevin.mykotlinapplication.Customs.AutoCompleteTextViewLightLine
+            <ir.elevin.azhand.customs.AutoCompleteTextViewLightLine
                 android:id="@+id/cityEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -148,7 +148,7 @@
                 android:textSize="14sp"
                 android:hint="شهر" />
 
-            <ir.elevin.mykotlinapplication.Customs.EditTextLightLine
+            <ir.elevin.azhand.customs.EditTextLightLine
                 android:id="@+id/yearsOfExperienceEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -179,7 +179,7 @@
 
             </LinearLayout>
 
-            <ir.elevin.mykotlinapplication.Customs.EditTextLightLine
+            <ir.elevin.azhand.customs.EditTextLightLine
                 android:id="@+id/educationEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -1,4 +1,4 @@
-package ir.elevin.mykotlinapplication
+package ir.elevin.azhand
 
 import android.os.Bundle
 import com.google.android.material.navigation.NavigationView
@@ -21,8 +21,8 @@ import android.transition.TransitionInflater
 import androidx.viewpager.widget.ViewPager
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
-import ir.elevin.mykotlinapplication.Database.DatabaseHandler
-import ir.elevin.mykotlinapplication.Fragments.*
+import ir.elevin.azhand.database.DatabaseHandler
+import ir.elevin.azhand.fragments.*
 import kotlinx.android.synthetic.main.content_main.rootView
 import kotlinx.android.synthetic.main.dialog_sort_price.*
 

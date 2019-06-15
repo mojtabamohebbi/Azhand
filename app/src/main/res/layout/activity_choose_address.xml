@@ -5,7 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="ir.elevin.mykotlinapplication.ChooseAddressActivity">
+    tools:context="ir.elevin.azhand.ChooseAddressActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_collapseMode="pin"
+            app:layout_constraintTop_toTopOf="parent"
+            app:popupTheme="@style/AppTheme.PopupOverlay"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
         android:id="@+id/firstAddressLayout"
@@ -15,15 +29,24 @@
         android:orientation="vertical"
         android:gravity="center">
 
+        <ProgressBar
+            android:id="@+id/addressProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"/>
+
         <TextView
+            android:id="@+id/addFirstDesTv"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginTop="16dp"
-            android:textSize="18sp"
-            android:text="لطفا آدرس محل دریافت کالا را وارد نمایید:"/>
+            android:textSize="16sp"
+            android:text="لطفا آدرس محل دریافت کالا را وارد نمایید."/>
 
         <Button
+            android:visibility="gone"
+            android:id="@+id/addFirstAddressButton"
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:text="ثبت آدرس"
@@ -32,42 +55,70 @@
             android:background="@drawable/round_ee_15"
             android:textColor="@color/colorWhite"/>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:visibility="gone"
+            android:id="@+id/addressRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <Button
+            android:visibility="gone"
+            android:id="@+id/addAddressButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@color/colorBlue"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp"
+            android:text="ثبت آدرس جدید"/>
+
     </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:visibility="gone"
-        android:id="@+id/addressRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-    </androidx.recyclerview.widget.RecyclerView>
 
     <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="match_parent"
         android:layout_height="20dp"
         app:srcCompat="@drawable/shadow_top"
         android:scaleType="fitXY"
-        android:alpha="0.5"/>
+        android:alpha="0.3"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="انتخاب کارت"
-        android:layout_marginTop="-4dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="-8dp"
+        android:layout_marginBottom="6dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:textColor="#696969"
         android:textSize="12sp"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/cardRecyclerView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="116dp"
-        android:paddingStart="4dp"
-        android:clipToPadding="false"
-        tools:ignore="RtlSymmetry">
+        android:layout_height="180dp"
+        android:orientation="vertical"
+        android:gravity="center">
 
-    </androidx.recyclerview.widget.RecyclerView>
+        <ProgressBar
+            android:id="@+id/cardsProgressBar"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginBottom="40dp"
+            android:layout_marginTop="16dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:visibility="gone"
+            android:id="@+id/cardRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:paddingStart="8dp"
+            android:layout_marginBottom="4dp"
+            android:clipToPadding="false"
+            tools:ignore="RtlSymmetry"/>
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/payButton"

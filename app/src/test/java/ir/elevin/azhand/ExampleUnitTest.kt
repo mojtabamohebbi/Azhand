@@ -1,4 +1,4 @@
-package ir.elevin.mykotlinapplication
+package ir.elevin.azhand
 
 import org.junit.Test
 

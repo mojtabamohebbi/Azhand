@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/scrollViw"
     android:orientation="vertical"
-    tools:context="ir.elevin.mykotlinapplication.ProductDetailActivity">
+    tools:context="ir.elevin.azhand.ProductDetailActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -104,7 +104,7 @@
             app:layout_constraintTop_toBottomOf="@+id/productPriceTv"
             app:layout_goneMarginTop="8dp" />
 
-        <ir.elevin.mykotlinapplication.Tools.TextViewEx
+        <ir.elevin.azhand.tools.TextViewEx
             android:id="@+id/desTv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -227,7 +227,7 @@
             app:layout_constraintTop_toBottomOf="@+id/orderCardView"
             app:layout_goneMarginTop="8dp" />
 
-        <ir.elevin.mykotlinapplication.Tools.TextViewEx
+        <ir.elevin.azhand.tools.TextViewEx
             android:id="@+id/maintenanceTv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

@@ -1,4 +1,4 @@
-package ir.elevin.mykotlinapplication
+package ir.elevin.azhand
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -13,7 +13,6 @@ import android.transition.TransitionInflater
 import android.util.Log
 import android.view.View
 
-import androidx.appcompat.content.res.AppCompatResources
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
 import com.github.kittinunf.fuel.httpPost
@@ -23,20 +22,18 @@ import com.simmorsal.recolor_project.ReColor
 import com.smarteist.autoimageslider.IndicatorAnimations
 import com.smarteist.autoimageslider.SliderAnimations
 import com.squareup.picasso.Picasso
-import ir.elevin.mykotlinapplication.Adapters.SliderAdapterExample
+import ir.elevin.azhand.adapters.SliderAdapterExample
 import kotlinx.android.synthetic.main.activity_product_detail.*
 import kotlinx.android.synthetic.main.activity_product_detail.imageSlider
 import kotlinx.android.synthetic.main.activity_product_detail.iv
 import kotlinx.android.synthetic.main.activity_product_detail.productToolbar
 import libs.mjn.prettydialog.PrettyDialog
 import android.util.TypedValue
-import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.github.kittinunf.result.failure
 import com.github.kittinunf.result.success
-import ir.elevin.mykotlinapplication.Adapters.CommentsAdapter
+import ir.elevin.azhand.adapters.CommentsAdapter
 import android.animation.ObjectAnimator
-import androidx.transition.Transition
 
 
 class ProductDetailActivity : CustomActivity() {

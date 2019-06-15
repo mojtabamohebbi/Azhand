@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:gravity="center"
     android:background="@color/colorBackground"
-    tools:context="ir.elevin.mykotlinapplication.UpgradeActivity">
+    tools:context="ir.elevin.azhand.UpgradeActivity">
 
     <ImageView
         android:id="@+id/backButton"

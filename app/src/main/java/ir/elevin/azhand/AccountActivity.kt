@@ -1,26 +1,16 @@
-package ir.elevin.mykotlinapplication
+package ir.elevin.azhand
 
-import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.WindowManager
 import android.widget.ArrayAdapter
-import android.widget.Toast
-import com.daimajia.androidanimations.library.Techniques
-import com.daimajia.androidanimations.library.YoYo
 import com.github.dhaval2404.imagepicker.ImagePicker
-import com.github.kittinunf.fuel.httpPost
-import com.github.kittinunf.fuel.livedata.liveDataObject
-import com.github.kittinunf.result.failure
-import com.github.kittinunf.result.success
 import com.yalantis.ucrop.UCrop
 //import com.yalantis.ucrop.UCrop
 import hari.bounceview.BounceView
 import kotlinx.android.synthetic.main.activity_account.*
-import libs.mjn.prettydialog.PrettyDialog
 import java.io.File
 
 class AccountActivity : CustomActivity() {
