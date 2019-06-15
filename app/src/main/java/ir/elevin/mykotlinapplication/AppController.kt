@@ -32,6 +32,7 @@ var rootViewlHeight = 0f
 var filterType = 0 //0=most visited, 1=highest price, 2= lowest price
 var tabColor = R.color.colorFlowerAndPotTabBar
 var backgroundColor = R.color.colorFlowerAndPotBackground
+var tabSelectedIndex = 0
 
 class AppController : Application() {
 
@@ -81,7 +82,7 @@ fun decimalFormatCommafy(number: String): String {
     }
 
     val splittedNum = inputNum.split("\\.").toTypedArray()
-    var decimalNum: String = ""
+    var decimalNum = ""
     if(splittedNum.size == 2)
     {
         inputNum = splittedNum[0]
@@ -92,7 +93,12 @@ fun decimalFormatCommafy(number: String): String {
     val myFormatter = DecimalFormat("###,###")
     val output = myFormatter.format(inputDouble)
 
-    return "$output$decimalNum تومان"
+    return if (number.length > 3){
+        "$output$decimalNum میلیون تومان"
+    }else{
+        "$output$decimalNum هزارتومان"
+    }
+
 }
 
 fun AppCompatEditText.hideKeyboard(context: Context){

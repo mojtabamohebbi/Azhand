@@ -5,7 +5,8 @@
     <color name="colorBackground">#fff</color>
     <color name="colorPrimaryLight">#035385</color>
     <color name="colorAccent">#F14C6D</color>
-    <color name="colorAccentLight">#FA8FA4</color>
+    <color name="colorAccentDark">#CF3F5C</color>
+    <color name="colorAccentLight">#CC6579</color>
     <color name="colorYellow">#F5DD02</color>
     <color name="colorOrange">#F1652F</color>
     <color name="colorGreen">#579C50</color>

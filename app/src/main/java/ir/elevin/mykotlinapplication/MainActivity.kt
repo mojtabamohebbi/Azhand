@@ -13,6 +13,9 @@ import android.view.*
 import kotlinx.android.synthetic.main.content_main.pager
 import kotlin.collections.ArrayList
 import android.annotation.SuppressLint
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.transition.TransitionInflater
 import androidx.viewpager.widget.ViewPager
@@ -20,11 +23,20 @@ import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
 import ir.elevin.mykotlinapplication.Database.DatabaseHandler
 import ir.elevin.mykotlinapplication.Fragments.*
+import kotlinx.android.synthetic.main.content_main.rootView
+import kotlinx.android.synthetic.main.dialog_sort_price.*
 
 
 class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedListener{
 
     private var appBarExpanded : Boolean = true
+    private val flowerAndPotFragment = ApartmentFlowerFragment()
+    private val singleFlowerFragment = SingleFlowerFragment()
+    private val bunchOfFlowerFragment = BunchOfFlowerFragment()
+    private val cactusFragment = CactusFragment()
+    private val treeFragment = TreeFragment()
+    private val gardeningFragment = GardeningFragment()
+    private val potFragment = PotFragment()
 
     private lateinit var pagerAdapter: TabsPagerAdapter
     private val tabs = ArrayList<TabModel>()
@@ -58,8 +70,6 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
         }
 
         setSupportActionBar(toolbar)
-
-        this.supportStartPostponedEnterTransition()
 
         title = ""
 
@@ -96,14 +106,6 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
 
         nav_view.setNavigationItemSelectedListener(this)
 
-        val flowerAndPotFragment = ApartmentFlowerFragment()
-        val singleFlowerFragment = SingleFlowerFragment()
-        val bunchOfFlowerFragment = BunchOfFlowerFragment()
-        val cactusFragment = CactusFragment()
-        val treeFragment = TreeFragment()
-        val gardeningFragment = GardeningFragment()
-        val potFragment = PotFragment()
-
         tabs.add(TabModel("ابزار و یراق", gardeningFragment))
         tabs.add(TabModel("گلدان", potFragment))
         tabs.add(TabModel("کاکتوس", cactusFragment))
@@ -130,6 +132,7 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
             }
 
             override fun onPageSelected(position: Int) {
+                tabSelectedIndex = position
                 when (position) {
                     0 -> {
                         changeTabBar(R.color.colorGardeningTabBar, R.color.colorGardeningBackground, R.color.colorGardeningStatusBar, R.drawable.gardening)
@@ -171,6 +174,55 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
         }
 
         insertAccounts()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+
+        if (item!!.itemId == R.id.action_sort){
+            val d = Dialog(this)
+            d.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            d.setContentView(R.layout.dialog_sort_price)
+            d.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+            d.mostVisitedButton.setOnClickListener {
+                filterType = 0
+                getDataForChangeSort()
+                d.dismiss()
+            }
+
+            d.expensiveButton.setOnClickListener {
+                filterType = 1
+                getDataForChangeSort()
+                d.dismiss()
+            }
+
+            d.cheapButton.setOnClickListener {
+                filterType = 2
+                getDataForChangeSort()
+                d.dismiss()
+            }
+
+            d.show()
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun getDataForChangeSort(){
+        when (tabSelectedIndex){
+            0 -> {flowerAndPotFragment.getData(true)}
+            1 -> {}
+            2 -> {}
+            3 -> {}
+            4 -> {}
+            5 -> {}
+            6 -> {}
+        }
     }
 
     fun changeTabBar(colorTabBar: Int, colorBackground: Int, colorStatusBar: Int, image: Int){

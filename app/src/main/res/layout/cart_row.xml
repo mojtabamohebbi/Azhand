@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginTop="12dp">
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -12,8 +13,21 @@
         android:layout_height="100dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:scaleType="centerCrop"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"/>
+
+    <Button
+        android:id="@+id/deleteButton"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:textSize="12sp"
+        android:text="حذف"
+        android:background="@color/colorAccent"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintTop_toBottomOf="@+id/productIv"
+        app:layout_constraintStart_toStartOf="@+id/productIv"
+        app:layout_constraintEnd_toEndOf="@+id/productIv"/>
 
     <TextView
         android:id="@+id/nameTv"
@@ -22,6 +36,8 @@
         app:layout_constraintTop_toTopOf="@+id/productIv"
         app:layout_constraintStart_toEndOf="@+id/productIv"
         app:layout_constraintEnd_toStartOf="@+id/numProductTv"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
         android:textSize="16sp"
         android:textColor="@color/colorPrimaryText"/>
 
@@ -32,8 +48,11 @@
         app:layout_constraintTop_toBottomOf="@+id/nameTv"
         app:layout_constraintStart_toEndOf="@+id/productIv"
         app:layout_constraintEnd_toStartOf="@+id/numProductTv"
-        android:textSize="16sp"
-        android:textColor="@color/colorPrimaryText"/>
+        android:textSize="10sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="12dp"
+        android:textColor="@color/colorSecondaryText"
+        tools:ignore="SmallSp" />
 
     <TextView
         android:id="@+id/totalPriceTv"
@@ -42,8 +61,22 @@
         app:layout_constraintTop_toBottomOf="@+id/basePriceTv"
         app:layout_constraintStart_toEndOf="@+id/productIv"
         app:layout_constraintEnd_toStartOf="@+id/numProductTv"
-        android:textSize="16sp"
-        android:textColor="@color/colorPrimaryText"/>
+        android:textSize="12sp"
+        android:layout_marginStart="12dp"
+        android:textColor="@color/colorAccent"/>
+
+    <TextView
+        android:id="@+id/numProductTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="45dp"
+        android:gravity="center"
+        android:textColor="@color/colorSecondaryText"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/downNumButton"
+        app:layout_constraintEnd_toEndOf="@+id/upNumButton"
+        app:layout_constraintStart_toStartOf="@+id/upNumButton"
+        app:layout_constraintTop_toTopOf="@+id/upNumButton" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/upNumButton"
@@ -53,35 +86,26 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
+        android:tint="@color/colorDividerDark"
         app:srcCompat="@drawable/ic_arrow_drop_up_black_48dp" />
-
-    <TextView
-        android:id="@+id/numProductTv"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/upNumButton"
-        app:layout_constraintEnd_toEndOf="@+id/upNumButton"
-        app:layout_constraintStart_toStartOf="@+id/upNumButton"
-        android:textSize="22sp"
-        android:layout_marginTop="-6dp"
-        android:layout_marginBottom="-6dp"
-        android:textColor="@color/colorPrimaryText"/>
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/downNumButton"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        app:layout_constraintTop_toBottomOf="@+id/numProductTv"
+        app:layout_constraintTop_toBottomOf="@+id/upNumButton"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="16dp"
+        android:layout_marginTop="10dp"
+        android:tint="@color/colorDividerDark"
         app:srcCompat="@drawable/ic_arrow_drop_down_black_48dp" />
 
     <View
         android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="@color/colorDividerDark"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="0.75dp"
+        android:background="@color/colorDivider"
         android:layout_marginBottom="12dp"
+        app:layout_constraintTop_toBottomOf="@+id/deleteButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginEnd="16dp"

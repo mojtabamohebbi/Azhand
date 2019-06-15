@@ -128,7 +128,7 @@ class ProductDetailActivity : CustomActivity() {
                     numProduct += 1
                 }
                 numProductTv.text = ""+numProduct
-                YoYo.with(Techniques.ZoomIn).duration(300).playOn(numProductTv)
+                YoYo.with(Techniques.BounceInDown).duration(300).playOn(numProductTv)
                 YoYo.with(Techniques.FadeIn).duration(300).playOn(plusButton)
             }else{
                 startActivity(Intent(this, LoginActivity::class.java))
@@ -141,7 +141,7 @@ class ProductDetailActivity : CustomActivity() {
                 numProduct -= 1
             }
             numProductTv.text = ""+numProduct
-            YoYo.with(Techniques.ZoomIn).duration(300).playOn(numProductTv)
+            YoYo.with(Techniques.BounceInUp).duration(300).playOn(numProductTv)
             YoYo.with(Techniques.FadeIn).duration(300).playOn(minusButton)
         }
 

@@ -131,3 +131,58 @@ data class Comment(
     }
 }
 
+data class Cart(
+        val id: Int = 0,
+        val pid: Int = 0,
+        val name: String = "",
+        val image: String = "",
+        val price: Int = 0,
+        var totalPrice: Int = 0,
+        var num: Int = 0
+) : Parcelable {
+
+    class Deserializer : ResponseDeserializable<Cart> {
+        override fun deserialize(reader: Reader) = Gson().fromJson(reader, Cart::class.java)!!
+    }
+
+    class ListDeserializer : ResponseDeserializable<List<Cart>> {
+
+        override fun deserialize(reader: Reader): List<Cart> {
+            val type = object : TypeToken<List<Cart>>() {}.type
+            return Gson().fromJson(reader, type)
+        }
+    }
+
+    constructor(parcel: Parcel) : this(
+            parcel.readInt(),
+            parcel.readInt(),
+            parcel.readString()!!,
+            parcel.readString()!!,
+            parcel.readInt(),
+            parcel.readInt(),
+            parcel.readInt())
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(id)
+        parcel.writeInt(pid)
+        parcel.writeString(name)
+        parcel.writeString(image)
+        parcel.writeInt(price)
+        parcel.writeInt(totalPrice)
+        parcel.writeInt(num)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<Cart> {
+        override fun createFromParcel(parcel: Parcel): Cart {
+            return Cart(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Cart?> {
+            return arrayOfNulls(size)
+        }
+    }
+}

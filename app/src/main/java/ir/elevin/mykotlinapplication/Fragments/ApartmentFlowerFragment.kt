@@ -58,11 +58,6 @@ class ApartmentFlowerFragment : androidx.fragment.app.Fragment() {
 
     private var array = ArrayList<Product>()
     private var adapter: ProductAdapter? = null
-    fun addAccount(){
-        val data = Product()
-        array.add(0, data)
-        adapter?.notifyDataSetChanged()
-    }
 
     private var mIsLoading = true
     private lateinit var layoutManager: StaggeredGridLayoutManager
@@ -103,7 +98,7 @@ class ApartmentFlowerFragment : androidx.fragment.app.Fragment() {
 
     }
 
-    private fun getData(isFirst: Boolean){
+    fun getData(isFirst: Boolean){
 
         if(isFirst){
             page = 1
