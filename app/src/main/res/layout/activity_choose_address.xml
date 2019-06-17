@@ -99,6 +99,7 @@
         android:layout_width="match_parent"
         android:layout_height="180dp"
         android:orientation="vertical"
+        android:layout_marginBottom="-5dp"
         android:gravity="center">
 
         <ProgressBar
@@ -120,13 +121,28 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/payButton"
+    <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="ثبت و پرداخت"
-        android:textSize="18sp"
-        android:background="@color/colorAccentLight"
-        android:textColor="@color/colorWhite"/>
+        android:layout_height="10dp"
+        app:srcCompat="@drawable/shadow_bottom"
+        android:scaleType="fitXY"
+        android:alpha="0.3"/>
+
+    <LinearLayout
+        android:id="@+id/colorLayoutPayButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent">
+
+        <Button
+            android:id="@+id/payButton"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="ثبت و پرداخت"
+            android:textSize="18sp"
+            android:background="#00FFFFFF"
+            android:textColor="@color/colorWhite"/>
+
+    </LinearLayout>
 
 </LinearLayout>

@@ -190,7 +190,8 @@ data class Cart(
 
 data class Address(
         val id: Int = 0,
-        val address: String = ""
+        val address: String = "",
+        var isSelected: Boolean = false
 ) : Parcelable {
 
     class Deserializer : ResponseDeserializable<Address> {
@@ -231,7 +232,8 @@ data class Address(
 
 data class Card(
         val id: Int = 0,
-        val image: String = ""
+        val image: String = "",
+        var isSelected: Boolean = false
 ) : Parcelable {
 
     class Deserializer : ResponseDeserializable<Card> {

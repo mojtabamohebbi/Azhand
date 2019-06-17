@@ -34,6 +34,12 @@ import com.github.kittinunf.result.failure
 import com.github.kittinunf.result.success
 import ir.elevin.azhand.adapters.CommentsAdapter
 import android.animation.ObjectAnimator
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.view.Window
+import android.widget.Toast
+import kotlinx.android.synthetic.main.dialog_comment.*
 
 
 class ProductDetailActivity : CustomActivity() {
@@ -180,6 +186,21 @@ class ProductDetailActivity : CustomActivity() {
             getComments()
         }, 3000)
 
+        addCommentButton.setOnClickListener {
+            val d = Dialog(this)
+            d.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            d.setContentView(R.layout.dialog_comment)
+            d.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+            d.sendButton.setOnClickListener {
+                d.addCommentProgressBar.visibility = View.VISIBLE
+                val rate = d.ratingBar.rating
+                val comment = d.commentEt.text.toString()
+                sendComment(comment, rate, d)
+            }
+
+            d.show()
+        }
     }
 
     var addToCartState = 1 //1=normal, 2=loading, 3=done
@@ -203,6 +224,26 @@ class ProductDetailActivity : CustomActivity() {
                             addToCartState = 2
                             showLoadingState()
                             addToCart()
+                        }
+                        .show()
+            }
+        }
+    }
+
+    private fun sendComment(comment: String, rate: Float, d: Dialog){
+        webserviceUrl.httpPost(listOf("func" to "send_comment", "uid" to account.id, "pid" to data.id, "comment" to comment, "rate" to rate)).liveDataResponse().observeForever {
+            Log.d("WEGweg", it.first.data.toString(Charsets.UTF_8))
+            if (it.first.data.toString(Charsets.UTF_8) == "1"){
+                d.dismiss()
+                Toast.makeText(this, "با موفقیت ثبت شد و پس از تایید نمایش داده می شود.", Toast.LENGTH_LONG).show()
+            }else{
+                val dd = PrettyDialog(this)
+                dd.setTitle(this.getString(R.string.error))
+                        .setIcon(R.drawable.error)
+                        .setMessage(this.getString(R.string.network_error))
+                        .addButton(this.getString(R.string.try_again), R.color.colorWhite, R.color.colorRed) {
+                            dd.dismiss()
+                            sendComment(comment, rate, d)
                         }
                         .show()
             }

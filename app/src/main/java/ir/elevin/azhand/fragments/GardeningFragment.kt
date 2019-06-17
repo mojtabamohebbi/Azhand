@@ -96,7 +96,7 @@ class GardeningFragment : androidx.fragment.app.Fragment() {
 
     }
 
-    private fun getData(isFirst: Boolean){
+    fun getData(isFirst: Boolean){
 
         if(isFirst){
             page = 1

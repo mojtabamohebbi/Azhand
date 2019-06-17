@@ -12,6 +12,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="action_transaction">انتقال</string>
+    <string name="success">با موفقیت انجام شد</string>
     <string name="error">مشکل!</string>
     <string name="try_again">تلاش دوباره</string>
     <string name="network_error">اشکال در برقراری ارتباط</string>

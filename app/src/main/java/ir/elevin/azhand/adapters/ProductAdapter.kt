@@ -43,6 +43,7 @@ class ProductAdapter(private val activity: FragmentActivity, private val items: 
 
         Picasso.get()
                 .load(data.image)
+                .placeholder(R.drawable.no_image)
                 .into(holder.imageIv)
 
         holder.itemView.setOnClickListener {

@@ -100,6 +100,9 @@ class CartActivity : CustomActivity(), CartAdapter.ChangeTotalPrice {
                                     }
                                 }
                             }, 1000, 500)
+                            notFoundTv.visibility = View.GONE
+                        }else{
+                            notFoundTv.visibility = View.VISIBLE
                         }
                     }
                     it?.failure {

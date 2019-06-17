@@ -30,10 +30,6 @@
             android:name="ir.elevin.azhand.UpgradeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="ir.elevin.azhand.AccountActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustNothing|adjustPan|adjustResize" />
-        <activity
             android:name="ir.elevin.azhand.ImageViewerActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
-    android:layout_marginBottom="4dp"
     android:layout_marginEnd="16dp"
     android:layout_marginStart="16dp">
 
@@ -16,9 +15,10 @@
         android:gravity="center_vertical">
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:visibility="invisible"
             android:id="@+id/selectedIv"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             app:srcCompat="@drawable/ic_check_box_green_48dp" />
 
         <TextView
@@ -26,10 +26,10 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
+            android:textSize="12sp"
+            android:textColor="@color/colorDisableText"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"/>
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -43,7 +43,7 @@
             android:id="@+id/editButton"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            app:srcCompat="@drawable/ic_edit_purple_48dp"
+            app:srcCompat="@drawable/ic_edit_location_blue_48dp"
             android:padding="8dp"/>
 
     </LinearLayout>

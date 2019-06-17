@@ -34,7 +34,7 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
     private val singleFlowerFragment = SingleFlowerFragment()
     private val bunchOfFlowerFragment = BunchOfFlowerFragment()
     private val cactusFragment = CactusFragment()
-    private val treeFragment = TreeFragment()
+    private val boxFlowerFragment = TreeFragment()
     private val gardeningFragment = GardeningFragment()
     private val potFragment = PotFragment()
 
@@ -105,11 +105,12 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
         }
 
         nav_view.setNavigationItemSelectedListener(this)
+        nav_view.menu.getItem(3).isVisible = account.id > 0
 
         tabs.add(TabModel("ابزار و یراق", gardeningFragment))
         tabs.add(TabModel("گلدان", potFragment))
         tabs.add(TabModel("کاکتوس", cactusFragment))
-        tabs.add(TabModel("جعبه گل", treeFragment))
+        tabs.add(TabModel("جعبه گل", boxFlowerFragment))
         tabs.add(TabModel("شاخه گل", singleFlowerFragment))
         tabs.add(TabModel("دسته گل", bunchOfFlowerFragment))
         tabs.add(TabModel("آپارتمانی", flowerAndPotFragment))
@@ -216,12 +217,12 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
     private fun getDataForChangeSort(){
         when (tabSelectedIndex){
             0 -> {flowerAndPotFragment.getData(true)}
-            1 -> {}
-            2 -> {}
-            3 -> {}
-            4 -> {}
-            5 -> {}
-            6 -> {}
+            1 -> {bunchOfFlowerFragment.getData(true)}
+            2 -> {singleFlowerFragment.getData(true)}
+            3 -> {boxFlowerFragment.getData(true)}
+            4 -> {cactusFragment.getData(true)}
+            5 -> {potFragment.getData(true)}
+            6 -> {gardeningFragment.getData(true)}
         }
     }
 
@@ -285,10 +286,10 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
-            R.id.nav_account -> {
+            R.id.nav_support -> {
                 account = db!!.getAccount()
                 if (account.id != 0){
-                    startActivity(Intent(this, AccountActivity::class.java))
+
                 }else{
                     startActivity(Intent(this, LoginActivity::class.java))
                 }
@@ -301,10 +302,10 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
                     startActivity(Intent(this, LoginActivity::class.java))
                 }
             }
-            R.id.nav_receipts -> {
+            R.id.nav_orders -> {
                 account = db!!.getAccount()
                 if (account.id != 0){
-                    startActivity(Intent(this, AccountActivity::class.java))
+
                 }else{
                     startActivity(Intent(this, LoginActivity::class.java))
                 }

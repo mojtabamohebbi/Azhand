@@ -26,9 +26,27 @@ class CardAdapter(private val activity: FragmentActivity, private val items: Lis
         val data = items[position]
 
         Picasso.get().load(data.image).into((holder as CardHolder).imageView)
+
+        if (data.isSelected){
+            holder.maskView.visibility = View.VISIBLE
+            holder.checkedIv.visibility = View.VISIBLE
+        }else{
+            holder.maskView.visibility = View.GONE
+            holder.checkedIv.visibility = View.GONE
+        }
+
+        holder.itemView.setOnClickListener {
+            for (i in items){
+                i.isSelected = false
+            }
+            items[position].isSelected = true
+            notifyDataSetChanged()
+        }
     }
 }
 
 private class CardHolder(view: View) : RecyclerView.ViewHolder(view) {
     val imageView = view.iv!!
+    val checkedIv = view.checkedIv!!
+    val maskView = view.selectMaskView!!
 }
