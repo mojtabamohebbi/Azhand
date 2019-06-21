@@ -1,15 +1,19 @@
 package ir.elevin.azhand
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.Window
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.daimajia.androidanimations.library.Techniques
@@ -19,22 +23,36 @@ import com.github.kittinunf.fuel.livedata.liveDataObject
 import com.github.kittinunf.fuel.livedata.liveDataResponse
 import com.github.kittinunf.result.failure
 import com.github.kittinunf.result.success
-import ir.elevin.azhand.adapters.AddressAdapter
-import ir.elevin.azhand.adapters.CardAdapter
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_choose_address.*
+import kotlinx.android.synthetic.main.address_row.view.*
+import kotlinx.android.synthetic.main.card_row.view.*
 import kotlinx.android.synthetic.main.dialog_add_address.*
+import kotlinx.android.synthetic.main.order_row.*
 import libs.mjn.prettydialog.PrettyDialog
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ChooseAddressActivity : CustomActivity() {
+@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+class ChooseAddressActivity : CustomActivity(){
+
+    lateinit var products: String
+    var cardId: Int = 0
+    var amount: Int = 0
+    var address = ""
 
     private val addresses = ArrayList<Address>()
-    private var addressAdapter: AddressAdapter = AddressAdapter(this, addresses)
+    private var addressAdapter: AddressAdapter = AddressAdapter(this)
 
+    private var cardArray = ArrayList<Card>()
+    
+    @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_choose_address)
+
+        products = intent.extras.getString("products")
+        amount = intent.extras.getInt("amount")
 
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -53,7 +71,32 @@ class ChooseAddressActivity : CustomActivity() {
             addAddressDialog()
         }
 
+        payButton.setOnClickListener {
+            insertOrder()
+        }
+
         getAddresses()
+    }
+
+    private fun insertOrder(){
+        webserviceUrl.httpPost(listOf("func" to "insert_order",
+                "uid" to account.id, "products" to products,
+                "amount" to amount, "cardId" to cardId, "address" to address, "transcode" to "3423892")).liveDataResponse().observeForever {
+            Log.d("WEGweg", it.first.data.toString(Charsets.UTF_8))
+            if (it.first.data.toString(Charsets.UTF_8) == "1"){
+                Toast.makeText(this, "با موفقیت ثبت شد", Toast.LENGTH_LONG).show()
+            }else{
+                val dd = PrettyDialog(this)
+                dd.setTitle(this.getString(R.string.error))
+                        .setIcon(R.drawable.error)
+                        .setMessage(this.getString(R.string.network_error))
+                        .addButton(this.getString(R.string.try_again), R.color.colorWhite, R.color.colorRed) {
+                            dd.dismiss()
+                            insertOrder()
+                        }
+                        .show()
+            }
+        }
     }
 
     private fun getAddresses(){
@@ -63,6 +106,7 @@ class ChooseAddressActivity : CustomActivity() {
                     it.success {
                         if (it.isNotEmpty()){
                             it[0].isSelected = true
+                            address = it[0].address
                             addresses += it
                             addressAdapter.notifyDataSetChanged()
                             addressRecyclerView.scheduleLayoutAnimation()
@@ -108,8 +152,10 @@ class ChooseAddressActivity : CustomActivity() {
                     it.success {
                         if (it.isNotEmpty()){
                             it[0].isSelected = true
+                            cardId = it[0].id
                         }
-                        cardRecyclerView.adapter = CardAdapter(this, it)
+                        cardArray = it.toCollection(cardArray)
+                        cardRecyclerView.adapter = CardAdapter(this)
                         cardRecyclerView.visibility = View.VISIBLE
                         cardsProgressBar.visibility = View.GONE
                     }
@@ -161,6 +207,95 @@ class ChooseAddressActivity : CustomActivity() {
         }
 
         d.show()
+    }
+    
+    inner class CardAdapter(private val activity: FragmentActivity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+        override fun onCreateViewHolder(p0: ViewGroup, p1: Int): RecyclerView.ViewHolder {
+            return CardHolder(LayoutInflater.from(activity).inflate(R.layout.card_row, p0, false))
+        }
+
+        override fun getItemCount(): Int {
+            return cardArray.size
+        }
+
+        @SuppressLint("SetTextI18n", "RestrictedApi", "CheckResult")
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+            val data = cardArray[position]
+
+            Picasso.get().load(data.image).into((holder as CardHolder).imageView)
+
+            if (data.isSelected){
+                holder.maskView.visibility = View.VISIBLE
+                holder.checkedIv.visibility = View.VISIBLE
+            }else{
+                holder.maskView.visibility = View.GONE
+                holder.checkedIv.visibility = View.GONE
+            }
+
+            holder.itemView.setOnClickListener {
+                for (i in cardArray){
+                    i.isSelected = false
+                }
+                cardId = data.id
+                cardArray[position].isSelected = true
+                notifyDataSetChanged()
+            }
+        }
+    }
+
+    private class CardHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val imageView = view.iv!!
+        val checkedIv = view.checkedIv!!
+        val maskView = view.selectMaskView!!
+    }
+
+    inner class AddressAdapter(private val activity: FragmentActivity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+        override fun onCreateViewHolder(p0: ViewGroup, p1: Int): RecyclerView.ViewHolder {
+            return AddressHolder(LayoutInflater.from(activity).inflate(R.layout.address_row, p0, false))
+        }
+
+        override fun getItemCount(): Int {
+            return addresses.size
+        }
+
+        @SuppressLint("SetTextI18n", "RestrictedApi", "CheckResult")
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+            val data = addresses[position]
+            (holder as AddressHolder).addressTv.text = data.address
+
+            if (data.isSelected){
+                holder.selectedIv.visibility = View.VISIBLE
+                holder.addressTv.setTextColor(AppCompatResources.getColorStateList(activity, R.color.colorGreen))
+            }else{
+                holder.selectedIv.visibility = View.INVISIBLE
+                holder.addressTv.setTextColor(AppCompatResources.getColorStateList(activity, R.color.colorDisableText))
+            }
+
+            holder.itemView.setOnClickListener {
+                for (i in addresses){
+                    i.isSelected = false
+                }
+                address = data.address
+                addresses[position].isSelected = true
+                notifyDataSetChanged()
+            }
+
+            holder.editButton.setOnClickListener {
+
+            }
+            holder.deleteButton.setOnClickListener {
+
+            }
+        }
+    }
+
+    private class AddressHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val addressTv = view.addressTv!!
+        val deleteButton = view.deleteButton!!
+        val editButton = view.editButton!!
+        val selectedIv = view.selectedIv!!
     }
 
     override fun onSupportNavigateUp(): Boolean {

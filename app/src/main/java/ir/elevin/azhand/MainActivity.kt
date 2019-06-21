@@ -305,7 +305,7 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
             R.id.nav_orders -> {
                 account = db!!.getAccount()
                 if (account.id != 0){
-
+                    startActivity(Intent(this, OrdersActivity::class.java))
                 }else{
                     startActivity(Intent(this, LoginActivity::class.java))
                 }

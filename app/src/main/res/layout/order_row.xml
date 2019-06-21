@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="20dp"
+    app:cardCornerRadius="0dp"
+    app:cardElevation="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:background="@color/colorAccent"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/orderNumberTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorWhite"
+                android:textSize="14sp"
+                android:gravity="right"
+                android:layout_weight="1"/>
+
+            <View
+                android:layout_width="0.5dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorWhite"
+                android:layout_marginRight="4dp"
+                android:layout_marginLeft="4dp"/>
+
+            <TextView
+                android:id="@+id/orderAmountTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorWhite"
+                android:textSize="12sp"
+                android:gravity="left"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/colorDivider"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            android:paddingRight="12dp"
+            android:paddingLeft="12dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="12sp"
+                android:text="تاریخ ثبت:"
+                tools:ignore="SmallSp"/>
+
+            <View
+                android:layout_width="12dp"
+                android:layout_height="0dp"/>
+
+            <TextView
+                android:id="@+id/orderDateCreateTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="14sp"
+                android:gravity="left"
+                tools:ignore="SmallSp"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/colorDivider"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            android:paddingRight="12dp"
+            android:paddingLeft="12dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="12sp"
+                android:text="وضعیت سفارش:"
+                tools:ignore="SmallSp"/>
+
+            <View
+                android:layout_width="12dp"
+                android:layout_height="0dp"/>
+
+            <TextView
+                android:id="@+id/orderStatusTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="14sp"
+                android:gravity="left"
+                tools:ignore="SmallSp"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+        
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/colorDivider"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            android:paddingRight="12dp"
+            android:paddingLeft="12dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="12sp"
+                android:layout_marginEnd="8dp"
+                android:text="آدرس تحویل:"
+                tools:ignore="SmallSp"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/orderAddressTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="14sp"
+                tools:ignore="SmallSp"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/colorDivider"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:visibility="gone"
+            android:id="@+id/ordersRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="280dp">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <View
+            android:id="@+id/dividerView"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/colorDivider"/>
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/giftImageLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingRight="12dp"
+            android:paddingLeft="12dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:gravity="left"
+                android:text="کارت هدیه انتخابی:"/>
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/giftCardIv"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="150dp"
+                android:scaleType="centerInside"
+                android:padding="8dp"
+                app:srcCompat="@drawable/no_image_wide"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/detailsButton"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="#6EAD67"
+            android:textColor="@color/colorWhite"
+            android:text="جزئیات"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

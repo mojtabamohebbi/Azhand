@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-import ir.elevin.azhand.R
 import kotlinx.android.synthetic.main.recycler_fragment.*
 
 import android.util.Log
@@ -15,13 +14,11 @@ import com.github.kittinunf.fuel.livedata.liveDataObject
 import com.github.kittinunf.result.failure
 import com.github.kittinunf.result.success
 
-import ir.elevin.azhand.webserviceUrl
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.transition.Explode
+import ir.elevin.azhand.*
 import ir.elevin.azhand.adapters.ProductAdapter
-import ir.elevin.azhand.Product
-import ir.elevin.azhand.filterType
 import libs.mjn.prettydialog.PrettyDialog
 
 
@@ -94,6 +91,8 @@ class ApartmentFlowerFragment : androidx.fragment.app.Fragment() {
 
     fun getData(isFirst: Boolean){
 
+        isErrorShowing = false
+
         if(isFirst){
             page = 1
             array.clear()
@@ -123,15 +122,18 @@ class ApartmentFlowerFragment : androidx.fragment.app.Fragment() {
                         progressBar.visibility = View.INVISIBLE
                         swipeRefreshLayout.isRefreshing = false
                         mIsLoading = false
-                        val d = PrettyDialog(activity)
-                        d.setTitle(getString(R.string.error))
-                                .setIcon(R.drawable.error)
-                                .setMessage(getString(R.string.network_error))
-                                .addButton(getString(R.string.try_again), R.color.colorWhite, R.color.colorRed) {
-                                    d.dismiss()
-                                    getData(false)
-                                }
-                                .show()
+                        if (!isErrorShowing){
+                            isErrorShowing = true
+                            val d = PrettyDialog(activity)
+                            d.setTitle(getString(R.string.error))
+                                    .setIcon(R.drawable.error)
+                                    .setMessage(getString(R.string.network_error))
+                                    .addButton(getString(R.string.try_again), R.color.colorWhite, R.color.colorRed) {
+                                        d.dismiss()
+                                        getData(false)
+                                    }
+                                    .show()
+                        }
                     }
                 }
     }

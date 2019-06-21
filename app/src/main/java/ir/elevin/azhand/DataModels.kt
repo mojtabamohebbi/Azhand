@@ -3,6 +3,7 @@ package ir.elevin.azhand
 import android.os.Parcel
 import android.os.Parcelable
 import androidx.fragment.app.Fragment
+import com.github.kittinunf.fuel.android.core.Json
 import com.github.kittinunf.fuel.core.ResponseDeserializable
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -74,9 +75,9 @@ data class Product(
 
 
 data class Account(val id: Int = 0
-                   ,val name: String = ""
-                   ,val phone: String = ""
-                   ,val address: String = ""
+                   , val name: String = ""
+                   , val phone: String = ""
+                   , val address: String = ""
 ) {
     class Deserializer : ResponseDeserializable<Account> {
         override fun deserialize(reader: Reader) = Gson().fromJson(reader, Account::class.java)!!
@@ -267,6 +268,67 @@ data class Card(
         }
 
         override fun newArray(size: Int): Array<Card?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
+
+
+data class Order(
+        val id: Int = 0,
+        val transCode: String = "",
+        val dateCreate: String = "",
+        val address: String = "",
+        var cardPoster: String = "",
+        val products: String = "",
+        var amount: Int = 0,
+        var status: Int = 0,
+        var isSelected: Boolean = false
+) : Parcelable {
+
+    class Deserializer : ResponseDeserializable<Order> {
+        override fun deserialize(reader: Reader) = Gson().fromJson(reader, Order::class.java)!!
+    }
+
+    class ListDeserializer : ResponseDeserializable<List<Order>> {
+
+        override fun deserialize(reader: Reader): List<Order> {
+            val type = object : TypeToken<List<Order>>() {}.type
+            return Gson().fromJson(reader, type)
+        }
+    }
+
+    constructor(parcel: Parcel) : this(
+            parcel.readInt(),
+            parcel.readString()!!,
+            parcel.readString()!!,
+            parcel.readString()!!,
+            parcel.readString()!!,
+            parcel.readString()!!,
+            parcel.readInt(),
+            parcel.readInt())
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(id)
+        parcel.writeString(transCode)
+        parcel.writeString(dateCreate)
+        parcel.writeString(address)
+        parcel.writeString(cardPoster)
+        parcel.writeString(products)
+        parcel.writeInt(amount)
+        parcel.writeInt(status)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<Order> {
+        override fun createFromParcel(parcel: Parcel): Order {
+            return Order(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Order?> {
             return arrayOfNulls(size)
         }
     }

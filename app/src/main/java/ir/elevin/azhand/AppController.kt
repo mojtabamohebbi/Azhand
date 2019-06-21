@@ -33,6 +33,7 @@ var filterType = 0 //0=most visited, 1=highest price, 2= lowest price
 var tabColor = R.color.colorFlowerAndPotTabBar
 var backgroundColor = R.color.colorFlowerAndPotBackground
 var tabSelectedIndex = 0
+var isErrorShowing = false
 
 class AppController : Application() {
 
