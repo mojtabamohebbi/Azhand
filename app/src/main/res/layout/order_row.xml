@@ -166,47 +166,52 @@
             android:layout_height="0.5dp"
             android:background="@color/colorDivider"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:visibility="gone"
-            android:id="@+id/ordersRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="280dp">
-
-        </androidx.recyclerview.widget.RecyclerView>
-
-        <View
-            android:id="@+id/dividerView"
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/colorDivider"/>
-
         <LinearLayout
-            android:visibility="gone"
-            android:id="@+id/giftImageLayout"
+            android:id="@+id/detailLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:paddingRight="12dp"
-            android:paddingLeft="12dp"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.5"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/ordersRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="280dp">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <View
+                android:id="@+id/dividerView"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/colorDivider"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:gravity="left"
-                android:text="کارت هدیه انتخابی:"/>
+                android:gravity="center_vertical"
+                android:paddingRight="12dp"
+                android:paddingLeft="12dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:gravity="left"
+                    android:text="کارت هدیه انتخابی:"/>
 
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/giftCardIv"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="150dp"
-                android:scaleType="centerInside"
-                android:padding="8dp"
-                app:srcCompat="@drawable/no_image_wide"/>
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/giftCardIv"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="150dp"
+                    android:scaleType="centerInside"
+                    android:padding="8dp"
+                    app:srcCompat="@drawable/no_image_wide"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 

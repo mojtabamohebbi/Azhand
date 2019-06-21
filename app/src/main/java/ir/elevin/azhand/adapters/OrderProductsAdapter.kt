@@ -48,7 +48,7 @@ class OrderProductsAdapter(private val activity: FragmentActivity, private val i
                 .into(holder.imageIv)
 
         holder.itemView.setOnClickListener {
-            getData(data.id, holder.imageIv, holder.progressBar, holder.priceTv, holder.cardView)
+            getData(data.pid, holder.imageIv, holder.progressBar, holder.priceTv, holder.cardView)
         }
 
     }
@@ -61,9 +61,9 @@ class OrderProductsAdapter(private val activity: FragmentActivity, private val i
         priceTv.visibility = View.GONE
         Log.d("gwegwe", "${account.id}")
         val params = listOf("func" to "get_product", "pid" to pid)
-        webserviceUrl.httpPost(params).liveDataObject(Cart.Deserializer()).observeForever {
+        webserviceUrl.httpPost(params).liveDataObject(Product.Deserializer()).observeForever {
             Log.d("response", it.toString())
-            it.success {
+            it.success { it ->
                 progressBar.visibility = View.GONE
                 priceTv.visibility = View.VISIBLE
                 val intent = Intent(activity, ProductDetailActivity::class.java)

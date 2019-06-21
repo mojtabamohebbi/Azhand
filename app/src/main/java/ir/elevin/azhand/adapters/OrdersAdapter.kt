@@ -50,29 +50,26 @@ class OrdersAdapter(private val activity: FragmentActivity, private val items: L
         if (data.isSelected){
             holder.detailsButton.setBackgroundColor(AppCompatResources.getColorStateList(activity, R.color.colorAccentDark).defaultColor)
             holder.detailsButton.text = "بستن"
-            holder.ordersRecyclerView.visibility = View.VISIBLE
-            holder.giftImageLayout.visibility = View.VISIBLE
+            holder.detailLayout.visibility = View.VISIBLE
         }else{
             holder.detailsButton.text = "جزئیات"
             holder.detailsButton.setBackgroundColor(Color.parseColor("#6EAD67"))
-            holder.ordersRecyclerView.visibility = View.GONE
-            holder.giftImageLayout.visibility = View.GONE
+            holder.detailLayout.visibility = View.GONE
         }
 
         holder.detailsButton.setOnClickListener {
             if (data.isSelected){
                 data.isSelected = false
-                holder.ordersRecyclerView.visibility = View.GONE
-                holder.giftImageLayout.visibility = View.GONE
+                holder.detailLayout.visibility = View.GONE
                 holder.detailsButton.text = "جزئیات"
                 holder.detailsButton.setBackgroundColor(Color.parseColor("#6EAD67"))
             }else{
                 data.isSelected = true
-                holder.ordersRecyclerView.visibility = View.VISIBLE
-                holder.giftImageLayout.visibility = View.VISIBLE
+                holder.detailLayout.visibility = View.VISIBLE
                 holder.detailsButton.setBackgroundColor(AppCompatResources.getColorStateList(activity, R.color.colorAccentDark).defaultColor)
                 holder.detailsButton.text = "بستن"
             }
+            notifyItemChanged(position)
         }
     }
 }
@@ -86,6 +83,6 @@ private class OrderViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val orderAddressTv = view.orderAddressTv!!
     val detailsButton = view.detailsButton!!
     val giftCardIv = view.giftCardIv!!
-    val giftImageLayout = view.giftImageLayout!!
+    val detailLayout = view.detailLayout!!
 
 }

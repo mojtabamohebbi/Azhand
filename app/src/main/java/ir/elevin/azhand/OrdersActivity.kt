@@ -1,6 +1,5 @@
 package ir.elevin.azhand
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -28,7 +27,7 @@ class OrdersActivity : CustomActivity() {
         setContentView(R.layout.activity_orders)
 
         setSupportActionBar(orderToolbar)
-        title = "سبد خرید"
+        title = "سفارشات"
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
 
