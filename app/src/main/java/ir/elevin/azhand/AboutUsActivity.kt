@@ -9,8 +9,6 @@ import kotlinx.android.synthetic.main.activity_about_us.*
 import android.view.ViewGroup
 import android.animation.ValueAnimator
 
-
-
 class AboutUsActivity : CustomActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

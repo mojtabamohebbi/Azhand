@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="ir.elevin.azhand.AboutUsActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center_horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/backButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:srcCompat="@drawable/ic_keyboard_backspace_black_48dp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:visibility="invisible"
+            android:id="@+id/view1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:gravity="center"
+            android:layout_marginTop="32dp"
+            android:textColor="#920C3A"
+            android:text="داستان آژند و ما، درباره شماست!"/>
+
+        <TextView
+            android:visibility="invisible"
+            android:id="@+id/view2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:textColor="#A00B3E"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:text="شمایی که لایق بهترین ها هستید."/>
+
+        <TextView
+            android:visibility="invisible"
+            android:id="@+id/view3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="#B40B45"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:text="ما فقط گل فروش نیستیم!"/>
+
+        <TextView
+            android:visibility="invisible"
+            android:id="@+id/view4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="#C00C4A"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:text="ما را شریک لحظه های"/>
+
+        <TextView
+            android:visibility="invisible"
+            android:id="@+id/view5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:textColor="#C50B4B"
+            android:textSize="12sp"
+            android:text="غم و شادی تان بدانید."/>
+
+        <View
+            android:id="@+id/view6_expand"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="24dp"
+            android:background="@color/colorDivider"/>
+
+        <TextView
+            android:visibility="invisible"
+            android:id="@+id/viewTeamName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:textSize="20sp"
+            android:textColor="@color/colorBlue"
+            android:text="تیم ما"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            android:gravity="top">
+
+            <LinearLayout
+                android:visibility="invisible"
+                android:id="@+id/view9"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:maxHeight="100dp"
+                    android:src="@drawable/call_circle"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/colorBlue"
+                    android:text="محدثه محبی"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="10sp"
+                    tools:ignore="SmallSp"
+                    android:textColor="#2B5EBB"
+                    android:text="معمار و طراح"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="16dp"
+                android:layout_height="1dp"/>
+
+            <LinearLayout
+                android:visibility="invisible"
+                android:id="@+id/view7"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:maxHeight="100dp"
+                    android:src="@drawable/call_circle"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/colorBlue"
+                    android:text="مجتبی محبی"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="10sp"
+                    tools:ignore="SmallSp"
+                    android:textColor="#2B5EBB"
+                    android:text="برنامه نویس"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="16dp"
+                android:layout_height="1dp"/>
+
+            <LinearLayout
+                android:visibility="invisible"
+                android:id="@+id/view8"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:maxHeight="100dp"
+                    android:src="@drawable/call_circle"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/colorBlue"
+                    android:text="شهرزاد خانی زاده"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="10sp"
+                    tools:ignore="SmallSp"
+                    android:textColor="#2B5EBB"
+                    android:text="مدیریت کسب و کار" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view10_expand"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="24dp"
+            android:background="@color/colorDivider"/>
+
+        <TextView
+            android:visibility="invisible"
+            android:id="@+id/view11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:textColor="@color/colorSecondaryText"
+            android:text="آدرس: مشهد - بین سیدرضی ۷ و ۹ پلاک ۳۵ طبقه دوم - مرکز شتابدهنده کسب و کار فردوسی"/>
+
+        <TextView
+            android:visibility="invisible"
+            android:id="@+id/view12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/colorSecondaryText"
+            android:text="تلفن تماس: ۰۵۱۳-۶۷۸۹۰۹۸"/>
+
+        <TextView
+            android:visibility="invisible"
+            android:id="@+id/view13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="از همراهی شما صمیمانه سپاس گزاریم"
+            android:textColor="#584A4A"
+            android:textSize="10sp"
+            tools:ignore="SmallSp" />
+
+    </LinearLayout>
+
+</ScrollView>
