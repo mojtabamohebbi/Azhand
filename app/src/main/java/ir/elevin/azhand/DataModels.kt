@@ -75,15 +75,22 @@ data class Product(
 
 
 data class Account(val id: Int = 0
-                   , val name: String = ""
                    , val phone: String = ""
-                   , val address: String = ""
 ) {
     class Deserializer : ResponseDeserializable<Account> {
         override fun deserialize(reader: Reader) = Gson().fromJson(reader, Account::class.java)!!
     }
 }
 
+data class Version(val versionName: String = ""
+                   , val isForce: Int = 0,
+                   val changes: String = "",
+                   val updateUrl: String = ""
+) {
+    class Deserializer : ResponseDeserializable<Version> {
+        override fun deserialize(reader: Reader) = Gson().fromJson(reader, Version::class.java)!!
+    }
+}
 
 data class Comment(
         val name: String = "",
@@ -191,7 +198,7 @@ data class Cart(
 
 data class Address(
         val id: Int = 0,
-        val address: String = "",
+        var address: String = "",
         var isSelected: Boolean = false
 ) : Parcelable {
 
@@ -329,6 +336,63 @@ data class Order(
         }
 
         override fun newArray(size: Int): Array<Order?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
+
+
+data class Supporter(
+        val id: Int = 0,
+        var sex: Int = 0,
+        val name: String = "",
+        val image: String = "",
+        val responsibility: String = "",
+        val phone: String = "",
+        var textColor: String = ""
+) : Parcelable {
+
+    class Deserializer : ResponseDeserializable<Supporter> {
+        override fun deserialize(reader: Reader) = Gson().fromJson(reader, Supporter::class.java)!!
+    }
+
+    class ListDeserializer : ResponseDeserializable<List<Supporter>> {
+
+        override fun deserialize(reader: Reader): List<Supporter> {
+            val type = object : TypeToken<List<Supporter>>() {}.type
+            return Gson().fromJson(reader, type)
+        }
+    }
+
+    constructor(parcel: Parcel) : this(
+            parcel.readInt(),
+            parcel.readInt(),
+            parcel.readString()!!,
+            parcel.readString()!!,
+            parcel.readString()!!,
+            parcel.readString()!!,
+            parcel.readString()!!)
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(id)
+        parcel.writeInt(sex)
+        parcel.writeString(name)
+        parcel.writeString(image)
+        parcel.writeString(responsibility)
+        parcel.writeString(phone)
+        parcel.writeString(textColor)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<Supporter> {
+        override fun createFromParcel(parcel: Parcel): Supporter {
+            return Supporter(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Supporter?> {
             return arrayOfNulls(size)
         }
     }

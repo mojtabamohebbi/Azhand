@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.RecyclerView
 import saman.zamani.persiandate.PersianDate
 import java.text.DecimalFormat
 
-val webserviceUrl = "https://gr00p.com/goli/api.php"
+val webserviceUrl = "http://azhand-store.ir/goli/api.php"
 var account = Account()
 var token = ""
 var rootViewlHeight = 0f

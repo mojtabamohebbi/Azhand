@@ -104,6 +104,7 @@ class ApartmentFlowerFragment : androidx.fragment.app.Fragment() {
                 .httpPost(params)
                 .liveDataObject(Product.ListDeserializer())
                 .observeForever { it ->
+                    Log.d("gwegewg", it.toString())
                     it?.success {
                         swipeRefreshLayout.isRefreshing = false
                         progressBar.visibility = View.INVISIBLE

@@ -30,6 +30,7 @@ import kotlinx.android.synthetic.main.card_row.view.*
 import kotlinx.android.synthetic.main.dialog_add_address.*
 import kotlinx.android.synthetic.main.order_row.*
 import libs.mjn.prettydialog.PrettyDialog
+import org.jetbrains.anko.progressDialog
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -41,7 +42,7 @@ class ChooseAddressActivity : CustomActivity(){
     var amount: Int = 0
     var address = ""
 
-    private val addresses = ArrayList<Address>()
+    private var addresses = ArrayList<Address>()
     private var addressAdapter: AddressAdapter = AddressAdapter(this)
 
     private var cardArray = ArrayList<Card>()
@@ -64,11 +65,11 @@ class ChooseAddressActivity : CustomActivity(){
         addressRecyclerView.adapter = addressAdapter
 
         addAddressButton.setOnClickListener {
-            addAddressDialog()
+            addOrEditAddressDialog(false)
         }
 
         addFirstAddressButton.setOnClickListener {
-            addAddressDialog()
+            addOrEditAddressDialog(false)
         }
 
         payButton.setOnClickListener {
@@ -79,24 +80,29 @@ class ChooseAddressActivity : CustomActivity(){
     }
 
     private fun insertOrder(){
-        webserviceUrl.httpPost(listOf("func" to "insert_order",
-                "uid" to account.id, "products" to products,
-                "amount" to amount, "cardId" to cardId, "address" to address, "transcode" to "3423892")).liveDataResponse().observeForever {
-            Log.d("WEGweg", it.first.data.toString(Charsets.UTF_8))
-            if (it.first.data.toString(Charsets.UTF_8) == "1"){
-                Toast.makeText(this, "با موفقیت ثبت شد", Toast.LENGTH_LONG).show()
-            }else{
-                val dd = PrettyDialog(this)
-                dd.setTitle(this.getString(R.string.error))
-                        .setIcon(R.drawable.error)
-                        .setMessage(this.getString(R.string.network_error))
-                        .addButton(this.getString(R.string.try_again), R.color.colorWhite, R.color.colorRed) {
-                            dd.dismiss()
-                            insertOrder()
-                        }
-                        .show()
+        if (address.isEmpty()){
+            Toast.makeText(this, "لطفا آدرس محل تحویل را وارد نمایید", Toast.LENGTH_LONG).show()
+        }else{
+            webserviceUrl.httpPost(listOf("func" to "insert_order",
+                    "uid" to account.id, "products" to products,
+                    "amount" to amount, "cardId" to cardId, "address" to address, "transcode" to "3423892")).liveDataResponse().observeForever {
+                Log.d("WEGweg", it.first.data.toString(Charsets.UTF_8))
+                if (it.first.data.toString(Charsets.UTF_8) == "1"){
+                    Toast.makeText(this, "با موفقیت ثبت شد", Toast.LENGTH_LONG).show()
+                }else{
+                    val dd = PrettyDialog(this)
+                    dd.setTitle(this.getString(R.string.error))
+                            .setIcon(R.drawable.error)
+                            .setMessage(this.getString(R.string.network_error))
+                            .addButton(this.getString(R.string.try_again), R.color.colorWhite, R.color.colorRed) {
+                                dd.dismiss()
+                                insertOrder()
+                            }
+                            .show()
+                }
             }
         }
+
     }
 
     private fun getAddresses(){
@@ -107,7 +113,7 @@ class ChooseAddressActivity : CustomActivity(){
                         if (it.isNotEmpty()){
                             it[0].isSelected = true
                             address = it[0].address
-                            addresses += it
+                            it.toCollection(addresses)
                             addressAdapter.notifyDataSetChanged()
                             addressRecyclerView.scheduleLayoutAnimation()
                             showAddressList()
@@ -165,12 +171,18 @@ class ChooseAddressActivity : CustomActivity(){
                 }
     }
 
-    private fun addAddressDialog(){
+    fun addOrEditAddressDialog(isEdit: Boolean, lastAddress: String = "", addressId: Int = 0, position: Int = 0){
         val d = Dialog(this)
         d.requestWindowFeature(Window.FEATURE_NO_TITLE)
         d.setContentView(R.layout.dialog_add_address)
         d.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
+        d.headerTitleTv.text = if (isEdit) "ویرایش آدرس" else "ثبت آدرس جدید"
+        if (isEdit){
+            d.addressEt.setText(lastAddress)
+            d.addButton.text = "ویرایش"
+        }
+        
         d.addButton.setOnClickListener {
             val address = d.addressEt.text.toString()
             if (address.length < 10){
@@ -178,13 +190,21 @@ class ChooseAddressActivity : CustomActivity(){
             }else{
                 d.addAddressProgressBar.visibility = View.VISIBLE
                 d.addButton.isEnabled = false
-                webserviceUrl.httpPost(listOf("func" to "add_address", "uid" to account.id, "address" to address)).liveDataResponse().observeForever {
+                webserviceUrl.httpPost(listOf("func" to if(isEdit) "edit_address" else "add_address", "uid" to account.id, "address" to address, "aid" to addressId)).liveDataResponse().observeForever {
                     Log.d("WEGweg", it.first.data.toString(Charsets.UTF_8))
                     if (it.first.data.toString(Charsets.UTF_8) == "1"){
                         for (i in addresses){
                             i.isSelected = false
                         }
-                        addresses.add(0, Address(id = 0, address = address, isSelected = true))
+                        if (!isEdit){
+                            addresses.add(0, Address(id = 0, address = address, isSelected = true))
+                            addresses[0].isSelected = true
+                            this.address = address
+                        }else{
+                            addresses[position].address = address
+                            addresses[position].isSelected = true
+                            this.address = address
+                        }
                         addressAdapter.notifyDataSetChanged()
                         showAddressList()
                         d.dismiss()
@@ -283,10 +303,26 @@ class ChooseAddressActivity : CustomActivity(){
             }
 
             holder.editButton.setOnClickListener {
-
+                addOrEditAddressDialog(true, data.address, data.id, position)
             }
             holder.deleteButton.setOnClickListener {
+                deleteAddress(data.id, position)
+            }
+        }
 
+        private fun deleteAddress(addressId: Int, position: Int){
+            val progressBar = progressDialog(this@ChooseAddressActivity)
+            webserviceUrl.httpPost(listOf("func" to "delete_address", "uid" to account.id, "aid" to addressId)).liveDataResponse().observeForever {
+                if (it.first.data.toString(Charsets.UTF_8) == "1"){
+                    address = ""
+                    progressBar.dismiss()
+                    addresses.removeAt(position)
+                    notifyDataSetChanged()
+                    Toast.makeText(this@ChooseAddressActivity, "با موفقیت حذف شد", Toast.LENGTH_LONG).show()
+                }else{
+                    progressBar.dismiss()
+                    Toast.makeText(this@ChooseAddressActivity, "عملیات ناموفق لطفا دوباره تلاش کنید", Toast.LENGTH_LONG).show()
+                }
             }
         }
     }

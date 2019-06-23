@@ -26,12 +26,15 @@ import java.util.*
 
 
 
+@Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class LoginActivity : CustomActivity() {
 
     enum class LoginStates{
         PHONE,
         CODE
     }
+
+    var resultCode: Int = 0
 
     var code = 0
     var phone = ""
@@ -47,6 +50,7 @@ class LoginActivity : CustomActivity() {
         setContentView(R.layout.activity_login)
         window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
+        resultCode = intent.extras.getInt("result")
         db = DatabaseHandler(this)
 
         codeTelEt.requestFocusFromTouch()
@@ -157,10 +161,11 @@ class LoginActivity : CustomActivity() {
             Log.d("response-login", it.toString())
             it?.success {
                 db!!.deleteAccount()
-                db!!.insertAccounts(it.id, it.name, phone, it.address)
+                db!!.insertAccounts(it.id , phone)
                 account = db!!.getAccount()
                 Toast.makeText(this, "خوش آمدید!", Toast.LENGTH_LONG).show()
                 progressDialog?.dismiss()
+                setResult(resultCode)
                 finish()
             }
             it?.failure {

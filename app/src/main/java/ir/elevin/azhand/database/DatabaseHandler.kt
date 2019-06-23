@@ -35,13 +35,13 @@ class DatabaseHandler(val context: Context){
 
     fun getAccount(): Account {
         var data = Account()
-        database.select("account", "id", "name", "phone", "address")
+        database.select("account", "id", "phone")
                 .orderBy("id", SqlOrderDirection.DESC)
                 .limit(1)
                 .exec {
                     this.moveToFirst()
                     if (count > 0){
-                        data = Account(getInt(0), getString(1), getString(2), getString(3))
+                        data = Account(getInt(0), getString(1))
                     }
         }
         return data
@@ -51,12 +51,10 @@ class DatabaseHandler(val context: Context){
         database.delete("account")
     }
 
-    fun insertAccounts(id: Int, name: String, phone: String, address: String){
+    fun insertAccounts(id: Int, phone: String){
         val values = ContentValues()
         values.put("id", id)
-        values.put("name", name)
         values.put("phone", phone)
-        values.put("address", address)
         database.insert("account", null, values)
     }
 

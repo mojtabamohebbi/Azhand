@@ -10,6 +10,7 @@
     android:clipToPadding="false"
     app:cardElevation="8dp"
     app:cardCornerRadius="10dp"
+    android:animateLayoutChanges="true"
     android:layout_marginTop="14dp">
 
     <androidx.cardview.widget.CardView

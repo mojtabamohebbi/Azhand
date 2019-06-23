@@ -16,15 +16,30 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Build
 import android.transition.TransitionInflater
+import android.util.Log
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
+import com.github.kittinunf.fuel.httpPost
+import com.github.kittinunf.fuel.livedata.liveDataObject
+import com.github.kittinunf.result.failure
+import com.github.kittinunf.result.success
+import ir.elevin.azhand.adapters.SupporterAdapter
 import ir.elevin.azhand.database.DatabaseHandler
 import ir.elevin.azhand.fragments.*
 import kotlinx.android.synthetic.main.content_main.rootView
+import kotlinx.android.synthetic.main.dialog_confirm.*
 import kotlinx.android.synthetic.main.dialog_sort_price.*
+import kotlinx.android.synthetic.main.dialog_support.*
+import kotlinx.android.synthetic.main.dialog_update.*
+import libs.mjn.prettydialog.PrettyDialog
+import org.jetbrains.anko.startActivityForResult
 
 
 class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedListener{
@@ -175,6 +190,7 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
         }
 
         insertAccounts()
+        checkVersions()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -283,23 +299,72 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
         }
     }
 
+    private fun getSupporterList(d: Dialog){
+        d.progressBar.visibility = View.VISIBLE
+        d.supportersRecyclerView.visibility = View.GONE
+        val params: List<Pair<String, Any?>> = listOf("func" to "get_supporters")
+        webserviceUrl
+                .httpPost(params)
+                .liveDataObject(Supporter.ListDeserializer())
+                .observeForever { it ->
+                    Log.d("gwegewg", it.toString())
+                    it?.success {
+                        d.progressBar.visibility = View.GONE
+                        d.supportersRecyclerView.visibility = View.VISIBLE
+                        if (it.isNotEmpty()){
+                            val array = ArrayList<Supporter>()
+                            d.supportersRecyclerView.adapter = SupporterAdapter(this, it.toCollection(array))
+                        }
+                    }
+                    it?.failure {
+                        Log.d("errorFound", it.message)
+                        val dd = PrettyDialog(this)
+                        dd.setTitle(getString(R.string.error))
+                                .setIcon(R.drawable.error)
+                                .setMessage(getString(R.string.network_error))
+                                .addButton(getString(R.string.try_again), R.color.colorWhite, R.color.colorRed) {
+                                    d.dismiss()
+                                    getSupporterList(d)
+                                }
+                                .show()
+                    }
+                }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == 21){
+            nav_view.menu.getItem(3).isVisible = true
+            startActivity(Intent(this, CartActivity::class.java))
+        }else if (resultCode == 22){
+            nav_view.menu.getItem(3).isVisible = true
+            startActivity(Intent(this, OrdersActivity::class.java))
+        }
+    }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_support -> {
-                account = db!!.getAccount()
-                if (account.id != 0){
+                val d = Dialog(this)
+                d.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                d.setContentView(R.layout.dialog_support)
+                d.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                d.window?.decorView!!.layoutDirection = View.LAYOUT_DIRECTION_RTL
 
-                }else{
-                    startActivity(Intent(this, LoginActivity::class.java))
-                }
+                d.supportersRecyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+                getSupporterList(d)
+
+                d.show()
             }
             R.id.nav_cart -> {
                 account = db!!.getAccount()
                 if (account.id != 0){
                     startActivity(Intent(this, CartActivity::class.java))
                 }else{
-                    startActivity(Intent(this, LoginActivity::class.java))
+                    val intent = Intent(this, LoginActivity::class.java)
+                    intent.putExtra("result", 21)
+                    startActivityForResult(intent, 2)
                 }
             }
             R.id.nav_orders -> {
@@ -307,7 +372,9 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
                 if (account.id != 0){
                     startActivity(Intent(this, OrdersActivity::class.java))
                 }else{
-                    startActivity(Intent(this, LoginActivity::class.java))
+                    val intent = Intent(this, LoginActivity::class.java)
+                    intent.putExtra("result", 22)
+                    startActivityForResult(intent, 2)
                 }
             }
             R.id.nav_about -> {
@@ -319,9 +386,63 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
             R.id.nav_share -> {
 
             }
+            R.id.nav_logout -> {
+                val d = Dialog(this)
+                d.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                d.setContentView(R.layout.dialog_confirm)
+                d.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+                d.yesButton.setOnClickListener {
+                    db!!.deleteAccount()
+                    nav_view.menu.getItem(3).isVisible = false
+                    d.dismiss()
+                }
+
+                d.noButton.setOnClickListener {
+                    d.dismiss()
+                }
+
+                d.show()
+            }
         }
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    private fun checkVersions(){
+        webserviceUrl.httpPost(listOf("func" to "check_versions", "version" to "1", "osType" to 2))
+                .liveDataObject(Version.Deserializer())
+                .observeForever { res ->
+                    res.success {it ->
+                        Log.d("update", "available")
+                        val d = Dialog(this)
+                        d.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                        d.setContentView(R.layout.dialog_update)
+                        d.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+                        d.versionNameTv.text = "ورژن جدید: ${it.versionName}"
+                        d.changesTv.text = "تغییرات: ${it.changes}"
+                        d.isForceTv.text = if(it.isForce == 1) "این بروزرسانی الزامیست" else "این بروزرسانی اختیاریست"
+
+                        if(it.isForce == 1){
+                            d.setCancelable(false)
+                            d.setCanceledOnTouchOutside(false)
+                            d.isForceTv.setTextColor(AppCompatResources.getColorStateList(this, R.color.colorAccentDark).defaultColor)
+                        }else{
+                            d.isForceTv.setTextColor(AppCompatResources.getColorStateList(this, R.color.colorBlue).defaultColor)
+                        }
+
+                        d.updateButton.setOnClickListener {it2 ->
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it.updateUrl))
+                            startActivity(intent)
+                        }
+
+                        d.show()
+                    }
+                    res.failure {
+                        Log.d("update", "not available")
+                    }
+                }
     }
 }

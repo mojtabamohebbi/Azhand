@@ -43,7 +43,8 @@ class ProductAdapter(private val activity: FragmentActivity, private val items: 
 
         Picasso.get()
                 .load(data.image)
-                .placeholder(R.drawable.no_image)
+                .placeholder(R.drawable.loading)
+                .error(R.drawable.loading)
                 .into(holder.imageIv)
 
         holder.itemView.setOnClickListener {
@@ -60,7 +61,7 @@ class ProductAdapter(private val activity: FragmentActivity, private val items: 
         val params = listOf("func" to "get_product", "pid" to pid)
         webserviceUrl.httpPost(params).liveDataObject(Product.Deserializer()).observeForever {
             Log.d("response", it.toString())
-            it.success {
+            it.success {it ->
                 progressBar.visibility = View.GONE
                 priceTv.visibility = View.VISIBLE
                 val intent = Intent(activity, ProductDetailActivity::class.java)
