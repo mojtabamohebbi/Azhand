@@ -15,7 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
-        <activity android:name=".OrdersActivity"
+        <activity android:name=".AboutUsActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".OrdersActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ChooseAddressActivity"

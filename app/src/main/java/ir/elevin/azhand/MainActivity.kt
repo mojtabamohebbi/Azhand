@@ -378,7 +378,7 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
                 }
             }
             R.id.nav_about -> {
-
+                startActivity(Intent(this, AboutUsActivity::class.java))
             }
             R.id.nav_contact_us -> {
 
