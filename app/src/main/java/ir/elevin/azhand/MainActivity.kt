@@ -39,7 +39,6 @@ import kotlinx.android.synthetic.main.dialog_sort_price.*
 import kotlinx.android.synthetic.main.dialog_support.*
 import kotlinx.android.synthetic.main.dialog_update.*
 import libs.mjn.prettydialog.PrettyDialog
-import org.jetbrains.anko.startActivityForResult
 
 
 class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedListener{
@@ -49,8 +48,9 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
     private val singleFlowerFragment = SingleFlowerFragment()
     private val bunchOfFlowerFragment = BunchOfFlowerFragment()
     private val cactusFragment = CactusFragment()
-    private val boxFlowerFragment = TreeFragment()
-    private val gardeningFragment = GardeningFragment()
+    private val boxFlowerFragment = BoxFlowerFragment()
+    private val subscriptionFragment = SubscriptionFragment()
+    private val cardPostalFragment = CardPostalFragment()
     private val potFragment = PotFragment()
 
     private lateinit var pagerAdapter: TabsPagerAdapter
@@ -122,9 +122,10 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
         nav_view.setNavigationItemSelectedListener(this)
         nav_view.menu.getItem(3).isVisible = account.id > 0
 
-        tabs.add(TabModel("ابزار و یراق", gardeningFragment))
+        tabs.add(TabModel("کارت پستال", cardPostalFragment))
         tabs.add(TabModel("گلدان", potFragment))
         tabs.add(TabModel("کاکتوس", cactusFragment))
+        tabs.add(TabModel("اشتراک", subscriptionFragment))
         tabs.add(TabModel("جعبه گل", boxFlowerFragment))
         tabs.add(TabModel("شاخه گل", singleFlowerFragment))
         tabs.add(TabModel("دسته گل", bunchOfFlowerFragment))
@@ -132,10 +133,10 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
 
         pagerAdapter = TabsPagerAdapter(supportFragmentManager, tabs)
         pager.adapter = pagerAdapter
-        pager.offscreenPageLimit = 7
+        pager.offscreenPageLimit = 8
         tabLayout.setupWithViewPager(pager)
 
-        val tab = tabLayout.getTabAt(6)
+        val tab = tabLayout.getTabAt(7)
         tab!!.select()
 
         pager.addOnPageChangeListener(object: ViewPager.OnPageChangeListener{
@@ -151,7 +152,7 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
                 tabSelectedIndex = position
                 when (position) {
                     0 -> {
-                        changeTabBar(R.color.colorGardeningTabBar, R.color.colorGardeningBackground, R.color.colorGardeningStatusBar, R.drawable.gardening)
+                        changeTabBar(R.color.colorGardeningTabBar, R.color.colorGardeningBackground, R.color.colorGardeningStatusBar, R.drawable.card_postal)
                     }
                     1 -> {
                         changeTabBar(R.color.colorTreeTabBar, R.color.colorTreeBackground, R.color.colorTreeStatusBar, R.drawable.pot)
@@ -160,15 +161,18 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
                         changeTabBar(R.color.colorPotTabBar, R.color.colorPotBackground, R.color.colorPotStatusBar, R.drawable.cactus)
                     }
                     3 -> {
-                        changeTabBar(R.color.colorCactusTabBar, R.color.colorCactusBackground, R.color.colorCactusStatusBar, R.drawable.flowerbox)
+                        changeTabBar(R.color.colorCactusTabBar, R.color.colorCactusBackground, R.color.colorCactusStatusBar, R.drawable.subscription)
                     }
                     4 -> {
-                        changeTabBar(R.color.colorSingleFlowerTabBar, R.color.colorSingleFlowerBackground, R.color.colorSingleFlowerStatusBar, R.drawable.single_flower)
+                        changeTabBar(R.color.colorSingleFlowerTabBar, R.color.colorSingleFlowerBackground, R.color.colorSingleFlowerStatusBar, R.drawable.flowerbox)
                     }
                     5 -> {
-                        changeTabBar(R.color.colorBunchFlowersTabBar, R.color.colorBunchFlowersBackground, R.color.colorBunchFlowersStatusBar, R.drawable.bunch_of_flowers)
+                        changeTabBar(R.color.colorBunchFlowersTabBar, R.color.colorBunchFlowersBackground, R.color.colorBunchFlowersStatusBar, R.drawable.single_flower)
                     }
                     6 -> {
+                        changeTabBar(R.color.colorFlowerAndPotTabBar, R.color.colorFlowerAndPotBackground, R.color.colorFlowerAndPotStatusBar, R.drawable.bunch_of_flowers)
+                    }
+                    7 -> {
                         changeTabBar(R.color.colorFlowerAndPotTabBar, R.color.colorFlowerAndPotBackground, R.color.colorFlowerAndPotStatusBar, R.drawable.flower_and_pot)
                     }
                 }
@@ -236,9 +240,10 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
             1 -> {bunchOfFlowerFragment.getData(true)}
             2 -> {singleFlowerFragment.getData(true)}
             3 -> {boxFlowerFragment.getData(true)}
-            4 -> {cactusFragment.getData(true)}
-            5 -> {potFragment.getData(true)}
-            6 -> {gardeningFragment.getData(true)}
+            4 -> {subscriptionFragment.getData(true)}
+            5 -> {cactusFragment.getData(true)}
+            6 -> {potFragment.getData(true)}
+            7 -> {cardPostalFragment.getData(true)}
         }
     }
 
@@ -270,6 +275,7 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
         // 2
         override fun getItem(position: Int): androidx.fragment.app.Fragment {
             return when (position) {
+                7 -> tabs[7].fragment
                 6 -> tabs[6].fragment
                 5 -> tabs[5].fragment
                 4 -> tabs[4].fragment

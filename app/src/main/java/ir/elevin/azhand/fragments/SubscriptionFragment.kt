@@ -21,7 +21,7 @@ import ir.elevin.azhand.adapters.ProductAdapter
 import kotlinx.android.synthetic.main.recycler_fragment.*
 import libs.mjn.prettydialog.PrettyDialog
 
-class GardeningFragment : androidx.fragment.app.Fragment() {
+class SubscriptionFragment : androidx.fragment.app.Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -103,7 +103,7 @@ class GardeningFragment : androidx.fragment.app.Fragment() {
             swipeRefreshLayout.isRefreshing = true
         }
 
-        val params: List<Pair<String, Any?>> = listOf("func" to "get_products", "page" to page, "filterType" to filterType, "catId" to 7)
+        val params: List<Pair<String, Any?>> = listOf("func" to "get_products", "page" to page, "filterType" to filterType, "catId" to 5)
         webserviceUrl
                 .httpPost(params)
                 .liveDataObject(Product.ListDeserializer())

@@ -9,19 +9,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.transition.Explode
-import com.daimajia.androidanimations.library.Techniques
-import com.daimajia.androidanimations.library.YoYo
 import com.github.kittinunf.fuel.httpPost
 import com.github.kittinunf.fuel.livedata.liveDataObject
 import com.github.kittinunf.result.failure
 import com.github.kittinunf.result.success
 import ir.elevin.azhand.*
 import ir.elevin.azhand.adapters.ProductAdapter
-
 import kotlinx.android.synthetic.main.recycler_fragment.*
 import libs.mjn.prettydialog.PrettyDialog
 
-class TreeFragment : androidx.fragment.app.Fragment() {
+class CardPostalFragment: androidx.fragment.app.Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -48,11 +45,6 @@ class TreeFragment : androidx.fragment.app.Fragment() {
 
     private var array = ArrayList<Product>()
     private var adapter: ProductAdapter? = null
-    fun addAccount(){
-        val data = Product()
-        array.add(0, data)
-        adapter?.notifyDataSetChanged()
-    }
 
     private var mIsLoading = true
     private lateinit var layoutManager: StaggeredGridLayoutManager
@@ -103,12 +95,12 @@ class TreeFragment : androidx.fragment.app.Fragment() {
             swipeRefreshLayout.isRefreshing = true
         }
 
-        val params: List<Pair<String, Any?>> = listOf("func" to "get_products", "page" to page, "filterType" to filterType, "catId" to 6)
+        val params: List<Pair<String, Any?>> = listOf("func" to "get_products", "page" to page, "filterType" to filterType, "catId" to 8)
         webserviceUrl
                 .httpPost(params)
                 .liveDataObject(Product.ListDeserializer())
                 .observeForever { it ->
-                    Log.d("ergegewgv", it.toString())
+                    Log.d("gwegewg", it.toString())
                     it?.success {
                         swipeRefreshLayout.isRefreshing = false
                         progressBar.visibility = View.INVISIBLE
@@ -118,7 +110,7 @@ class TreeFragment : androidx.fragment.app.Fragment() {
                             adapter?.notifyDataSetChanged()
                             mIsLoading = false
                             if (isFirst){
-                                YoYo.with(Techniques.ZoomIn).duration(500).playOn(recyclerview)
+                                recyclerview.scheduleLayoutAnimation()
                             }
                         }
                     }
@@ -142,6 +134,5 @@ class TreeFragment : androidx.fragment.app.Fragment() {
                     }
                 }
     }
-
 
 }

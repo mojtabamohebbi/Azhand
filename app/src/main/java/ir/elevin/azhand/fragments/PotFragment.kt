@@ -103,7 +103,7 @@ class PotFragment : androidx.fragment.app.Fragment() {
             swipeRefreshLayout.isRefreshing = true
         }
 
-        val params: List<Pair<String, Any?>> = listOf("func" to "get_products", "page" to page, "filterType" to filterType, "catId" to 5)
+        val params: List<Pair<String, Any?>> = listOf("func" to "get_products", "page" to page, "filterType" to filterType, "catId" to 7)
         webserviceUrl
                 .httpPost(params)
                 .liveDataObject(Product.ListDeserializer())

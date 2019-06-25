@@ -25,10 +25,10 @@
         app:menu="@menu/activity_main_drawer" >
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:scaleType="centerCrop"
-            app:srcCompat="@drawable/back_footer"
             android:layout_gravity="bottom"/>
 
     </com.google.android.material.navigation.NavigationView>

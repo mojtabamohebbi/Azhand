@@ -22,6 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import libs.mjn.prettydialog.PrettyDialog
 import org.jetbrains.anko.doAsync
+import java.lang.Exception
 import java.util.*
 
 
@@ -50,7 +51,12 @@ class LoginActivity : CustomActivity() {
         setContentView(R.layout.activity_login)
         window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        resultCode = intent.extras.getInt("result")
+        resultCode = try {
+            intent.extras.getInt("result")
+        }catch (e: Exception){
+            0
+        }
+
         db = DatabaseHandler(this)
 
         codeTelEt.requestFocusFromTouch()
