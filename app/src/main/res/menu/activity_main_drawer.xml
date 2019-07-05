@@ -34,6 +34,10 @@
                 android:icon="@drawable/ic_email_black_24dp"
                 android:title="ارتباط با ما" />
             <item
+                android:id="@+id/nav_common_q"
+                android:icon="@drawable/ic_help_black_24dp"
+                android:title="سوالات متداول" />
+            <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
                 android:title="اشتراک گذاری" />

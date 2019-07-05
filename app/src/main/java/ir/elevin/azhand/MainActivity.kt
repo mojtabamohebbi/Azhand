@@ -392,6 +392,9 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
             R.id.nav_share -> {
 
             }
+            R.id.nav_common_q -> {
+                startActivity(Intent(this, CommonQuestionsActivity::class.java))
+            }
             R.id.nav_logout -> {
                 val d = Dialog(this)
                 d.requestWindowFeature(Window.FEATURE_NO_TITLE)

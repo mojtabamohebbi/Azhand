@@ -14,8 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
-        <activity android:name=".AboutUsActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".CommonQuestionsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AboutUsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".OrdersActivity"
             android:theme="@style/AppTheme.NoActionBar" />
