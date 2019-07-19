@@ -26,8 +26,6 @@
             android:id="@+id/imageIv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:minHeight="150dp"
-            android:maxHeight="500dp"
             android:transitionName="poster"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"/>

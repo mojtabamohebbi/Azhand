@@ -152,7 +152,7 @@ class LoginActivity : CustomActivity() {
 
     private fun sendSms(){
         code = (1000..9999).shuffled().first()
-        val params: List<Pair<String, Any?>> = listOf("receptor" to phone, "token" to "$code", "template" to "gr00p")
+        val params: List<Pair<String, Any?>> = listOf("receptor" to phone, "token" to "$code", "template" to "floral")
         "https://api.kavenegar.com/v1/4362695A3879324943585372326F7A493574483068413D3D/verify/lookup.json".httpPost(params).liveDataResponse().observeForever {
             Log.d("response", it.toString())
         }

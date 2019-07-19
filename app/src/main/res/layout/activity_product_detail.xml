@@ -97,7 +97,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="74dp"
-            android:text="درباره"
+            android:text="درباره محصول"
             android:textColor="@color/colorSecondaryText"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -215,6 +215,7 @@
         </androidx.cardview.widget.CardView>
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/maintenanceTitleTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -228,6 +229,7 @@
             app:layout_goneMarginTop="8dp" />
 
         <ir.elevin.azhand.tools.TextViewEx
+            android:visibility="gone"
             android:id="@+id/maintenanceTv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -250,7 +252,7 @@
             android:textColor="@color/colorSecondaryText"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/maintenanceTv"
+            app:layout_constraintTop_toBottomOf="@+id/orderCardView"
             app:layout_goneMarginTop="8dp" />
 
         <ProgressBar

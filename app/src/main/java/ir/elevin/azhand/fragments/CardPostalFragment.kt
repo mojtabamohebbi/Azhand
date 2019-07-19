@@ -9,12 +9,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.transition.Explode
+import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.fuel.httpPost
 import com.github.kittinunf.fuel.livedata.liveDataObject
 import com.github.kittinunf.result.failure
 import com.github.kittinunf.result.success
 import ir.elevin.azhand.*
 import ir.elevin.azhand.adapters.ProductAdapter
+import ir.mjmim.woocommercehelper.enums.RequestMethod
+import ir.mjmim.woocommercehelper.enums.SigningMethod
+import ir.mjmim.woocommercehelper.helpers.OAuthSigner
+import ir.mjmim.woocommercehelper.main.WooBuilder
 import kotlinx.android.synthetic.main.recycler_fragment.*
 import libs.mjn.prettydialog.PrettyDialog
 
@@ -95,9 +100,18 @@ class CardPostalFragment: androidx.fragment.app.Fragment() {
             swipeRefreshLayout.isRefreshing = true
         }
 
-        val params: List<Pair<String, Any?>> = listOf("func" to "get_products", "page" to page, "filterType" to filterType, "catId" to 8)
-        webserviceUrl
-                .httpPost(params)
+        val params = HashMap<String, String>().apply {
+            put("category", "63")
+            put("per_page", "10")
+            put("page", "$page")
+        }
+
+        val resultLink: String? = OAuthSigner(wooBuilder)
+                .getSignature(RequestMethod.GET, "/products", params)
+        Log.d("gwegewg", resultLink+"--")
+
+        resultLink!!
+                .httpGet()
                 .liveDataObject(Product.ListDeserializer())
                 .observeForever { it ->
                     Log.d("gwegewg", it.toString())

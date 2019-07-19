@@ -12,18 +12,21 @@
 
     <TextView
         android:id="@+id/nameTv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textSize="16sp"
+        android:gravity="right"
         android:textColor="@color/colorPrimaryDark"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/dateCreateTv"/>
 
     <TextView
         android:id="@+id/dateCreateTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="10sp"
+        android:gravity="right"
         android:textColor="@color/colorRed3"
         app:layout_constraintTop_toTopOf="@+id/nameTv"
         app:layout_constraintBottom_toBottomOf="@+id/nameTv"
@@ -46,6 +49,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textSize="12sp"
+        android:gravity="right"
         android:textColor="@color/colorRed4"
         app:layout_constraintTop_toBottomOf="@+id/ratingBar"
         android:layout_marginTop="4dp"

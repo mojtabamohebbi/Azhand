@@ -38,31 +38,31 @@
 
     <color name="colorFlowerAndPotTabBar">#A3435E</color>
     <color name="colorFlowerAndPotBackground">#fff</color>
-    <!--<color name="colorFlowerAndPotBackground">#f49db5</color>-->
+    <!--<color reviewer="colorFlowerAndPotBackground">#f49db5</color>-->
     <color name="colorFlowerAndPotStatusBar">#581C2D</color>
     <color name="colorSingleFlowerTabBar">#bd3f25</color>
     <color name="colorSingleFlowerBackground">#fff</color>
-    <!--<color name="colorSingleFlowerBackground">#fb795e</color>-->
+    <!--<color reviewer="colorSingleFlowerBackground">#fb795e</color>-->
     <color name="colorSingleFlowerStatusBar">#411F19</color>
     <color name="colorCactusTabBar">#388372</color>
     <color name="colorCactusBackground">#fff</color>
-    <!--<color name="colorCactusBackground">#66baa7</color>-->
+    <!--<color reviewer="colorCactusBackground">#66baa7</color>-->
     <color name="colorCactusStatusBar">#203C35</color>
     <color name="colorBunchFlowersTabBar">#cb594c</color>
     <color name="colorBunchFlowersBackground">#fff</color>
-    <!--<color name="colorBunchFlowersBackground">#fa998f</color>-->
+    <!--<color reviewer="colorBunchFlowersBackground">#fa998f</color>-->
     <color name="colorBunchFlowersStatusBar">#422926</color>
     <color name="colorGardeningTabBar">#86410a</color>
     <color name="colorGardeningBackground">#fff</color>
-    <!--<color name="colorGardeningBackground">#ad652a</color>-->
+    <!--<color reviewer="colorGardeningBackground">#ad652a</color>-->
     <color name="colorGardeningStatusBar">#4B2C12</color>
     <color name="colorPotTabBar">#25213c</color>
     <color name="colorPotBackground">#fff</color>
-    <!--<color name="colorPotBackground">#3b365d</color>-->
+    <!--<color reviewer="colorPotBackground">#3b365d</color>-->
     <color name="colorPotStatusBar">#1B192C</color>
     <color name="colorTreeTabBar">#246549</color>
     <color name="colorTreeBackground">#fff</color>
-    <!--<color name="colorTreeBackground">#378866</color>-->
+    <!--<color reviewer="colorTreeBackground">#378866</color>-->
     <color name="colorTreeStatusBar">#1E503B</color>
 
 

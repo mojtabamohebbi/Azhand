@@ -22,11 +22,16 @@ class CommentsAdapter(private val activity: FragmentActivity, private val items:
     @SuppressLint("SetTextI18n", "RestrictedApi")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val data = items[position]
-        (holder as CommentViewHolder).nameTv.text = data.name
-        holder.commentTv.text = data.comment
-        val date = parsDateAndTime(data.dateCreate)
+        (holder as CommentViewHolder).nameTv.text = data.reviewer
+
+        var rev = data.review
+        rev = rev.replace("<p>", "", true)
+        rev = rev.replace("</p>", "", true)
+
+        holder.commentTv.text = rev
+        val date = parsDateAndTimeWooo(data.date_created)
         holder.dateCreate.text = "${date.first} - ${date.second}"
-        holder.ratingBar.rating = data.rate
+        holder.ratingBar.rating = data.rating
     }
 }
 

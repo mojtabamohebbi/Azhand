@@ -15,6 +15,7 @@ import android.graphics.Point
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.NonNull
@@ -24,6 +25,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import saman.zamani.persiandate.PersianDate
 import java.text.DecimalFormat
+import com.squareup.picasso.Picasso
+import com.squareup.picasso.OkHttp3Downloader
+import ir.mjmim.woocommercehelper.enums.SigningMethod
+import ir.mjmim.woocommercehelper.main.WooBuilder
+
 
 val webserviceUrl = "http://florals.ir/goli/api.php"
 var account = Account()
@@ -35,6 +41,14 @@ var backgroundColor = R.color.colorFlowerAndPotBackground
 var tabSelectedIndex = 0
 var isErrorShowing = false
 
+val wooBuilder = WooBuilder().apply {
+    isHttps = false
+    baseUrl = "florals.ir/wp-json/wc/v3"
+    signing_method = SigningMethod.HMACSHA1
+    wc_key = "ck_b89b3e5cd871e50755f2d021967aa903cf2839cc"
+    wc_secret = "cs_3c6fd6cfd5399a358f6ae285848829c7cc2cae88"
+}
+
 class AppController : Application() {
 
     override fun attachBaseContext(newBase: Context) {
@@ -43,6 +57,13 @@ class AppController : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+//        val builder = Picasso.Builder(this)
+//        builder.downloader(OkHttp3Downloader(this, Integer.MAX_VALUE.toLong()))
+//        val built = builder.build()
+//        built.setIndicatorsEnabled(true)
+//        built.isLoggingEnabled = true
+//        Picasso.setSingletonInstance(built)
 
         val languageToLoad = "fa-IR"
         val locale = Locale(languageToLoad)
@@ -74,6 +95,16 @@ fun parsDateAndTime(dateAndTime: String): Pair<String, String>{
     return Pair(""+jalali[0]+"/"+jalali[1]+"/"+jalali[2], timeSplited)
 }
 
+fun parsDateAndTimeWooo(dateAndTime: String): Pair<String, String>{
+    Log.d("gegewgweg", dateAndTime)
+    val persianDate = PersianDate()
+    val splited = dateAndTime.split("T")
+    val dateSplited = splited[0].split("-")
+    val timeSplited = splited[1]
+    val jalali = persianDate.toJalali(dateSplited[0].toInt(), dateSplited[1].toInt(), dateSplited[2].toInt())
+    return Pair(""+jalali[0]+"/"+jalali[1]+"/"+jalali[2], timeSplited)
+}
+
 @NonNull
 fun decimalFormatCommafy(number: String): String {
 
@@ -94,10 +125,13 @@ fun decimalFormatCommafy(number: String): String {
     val myFormatter = DecimalFormat("###,###")
     val output = myFormatter.format(inputDouble)
 
-    return if (number.length > 3){
-        "$output$decimalNum میلیون تومان"
+    var final = "$output$decimalNum"
+    final = final.substring(0, final.length-4)
+
+    return if (number.length >= 6){
+        "$final میلیون تومان"
     }else{
-        "$output$decimalNum هزارتومان"
+        "$final هزارتومان"
     }
 
 }

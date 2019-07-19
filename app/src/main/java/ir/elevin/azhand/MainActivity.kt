@@ -129,7 +129,7 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
         tabs.add(TabModel("جعبه گل", boxFlowerFragment))
         tabs.add(TabModel("شاخه گل", singleFlowerFragment))
         tabs.add(TabModel("دسته گل", bunchOfFlowerFragment))
-        tabs.add(TabModel("آپارتمانی", flowerAndPotFragment))
+        tabs.add(TabModel("گیاه", flowerAndPotFragment))
 
         pagerAdapter = TabsPagerAdapter(supportFragmentManager, tabs)
         pager.adapter = pagerAdapter

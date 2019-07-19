@@ -39,6 +39,11 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.Window
 import android.widget.Toast
+import com.github.kittinunf.fuel.httpGet
+import ir.mjmim.woocommercehelper.enums.RequestMethod
+import ir.mjmim.woocommercehelper.enums.SigningMethod
+import ir.mjmim.woocommercehelper.helpers.OAuthSigner
+import ir.mjmim.woocommercehelper.main.WooBuilder
 import kotlinx.android.synthetic.main.dialog_comment.*
 
 
@@ -51,6 +56,8 @@ class ProductDetailActivity : CustomActivity() {
     lateinit var layoutManager: androidx.recyclerview.widget.LinearLayoutManager
     var mIsLoading = true
     val comments = ArrayList<Comment>()
+    lateinit var images: ArrayList<Image>
+    lateinit var description: String
 
     @SuppressLint("SetTextI18n")
     @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS", "NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
@@ -59,13 +66,17 @@ class ProductDetailActivity : CustomActivity() {
         setContentView(R.layout.activity_product_detail)
 
         data = intent.extras.getParcelable("data")
+        images = intent.extras.getParcelableArrayList("images")
+        description = intent.extras.getString("description")
+
+        Log.d("wegewgeg", ""+data.id)
 
         Picasso.get()
-                .load(data.image)
+                .load(images[0].src)
                 .into(iv)
-        productPriceTv.text = "${data.price} هزارتومان"
-        desTv.setText(data.description, true)
-        maintenanceTv.setText(data.maintenance, true)
+        productPriceTv.text = "${data.price.substring(0, data.price.length-3)} هزارتومان"
+        desTv.setText(description, true)
+//        maintenanceTv.setText(data.maintenance, true)
 
         setSupportActionBar(productToolbar)
         title = data.name
@@ -120,7 +131,7 @@ class ProductDetailActivity : CustomActivity() {
         imageSlider.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION)
         imageSlider.scrollTimeInSec = 7 //set scroll delay in seconds :
 
-        val images = listOf(data.image, data.macroImage, data.potImage)
+//        val images = listOf(data.image, data.macroImage, data.potImage)
         imageSlider.sliderAdapter = SliderAdapterExample(this, images)
 
 //        imageSlider.postDelayed({imageSlider.startAutoCycle()}, 3000)
@@ -192,6 +203,8 @@ class ProductDetailActivity : CustomActivity() {
             d.setContentView(R.layout.dialog_comment)
             d.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
+            d.ratingBar.stepSize = 1f
+
             d.sendButton.setOnClickListener {
                 d.addCommentProgressBar.visibility = View.VISIBLE
                 val rate = d.ratingBar.rating
@@ -231,11 +244,25 @@ class ProductDetailActivity : CustomActivity() {
     }
 
     private fun sendComment(comment: String, rate: Float, d: Dialog){
-        webserviceUrl.httpPost(listOf("func" to "send_comment", "uid" to account.id, "pid" to data.id, "comment" to comment, "rate" to rate)).liveDataResponse().observeForever {
-            Log.d("WEGweg", it.first.data.toString(Charsets.UTF_8))
-            if (it.first.data.toString(Charsets.UTF_8) == "1"){
+
+        val params = HashMap<String, String>().apply {
+            put("product_id", "${data.id}")
+            put("review", comment)
+            put("reviewer", "مجتبی محبی")
+            put("reviewer_email", "iran@iran.com")
+            put("rating", "$rate")
+        }
+
+        val resultLink: String? = OAuthSigner(wooBuilder)
+                .getSignature(RequestMethod.POST, "/products/reviews", params)
+        Log.d("gwegewg33", resultLink+"--")
+
+        //listOf("func" to "send_comment", "uid" to account.id, "pid" to data.id, "review" to comment, "rating" to rate)
+        resultLink!!.httpPost().liveDataResponse().observeForever {
+            Log.d("WEGweg", it.first.data.toString(Charsets.UTF_8)+" --- "+it.toString())
+            if (it.first.statusCode == 201){
                 d.dismiss()
-                Toast.makeText(this, "با موفقیت ثبت شد و پس از تایید نمایش داده می شود.", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "ضمن سپاس از همراهی شما. با موفقیت ثبت شد", Toast.LENGTH_LONG).show()
             }else{
                 val dd = PrettyDialog(this)
                 dd.setTitle(this.getString(R.string.error))
@@ -247,16 +274,30 @@ class ProductDetailActivity : CustomActivity() {
                         }
                         .show()
             }
+
         }
     }
 
     private fun getComments(){
-        webserviceUrl.httpPost(listOf("func" to "get_comments", "page" to page, "pid" to data.id))
+
+        val params = HashMap<String, String>().apply {
+            put("product", "${data.id}")
+            put("per_page", "10")
+            put("page", "$page")
+        }
+
+        val resultLink: String? = OAuthSigner(wooBuilder)
+                .getSignature(RequestMethod.GET, "/products/reviews", params)
+        Log.d("gwegewg33", resultLink+"--")
+
+        resultLink!!.httpGet()
                 .liveDataObject(Comment.ListDeserializer()).observeForever { it ->
                     Log.d("wegwegvev", it.toString())
+                    commentsProgressBar.visibility = View.GONE
                     it.success{
                         commentsProgressBar.visibility = View.GONE
                         if (it.isNotEmpty()){
+                            Log.d("weweeg", it[0].date_created)
                             page += 1
                             commentsTitleTv.text = "نظرات"
                             comments + it.toCollection(comments)

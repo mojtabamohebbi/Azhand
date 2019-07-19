@@ -9,16 +9,18 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import ir.elevin.azhand.Image;
 import ir.elevin.azhand.R;
 
 public class SliderAdapterExample extends SliderViewAdapter<SliderAdapterExample.SliderAdapterVH> {
 
     private Context context;
-    private List<String> images;
+    private ArrayList<Image> images;
 
-    public SliderAdapterExample(Context context, List<String> images) {
+    public SliderAdapterExample(Context context, ArrayList<Image> images) {
         this.context = context;
         this.images = images;
     }
@@ -33,7 +35,7 @@ public class SliderAdapterExample extends SliderViewAdapter<SliderAdapterExample
     public void onBindViewHolder(SliderAdapterVH viewHolder, int position) {
 
         Glide.with(viewHolder.itemView)
-                .load(images.get(position))
+                .load(images.get(position).getSrc())
                 .into(viewHolder.imageViewBackground);
 
     }
