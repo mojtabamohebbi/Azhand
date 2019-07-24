@@ -20,6 +20,13 @@ class DatabaseHelper private constructor(ctx: Context) : ManagedSQLiteOpenHelper
         // Here you create tables
         db.createTable("account", true,
                 "id" to INTEGER + PRIMARY_KEY + UNIQUE,
+                "first_name" to TEXT,
+                "last_name" to TEXT,
+                "username" to TEXT,
+                "billing_address" to TEXT,
+                "shipping_address" to TEXT,
+                "postcode" to TEXT,
+                "token" to TEXT,
                 "phone" to TEXT)
     }
 

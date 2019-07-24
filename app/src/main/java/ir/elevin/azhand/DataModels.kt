@@ -10,6 +10,14 @@ import java.io.Reader
 
 data class TabModel(val title: String, val fragment: Fragment)
 
+data class MakeUser(val customer: customer)
+
+data class customer(val email: String, val first_name: String, val last_name: String, val username: String, val password: String, val billing_address: billing_address, val shipping_address: shipping_address)
+
+data class billing_address(val first_name: String, val last_name: String, val company: String, val address_1: String, val address_2: String, val city: String, val state: String, val postcode: String, val country: String, val email: String, val phone: String)
+
+data class shipping_address(val first_name: String, val last_name: String, val company: String, val address_1: String, val address_2: String, val city: String, val state: String, val postcode: String, val country: String)
+
 data class Image(val src: String) : Parcelable {
 
     companion object CREATOR : Parcelable.Creator<Image> {

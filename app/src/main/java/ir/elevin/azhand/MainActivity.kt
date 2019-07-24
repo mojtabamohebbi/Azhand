@@ -368,7 +368,7 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
                 if (account.id != 0){
                     startActivity(Intent(this, CartActivity::class.java))
                 }else{
-                    val intent = Intent(this, LoginActivity::class.java)
+                    val intent = Intent(this, SignUpActivity::class.java)
                     intent.putExtra("result", 21)
                     startActivityForResult(intent, 2)
                 }
@@ -378,7 +378,7 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
                 if (account.id != 0){
                     startActivity(Intent(this, OrdersActivity::class.java))
                 }else{
-                    val intent = Intent(this, LoginActivity::class.java)
+                    val intent = Intent(this, SignUpActivity::class.java)
                     intent.putExtra("result", 22)
                     startActivityForResult(intent, 2)
                 }

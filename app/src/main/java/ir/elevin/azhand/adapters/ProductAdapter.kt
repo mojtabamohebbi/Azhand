@@ -48,14 +48,11 @@ class ProductAdapter(private val activity: FragmentActivity, private val items: 
         (holder as ViewHolderLawyer).nameTv.text = data.name
         holder.priceTv.text = decimalFormatCommafy(data.price)
 
-        Glide.with(activity).load(data.images[0].src).centerCrop().placeholder(R.drawable.loading).error(R.drawable.loading).into(holder.imageIv)
-
-//        Picasso.get()
-//                .load(data.images[0].src)
-//                .placeholder(R.drawable.loading)
-//                .networkPolicy(NetworkPolicy.OFFLINE)
-//                .error(R.drawable.loading)
-//                .into(holder.imageIv) //loadddddd nashoooooddddd nakard nemidoonam chera
+        Picasso.get()
+                .load(data.images[0].src)
+                .placeholder(R.drawable.loading)
+                .error(R.drawable.loading)
+                .into(holder.imageIv)
 
         holder.itemView.setOnClickListener {
             getData(data.id, holder.imageIv, holder.progressBar, holder.priceTv, holder.cardView)

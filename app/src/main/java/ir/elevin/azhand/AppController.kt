@@ -126,7 +126,9 @@ fun decimalFormatCommafy(number: String): String {
     val output = myFormatter.format(inputDouble)
 
     var final = "$output$decimalNum"
-    final = final.substring(0, final.length-4)
+    if (final.length > 3){
+        final = final.substring(0, final.length-4)
+    }
 
     return if (number.length >= 6){
         "$final میلیون تومان"
