@@ -2,10 +2,11 @@ package ir.elevin.azhand
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -24,18 +25,19 @@ import com.github.kittinunf.fuel.livedata.liveDataResponse
 import com.github.kittinunf.result.failure
 import com.github.kittinunf.result.success
 import com.squareup.picasso.Picasso
+import com.zarinpal.ewallets.purchase.OnCallbackRequestPaymentListener
+import com.zarinpal.ewallets.purchase.PaymentRequest
+import com.zarinpal.ewallets.purchase.ZarinPal
 import kotlinx.android.synthetic.main.activity_choose_address.*
 import kotlinx.android.synthetic.main.address_row.view.*
 import kotlinx.android.synthetic.main.card_row.view.*
 import kotlinx.android.synthetic.main.dialog_add_address.*
-import kotlinx.android.synthetic.main.order_row.*
 import libs.mjn.prettydialog.PrettyDialog
-import org.jetbrains.anko.progressDialog
 import java.util.*
 import kotlin.collections.ArrayList
 
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-class ChooseAddressActivity : CustomActivity(){
+class ChooseAddressAndPayActivity : CustomActivity(){
 
     lateinit var products: String
     var cardId: Int = 0
@@ -46,7 +48,7 @@ class ChooseAddressActivity : CustomActivity(){
     private var addressAdapter: AddressAdapter = AddressAdapter(this)
 
     private var cardArray = ArrayList<Card>()
-    
+
     @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +60,7 @@ class ChooseAddressActivity : CustomActivity(){
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
-        title = "تکمیل خرید"
+        title = "انتخاب آدرس"
 
         addressRecyclerView.layoutManager = LinearLayoutManager(this)
         cardRecyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
@@ -74,6 +76,31 @@ class ChooseAddressActivity : CustomActivity(){
 
         payButton.setOnClickListener {
             insertOrder()
+        }
+
+        if (intent.data != null) {
+            ZarinPal.getPurchase(this).verificationPayment(intent.data) {
+                isPaymentSuccess, refID, paymentRequest -> Log.i("TAG", "onCallbackResultVerificationPayment: $refID")
+            }
+        }
+
+        payButton.setOnClickListener {
+            val payment: PaymentRequest = ZarinPal.getPaymentRequest()
+
+            payment.merchantID = "43c2d9fa-990a-11e9-aaf8-000c29344814"
+            payment.amount = 100
+            payment.description = "پرداخت"
+            payment.setCallbackURL("app://app")
+            payment.mobile = account.billing_address.phone
+            payment.email = account.email
+
+
+            ZarinPal.getPurchase(applicationContext).startPayment(payment, object : OnCallbackRequestPaymentListener {
+                override fun onCallbackResultPaymentRequest(status: Int, authority: String, paymentGatewayUri: Uri, intent: Intent) {
+
+                    startActivity(intent)
+                }
+            })
         }
 
         getAddresses()
@@ -102,7 +129,6 @@ class ChooseAddressActivity : CustomActivity(){
                 }
             }
         }
-
     }
 
     private fun getAddresses(){
@@ -125,7 +151,7 @@ class ChooseAddressActivity : CustomActivity(){
                             addFirstDesTv.visibility = View.VISIBLE
                             addFirstAddressButton.visibility = View.VISIBLE
                         }
-                        getCards()
+//                        getCards()
                     }
                     it.failure {
                         Log.d("vwevwebeb", it.localizedMessage)
@@ -151,25 +177,25 @@ class ChooseAddressActivity : CustomActivity(){
         addFirstAddressButton.visibility = View.GONE
     }
 
-    private fun getCards(){
-        webserviceUrl.httpPost(listOf("func" to "get_cards", "uid" to account.id))
-                .liveDataObject(Card.ListDeserializer()).observeForever { it ->
-                    Log.d("regwegewg22", it.toString())
-                    it.success {
-                        if (it.isNotEmpty()){
-                            it[0].isSelected = true
-                            cardId = it[0].id
-                        }
-                        cardArray = it.toCollection(cardArray)
-                        cardRecyclerView.adapter = CardAdapter(this)
-                        cardRecyclerView.visibility = View.VISIBLE
-                        cardsProgressBar.visibility = View.GONE
-                    }
-                    it.failure {
-                        getCards()
-                    }
-                }
-    }
+//    private fun getCards(){
+//        webserviceUrl.httpPost(listOf("func" to "get_cards", "uid" to account.id))
+//                .liveDataObject(Card.ListDeserializer()).observeForever { it ->
+//                    Log.d("regwegewg22", it.toString())
+//                    it.success {
+//                        if (it.isNotEmpty()){
+//                            it[0].isSelected = true
+//                            cardId = it[0].id
+//                        }
+//                        cardArray = it.toCollection(cardArray)
+//                        cardRecyclerView.adapter = CardAdapter(this)
+//                        cardRecyclerView.visibility = View.VISIBLE
+//                        cardsProgressBar.visibility = View.GONE
+//                    }
+//                    it.failure {
+//                        getCards()
+//                    }
+//                }
+//    }
 
     fun addOrEditAddressDialog(isEdit: Boolean, lastAddress: String = "", addressId: Int = 0, position: Int = 0){
         val d = Dialog(this)
@@ -311,17 +337,17 @@ class ChooseAddressActivity : CustomActivity(){
         }
 
         private fun deleteAddress(addressId: Int, position: Int){
-            val progressBar = progressDialog(this@ChooseAddressActivity)
+            val progressBar = progressDialog(this@ChooseAddressAndPayActivity)
             webserviceUrl.httpPost(listOf("func" to "delete_address", "uid" to account.id, "aid" to addressId)).liveDataResponse().observeForever {
                 if (it.first.data.toString(Charsets.UTF_8) == "1"){
                     address = ""
                     progressBar.dismiss()
                     addresses.removeAt(position)
                     notifyDataSetChanged()
-                    Toast.makeText(this@ChooseAddressActivity, "با موفقیت حذف شد", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@ChooseAddressAndPayActivity, "با موفقیت حذف شد", Toast.LENGTH_LONG).show()
                 }else{
                     progressBar.dismiss()
-                    Toast.makeText(this@ChooseAddressActivity, "عملیات ناموفق لطفا دوباره تلاش کنید", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@ChooseAddressAndPayActivity, "عملیات ناموفق لطفا دوباره تلاش کنید", Toast.LENGTH_LONG).show()
                 }
             }
         }

@@ -3,7 +3,8 @@ package ir.elevin.azhand.database
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
-import ir.elevin.azhand.Account
+import ir.elevin.azhand.Address
+
 import org.jetbrains.anko.db.SqlOrderDirection
 import org.jetbrains.anko.db.delete
 import org.jetbrains.anko.db.select
@@ -33,29 +34,35 @@ class DatabaseHandler(val context: Context){
 //        return data
 //    }
 
-    fun getAccount(): Account {
-        var data = Account()
-        database.select("account", "id", "phone")
+    fun getAddresses(): ArrayList<Address> {
+        val addresses = ArrayList<Address>()
+        database.select("addresses", "id, address")
                 .orderBy("id", SqlOrderDirection.DESC)
-                .limit(1)
                 .exec {
                     this.moveToFirst()
                     if (count > 0){
-                        data = Account(getInt(0), getString(1))
+                        addresses.add(Address(getInt(0), getString(1), false))
                     }
         }
-        return data
+        return addresses
     }
-
-    fun deleteAccount(){
-        database.delete("account")
+//
+    fun deleteAddresses(){
+        database.delete("addresses")
     }
-
-    fun insertAccounts(id: Int, phone: String){
+//
+    fun insertAddress(address: String){
         val values = ContentValues()
-        values.put("id", id)
-        values.put("phone", phone)
-        database.insert("account", null, values)
+        values.put("address", address)
+        database.insert("addresses", null, values)
+    }
+
+    fun deleteAddress(id: Int){
+        database.delete("addresses", "id = $id")
+    }
+
+    fun editAddress(address: String, id: Int){
+        database.execSQL("update addresses set address = '$address' where id = $id")
     }
 
 }

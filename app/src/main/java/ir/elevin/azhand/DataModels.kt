@@ -12,11 +12,217 @@ data class TabModel(val title: String, val fragment: Fragment)
 
 data class MakeUser(val customer: customer)
 
-data class customer(val email: String, val first_name: String, val last_name: String, val username: String, val password: String, val billing_address: billing_address, val shipping_address: shipping_address)
+data class GetUser(val customer: Account) {
+    class Deserializer : ResponseDeserializable<GetUser> {
+        override fun deserialize(reader: Reader) = Gson().fromJson(reader, GetUser::class.java)!!
+    }
+}
 
-data class billing_address(val first_name: String, val last_name: String, val company: String, val address_1: String, val address_2: String, val city: String, val state: String, val postcode: String, val country: String, val email: String, val phone: String)
+data class LoginData(val token: String,
+                     val user_id: Int,
+                     val user_email: String,
+                     val user_nicename: String,
+                     val user_display_name: String) : Parcelable {
 
-data class shipping_address(val first_name: String, val last_name: String, val company: String, val address_1: String, val address_2: String, val city: String, val state: String, val postcode: String, val country: String)
+    companion object CREATOR : Parcelable.Creator<LoginData> {
+        override fun createFromParcel(parcel: Parcel): LoginData {
+            return LoginData(parcel)
+        }
+
+        override fun newArray(size: Int): Array<LoginData?> {
+            return arrayOfNulls(size)
+        }
+    }
+
+    constructor(parcel: Parcel) : this(
+            parcel.readString()!!,
+            parcel.readInt(),
+            parcel.readString()!!,
+            parcel.readString()!!,
+            parcel.readString()!!
+    )
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(token)
+        parcel.writeInt(user_id)
+        parcel.writeString(user_email)
+        parcel.writeString(user_nicename)
+        parcel.writeString(user_display_name)
+    }
+
+    class Deserializer : ResponseDeserializable<LoginData> {
+        override fun deserialize(reader: Reader) = Gson().fromJson(reader, LoginData::class.java)!!
+    }
+
+    class ListDeserializer : ResponseDeserializable<List<LoginData>> {
+
+        override fun deserialize(reader: Reader): List<LoginData> {
+            val type = object : TypeToken<List<LoginData>>() {}.type
+            return Gson().fromJson(reader, type)
+        }
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+}
+
+
+data class billing_address(val first_name: String = "",
+                           val last_name: String = "",
+                           val company: String = "",
+                           val address_1: String = "",
+                           val address_2: String = "",
+                           val city: String = "",
+                           val state: String = "",
+                           val postcode: String = "",
+                           val country: String = "",
+                           val email: String = "",
+                           val phone: String = "") : Parcelable {
+
+    companion object CREATOR : Parcelable.Creator<billing_address> {
+        override fun createFromParcel(parcel: Parcel): billing_address {
+            return billing_address(parcel)
+        }
+
+        override fun newArray(size: Int): Array<billing_address?> {
+            return arrayOfNulls(size)
+        }
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(first_name)
+        parcel.writeString(last_name)
+        parcel.writeString(company)
+        parcel.writeString(address_1)
+        parcel.writeString(address_2)
+        parcel.writeString(city)
+        parcel.writeString(state)
+        parcel.writeString(postcode)
+        parcel.writeString(country)
+        parcel.writeString(email)
+        parcel.writeString(phone)
+    }
+
+    constructor(parcel: Parcel) : this(
+            parcel.readString()!!,
+            parcel.readString()!!,
+            parcel.readString()!!,
+            parcel.readString()!!,
+            parcel.readString()!!,
+            parcel.readString()!!,
+            parcel.readString()!!,
+            parcel.readString()!!,
+            parcel.readString()!!,
+            parcel.readString()!!,
+            parcel.readString()!!
+    )
+
+    class Deserializer : ResponseDeserializable<billing_address> {
+        override fun deserialize(reader: Reader) = Gson().fromJson(reader, billing_address::class.java)!!
+    }
+
+    class ListDeserializer : ResponseDeserializable<List<billing_address>> {
+
+        override fun deserialize(reader: Reader): List<billing_address> {
+            val type = object : TypeToken<List<billing_address>>() {}.type
+            return Gson().fromJson(reader, type)
+        }
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+}
+
+data class shipping_address(val first_name: String = "",
+                            val last_name: String = "",
+                            val company: String = "",
+                            val address_1: String = "",
+                            val address_2: String = "",
+                            val city: String = "",
+                            val state: String = "",
+                            val postcode: String = "",
+                            val country: String = "") : Parcelable {
+
+    companion object CREATOR : Parcelable.Creator<shipping_address> {
+        override fun createFromParcel(parcel: Parcel): shipping_address {
+            return shipping_address(parcel)
+        }
+
+        override fun newArray(size: Int): Array<shipping_address?> {
+            return arrayOfNulls(size)
+        }
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(first_name)
+        parcel.writeString(last_name)
+        parcel.writeString(company)
+        parcel.writeString(address_1)
+        parcel.writeString(address_2)
+        parcel.writeString(city)
+        parcel.writeString(state)
+        parcel.writeString(postcode)
+        parcel.writeString(country)
+    }
+
+    constructor(parcel: Parcel) : this(
+            parcel.readString()!!,
+            parcel.readString()!!,
+            parcel.readString()!!,
+            parcel.readString()!!,
+            parcel.readString()!!,
+            parcel.readString()!!,
+            parcel.readString()!!,
+            parcel.readString()!!,
+            parcel.readString()!!
+    )
+
+    class Deserializer : ResponseDeserializable<shipping_address> {
+        override fun deserialize(reader: Reader) = Gson().fromJson(reader, shipping_address::class.java)!!
+    }
+
+    class ListDeserializer : ResponseDeserializable<List<shipping_address>> {
+
+        override fun deserialize(reader: Reader): List<shipping_address> {
+            val type = object : TypeToken<List<shipping_address>>() {}.type
+            return Gson().fromJson(reader, type)
+        }
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+}
+
+
+data class customer(val id: Int = 0,
+                    val email: String = "",
+                    val first_name: String = "",
+                    val last_name: String = "",
+                    val username: String = "",
+                    val password: String = "",
+                    val billing_address: billing_address = billing_address(),
+                    val shipping_address: shipping_address = shipping_address()) {
+
+    class Deserializer : ResponseDeserializable<customer> {
+        override fun deserialize(reader: Reader) = Gson().fromJson(reader, customer::class.java)!!
+    }
+}
+
+data class Account(val id: Int = 0,
+                    val email: String = "",
+                    val first_name: String = "",
+                    val last_name: String = "",
+                    val username: String = "",
+                    val billing_address: billing_address = billing_address(),
+                    val shipping_address: shipping_address = shipping_address()) {
+
+    class Deserializer : ResponseDeserializable<Account> {
+        override fun deserialize(reader: Reader) = Gson().fromJson(reader, Account::class.java)!!
+    }
+}
 
 data class Image(val src: String) : Parcelable {
 
@@ -112,13 +318,13 @@ data class Product(
 
 }
 
-data class Account(val id: Int = 0
-                   , val phone: String = ""
-) {
-    class Deserializer : ResponseDeserializable<Account> {
-        override fun deserialize(reader: Reader) = Gson().fromJson(reader, Account::class.java)!!
-    }
-}
+//data class Account(val id: Int = 0
+//                   , val phone: String = ""
+//) {
+//    class Deserializer : ResponseDeserializable<Account> {
+//        override fun deserialize(reader: Reader) = Gson().fromJson(reader, Account::class.java)!!
+//    }
+//}
 
 data class Version(val versionName: String = ""
                    , val isForce: Int = 0,
@@ -179,12 +385,11 @@ data class Comment(
 
 data class Cart(
         val id: Int = 0,
-        val pid: Int = 0,
-        val name: String = "",
-        val image: String = "",
-        val price: Int = 0,
-        var totalPrice: Int = 0,
-        var num: Int = 0
+        val product_id: Int = 0,
+        val product_name: String = "",
+        val product_image: String = "",
+        val product_price: Int = 0,
+        var quantity: Int = 0
 ) : Parcelable {
 
     class Deserializer : ResponseDeserializable<Cart> {
@@ -205,17 +410,15 @@ data class Cart(
             parcel.readString()!!,
             parcel.readString()!!,
             parcel.readInt(),
-            parcel.readInt(),
             parcel.readInt())
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)
-        parcel.writeInt(pid)
-        parcel.writeString(name)
-        parcel.writeString(image)
-        parcel.writeInt(price)
-        parcel.writeInt(totalPrice)
-        parcel.writeInt(num)
+        parcel.writeInt(product_id)
+        parcel.writeString(product_name)
+        parcel.writeString(product_image)
+        parcel.writeInt(product_price)
+        parcel.writeInt(quantity)
     }
 
     override fun describeContents(): Int {

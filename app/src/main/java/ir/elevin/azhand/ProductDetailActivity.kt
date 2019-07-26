@@ -12,7 +12,7 @@ import android.transition.TransitionInflater
 
 import android.util.Log
 import android.view.View
-
+import org.sufficientlysecure.htmltextview.HtmlTextView
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
 import com.github.kittinunf.fuel.httpPost
@@ -40,6 +40,7 @@ import android.graphics.drawable.ColorDrawable
 import android.view.Window
 import android.widget.Toast
 import com.github.kittinunf.fuel.httpGet
+import com.github.kittinunf.fuel.livedata.liveDataResponseString
 import ir.mjmim.woocommercehelper.enums.RequestMethod
 import ir.mjmim.woocommercehelper.enums.SigningMethod
 import ir.mjmim.woocommercehelper.helpers.OAuthSigner
@@ -75,7 +76,7 @@ class ProductDetailActivity : CustomActivity() {
                 .load(images[0].src)
                 .into(iv)
         productPriceTv.text = "${data.price.substring(0, data.price.length-3)} هزارتومان"
-        desTv.setText(description, true)
+        desTv.setHtml(description)
 //        maintenanceTv.setText(data.maintenance, true)
 
         setSupportActionBar(productToolbar)
@@ -98,7 +99,7 @@ class ProductDetailActivity : CustomActivity() {
             val ex : android.transition.Transition = window.enterTransition
             ex.addListener(object : android.transition.Transition.TransitionListener {
                 override fun onTransitionEnd(transition: android.transition.Transition?) {
-                    imageSlider.animate().alpha(1f).duration = 300
+//                    imageSlider.animate().alpha(1f).duration = 300
                     iv.visibility = View.INVISIBLE
                     imageSlider.visibility = View.VISIBLE
                     productPriceTv.animate().alpha(1f).scaleY(1f).duration = 300
@@ -145,7 +146,7 @@ class ProductDetailActivity : CustomActivity() {
                 YoYo.with(Techniques.BounceInDown).duration(300).playOn(numProductTv)
                 YoYo.with(Techniques.FadeIn).duration(300).playOn(plusButton)
             }else{
-                startActivity(Intent(this, LoginActivity::class.java))
+                startActivity(Intent(this, SignUpActivity::class.java))
             }
 
         }
@@ -168,7 +169,7 @@ class ProductDetailActivity : CustomActivity() {
                     handler.postDelayed({addToCart()},1000)
                 }
             }else{
-                startActivity(Intent(this, LoginActivity::class.java))
+                startActivity(Intent(this, SignUpActivity::class.java))
             }
         }
 
@@ -218,9 +219,15 @@ class ProductDetailActivity : CustomActivity() {
 
     var addToCartState = 1 //1=normal, 2=loading, 3=done
     private fun addToCart(){
-        webserviceUrl.httpPost(listOf("func" to "add_to_cart", "uid" to account.id, "pid" to data.id, "num" to numProduct)).liveDataResponse().observeForever {
-            Log.d("WEGweg", it.first.data.toString(Charsets.UTF_8))
-            if (it.first.data.toString(Charsets.UTF_8) == "1"){
+
+        webserviceUrl.httpPost(listOf("func" to "add_to_cart",
+                "uid" to account.id,
+                "pid" to data.id,
+                "num" to numProduct,
+                "product_name" to data.name,
+                "product_image" to images[0].src,
+                "product_price" to data.price)).liveDataResponseString().observeForever {
+            if (it.second.component1() == "1"){
                 showDoneState()
                 val handler = Handler()
                 handler.postDelayed({

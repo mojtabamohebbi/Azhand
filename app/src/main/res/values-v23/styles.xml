@@ -9,7 +9,7 @@
         <item name="android:textViewStyle">@style/AppTheme.Widget.TextView</item>
         <item name="android:textColor">@color/colorPrimaryText</item>
         <item name="android:textColorSecondary">@color/colorSecondaryText</item>
-        <item name="android:statusBarColor">@color/colorWhite</item>
+        <item name="android:statusBarColor">@color/colorEEEEEE</item>
 
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowActivityTransitions">true</item>
@@ -21,7 +21,7 @@
         <item name="android:windowSharedElementEnterTransition">@transition/activity_slide</item>
         <item name="android:windowSharedElementExitTransition">@transition/activity_slide</item>
 
-        <item name="android:colorBackground">@color/colorWhite</item>
+        <item name="android:colorBackground">@color/colorEEEEEE</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:navigationBarColor">@color/colorBlack</item>
     </style>

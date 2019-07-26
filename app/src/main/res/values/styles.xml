@@ -10,7 +10,7 @@
         <item name="actionBarStyle">@style/AppTheme.Widget.TextView</item>
         <item name="android:textColor">@color/colorPrimaryText</item>
 
-        <item name="android:colorBackground">@color/colorWhite</item>
+        <item name="android:colorBackground">@color/colorEEEEEE</item>
 
         <item name="android:textColorSecondary">@color/colorSecondaryText</item>
     </style>

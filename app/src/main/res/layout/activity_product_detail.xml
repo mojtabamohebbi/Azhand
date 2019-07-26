@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/scrollViw"
     android:orientation="vertical"
+    android:background="#eeeeee"
     tools:context="ir.elevin.azhand.ProductDetailActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,7 +38,7 @@
                 android:layout_marginStart="72dp"
                 android:layout_marginEnd="16dp"
                 android:transitionName="card"
-                app:cardCornerRadius="2dp"
+                app:cardCornerRadius="10dp"
                 app:cardElevation="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -53,7 +54,8 @@
                         android:id="@+id/iv"
                         android:layout_width="match_parent"
                         android:layout_height="300dp"
-                        android:scaleType="centerCrop"
+                        android:scaleType="centerInside"
+
                         android:transitionName="poster"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -63,6 +65,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="300dp"
                         android:visibility="invisible"
+                        android:background="#fff"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.0" />
@@ -104,12 +107,13 @@
             app:layout_constraintTop_toBottomOf="@+id/productPriceTv"
             app:layout_goneMarginTop="8dp" />
 
-        <ir.elevin.azhand.tools.TextViewEx
+        <org.sufficientlysecure.htmltextview.HtmlTextView
             android:id="@+id/desTv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="72dp"
+            android:layout_marginTop="8dp"
             android:textColor="@color/colorPrimaryText"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -228,7 +232,7 @@
             app:layout_constraintTop_toBottomOf="@+id/orderCardView"
             app:layout_goneMarginTop="8dp" />
 
-        <ir.elevin.azhand.tools.TextViewEx
+        <TextView
             android:visibility="gone"
             android:id="@+id/maintenanceTv"
             android:layout_width="0dp"

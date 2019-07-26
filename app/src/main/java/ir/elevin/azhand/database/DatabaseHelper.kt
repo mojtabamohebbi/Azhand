@@ -4,7 +4,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import org.jetbrains.anko.db.*
 
-class DatabaseHelper private constructor(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "AzhandStoreDatabase", null, 1) {
+class DatabaseHelper private constructor(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "FloralStoreDatabase", null, 1) {
     init {
         instance = this
     }
@@ -18,16 +18,9 @@ class DatabaseHelper private constructor(ctx: Context) : ManagedSQLiteOpenHelper
 
     override fun onCreate(db: SQLiteDatabase) {
         // Here you create tables
-        db.createTable("account", true,
+        db.createTable("addresses", true,
                 "id" to INTEGER + PRIMARY_KEY + UNIQUE,
-                "first_name" to TEXT,
-                "last_name" to TEXT,
-                "username" to TEXT,
-                "billing_address" to TEXT,
-                "shipping_address" to TEXT,
-                "postcode" to TEXT,
-                "token" to TEXT,
-                "phone" to TEXT)
+                "address" to TEXT)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {

@@ -76,7 +76,7 @@ class OrdersActivity : CustomActivity() {
             swipeRefreshLayout.isRefreshing = true
         }
 
-        val params: List<Pair<String, Any?>> = listOf("func" to "get_orders", "page" to page, "uid" to account.id)
+        val params: List<Pair<String, Any?>> = listOf("func" to "get_orders", "page" to page, "uid" to "1")
         webserviceUrl
                 .httpPost(params)
                 .liveDataObject(Order.ListDeserializer())

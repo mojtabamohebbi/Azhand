@@ -6,6 +6,7 @@
     android:background="@drawable/rounded_dialog">
 
     <TextView
+        android:id="@+id/messageTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="نسبت به خروج از حساب کاربری خود اطمینان دارید؟"/>

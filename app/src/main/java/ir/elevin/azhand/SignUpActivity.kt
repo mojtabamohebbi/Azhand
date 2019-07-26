@@ -1,5 +1,6 @@
 package ir.elevin.azhand
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -7,14 +8,20 @@ import android.view.View
 import android.widget.Toast
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
+import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.fuel.httpPost
+import com.github.kittinunf.fuel.livedata.liveDataObject
 import com.github.kittinunf.fuel.livedata.liveDataResponse
+import com.github.kittinunf.result.failure
+import com.github.kittinunf.result.success
 import com.google.gson.Gson
+import com.kotlinpermissions.notNull
 import ir.mjmim.woocommercehelper.enums.RequestMethod
 import ir.mjmim.woocommercehelper.enums.SigningMethod
 import ir.mjmim.woocommercehelper.helpers.OAuthSigner
 import ir.mjmim.woocommercehelper.main.WooBuilder
 import kotlinx.android.synthetic.main.activity_sign_up.*
+import kotlinx.android.synthetic.main.recycler_fragment.*
 import libs.mjn.prettydialog.PrettyDialog
 import java.util.*
 
@@ -22,10 +29,17 @@ class SignUpActivity : CustomActivity() {
 
 
     var isLoginViewShowing = true
+    var resultCode: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
+
+        resultCode = try {
+            intent.extras.getInt("result")
+        }catch (e: Exception){
+            0
+        }
 
         signUpButton.setOnClickListener {
             if (isLoginViewShowing){
@@ -77,7 +91,7 @@ class SignUpActivity : CustomActivity() {
                     postalCode = "1234567890"
                 }
 
-                val data = MakeUser(customer(email, name, family, username, password, billing_address(name, family, "", address, "", "مشهد", "خراسان رضوی", postalCode, "ایران", email, phoneNumber), shipping_address(name, family, "", address, "", "مشهد", "خراسان رضوی", postalCode, "ایران")))
+                val data = MakeUser(customer(0, email, name, family, username, password, billing_address(name, family, "", address, "", "مشهد", "خراسان رضوی", postalCode, "ایران", email, phoneNumber), shipping_address(name, family, "", address, "", "مشهد", "خراسان رضوی", postalCode, "ایران")))
 
                 val gson = Gson()
                 val jsonString = gson.toJson(data)
@@ -104,12 +118,11 @@ class SignUpActivity : CustomActivity() {
                     }else{
                         progressDialog.dismiss()
                         val dd = PrettyDialog(this)
-                        dd.setTitle(this.getString(R.string.error))
+                        dd.setTitle("بررسی اطلاعات")
                                 .setIcon(R.drawable.error)
                                 .setMessage("لطفا اطلاعات وارد شده را بررسی نمایید و سپس دوباره تلاش کنید")
-                                .addButton(this.getString(R.string.try_again), R.color.colorWhite, R.color.colorRed) {
+                                .addButton("بستن", R.color.colorWhite, R.color.colorFlowerAndPotTabBar) {
                                     dd.dismiss()
-                                    signUp()
                                 }
                                 .show()
                     }
@@ -117,6 +130,9 @@ class SignUpActivity : CustomActivity() {
             }
         }
     }
+
+    var loginToken = ""
+    var loginUserId = 0
 
     private fun login(){
 
@@ -145,22 +161,27 @@ class SignUpActivity : CustomActivity() {
 
                 val progressDialog = progressDialog(this)
 
-                resultLink!!.httpPost().liveDataResponse().observeForever {
-                    if (it.first.statusCode == 200){
+                resultLink!!.httpPost().liveDataObject(LoginData.Deserializer()).observeForever {
+                    Log.d("gwegewg", it.toString())
+                    it?.success {
                         progressDialog.dismiss()
-                        Toast.makeText(this, "به فلورال خوش آمدید", Toast.LENGTH_LONG).show()
-
-
-
-                    }else{
+                        it.notNull {
+                            loginToken = it.token
+                            Log.d("token", loginToken)
+                            loginUserId = it.user_id
+                            editor.putString("token", loginToken).commit()
+                            getCustomerDetail(this, loginUserId, resultCode)
+                        }
+                    }
+                    it?.failure {
+                        Log.d("errorFound", it.message)
                         progressDialog.dismiss()
-                        val dd = PrettyDialog(this)
-                        dd.setTitle(this.getString(R.string.error))
+                        val d = PrettyDialog(this)
+                        d.setTitle("بررسی اطلاعات")
                                 .setIcon(R.drawable.error)
                                 .setMessage("لطفا اطلاعات وارد شده را بررسی نمایید و سپس دوباره تلاش کنید")
-                                .addButton(this.getString(R.string.try_again), R.color.colorWhite, R.color.colorRed) {
-                                    dd.dismiss()
-                                    signUp()
+                                .addButton("بستن", R.color.colorWhite, R.color.colorFlowerAndPotTabBar) {
+                                    d.dismiss()
                                 }
                                 .show()
                     }
@@ -169,7 +190,4 @@ class SignUpActivity : CustomActivity() {
         }
     }
 
-    fun getCustomerDetail(){
-
-    }
 }

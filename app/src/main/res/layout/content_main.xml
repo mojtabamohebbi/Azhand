@@ -22,7 +22,7 @@
         app:tabIconTintMode="add"
         app:tabIndicator="@drawable/tab_indication_3dot"
         app:tabMode="scrollable"
-        android:background="@color/colorWhite"
+        android:background="#eeeeee"
         android:layoutDirection="ltr"
         app:tabTextColor="@color/colorSecondaryText"
         app:tabSelectedTextColor="@color/colorBlack"

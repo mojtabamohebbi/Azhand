@@ -1,5 +1,7 @@
 package ir.elevin.azhand
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Application
 import java.util.*
 import android.content.Context
@@ -10,6 +12,7 @@ import android.view.View.MeasureSpec.UNSPECIFIED
 import android.view.View.MeasureSpec.makeMeasureSpec
 import android.view.View.MeasureSpec.AT_MOST
 import android.app.Dialog
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.PorterDuff
@@ -18,17 +21,27 @@ import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
+import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView
 import androidx.appcompat.widget.AppCompatEditText
+import androidx.multidex.MultiDex
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.github.kittinunf.fuel.httpGet
+import com.github.kittinunf.fuel.livedata.liveDataObject
+import com.github.kittinunf.result.failure
+import com.github.kittinunf.result.success
 import saman.zamani.persiandate.PersianDate
 import java.text.DecimalFormat
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.OkHttp3Downloader
+import ir.mjmim.woocommercehelper.enums.RequestMethod
 import ir.mjmim.woocommercehelper.enums.SigningMethod
+import ir.mjmim.woocommercehelper.helpers.OAuthSigner
 import ir.mjmim.woocommercehelper.main.WooBuilder
+import libs.mjn.prettydialog.PrettyDialog
 
 
 val webserviceUrl = "http://florals.ir/goli/api.php"
@@ -49,14 +62,21 @@ val wooBuilder = WooBuilder().apply {
     wc_secret = "cs_3c6fd6cfd5399a358f6ae285848829c7cc2cae88"
 }
 
+lateinit var sp: SharedPreferences
+lateinit var editor: SharedPreferences.Editor
+
 class AppController : Application() {
 
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase))
     }
 
+    @SuppressLint("CommitPrefEdits")
     override fun onCreate() {
         super.onCreate()
+
+        sp = getSharedPreferences("floral", Context.MODE_PRIVATE)
+        editor = sp.edit()
 
 //        val builder = Picasso.Builder(this)
 //        builder.downloader(OkHttp3Downloader(this, Integer.MAX_VALUE.toLong()))
@@ -70,6 +90,8 @@ class AppController : Application() {
         resources.configuration.setLocale(locale)
         resources.configuration.setLayoutDirection(locale)
 
+        MultiDex.install(this)
+
         CalligraphyConfig.initDefault(CalligraphyConfig.Builder()
                 .setDefaultFontPath("font/iransans_medium.ttf")
                 .setFontAttrId(R.attr.fontPath)
@@ -77,6 +99,63 @@ class AppController : Application() {
         )
     }
 
+}
+
+//resultCode == 0 means not showing dialog
+fun getCustomerDetail(context: Activity, id: Int, resultCode: Int){
+
+    lateinit var progressDialog: Dialog
+    if (resultCode != 0){
+        progressDialog = progressDialog(context)
+    }
+
+    val params = HashMap<String, String>().apply {}
+
+    val wooBuilderCustomer = WooBuilder().apply {
+        isHttps = false
+        baseUrl = "florals.ir/wc-api/v3"
+        signing_method = SigningMethod.HMACSHA1
+        wc_key = "ck_b89b3e5cd871e50755f2d021967aa903cf2839cc"
+        wc_secret = "cs_3c6fd6cfd5399a358f6ae285848829c7cc2cae88"
+    }
+
+    val resultLink: String? = OAuthSigner(wooBuilderCustomer)
+            .getSignature(RequestMethod.GET, "/customers/$id", params)
+    Log.d("gwegewg", resultLink+"--")
+
+    resultLink!!
+            .httpGet()
+            .liveDataObject(GetUser.Deserializer())
+            .observeForever { it ->
+                Log.d("gwegewwefefg", it.toString())
+                it?.success {
+                    account = it.customer
+                    Log.d("accountttt", account.billing_address.address_1)
+                    editor.putInt("id", id).commit()
+
+                    if (resultCode != 0){
+                        progressDialog.dismiss()
+                        Toast.makeText(context, "به فلورال خوش آمدید", Toast.LENGTH_LONG).show()
+                        context.setResult(resultCode)
+                        context.finish()
+                    }
+
+                }
+                it?.failure {
+                    if (resultCode != 0){
+                        progressDialog.dismiss()
+                        val d = PrettyDialog(context)
+                        d.setTitle(context.getString(R.string.error))
+                                .setIcon(R.drawable.error)
+                                .setMessage(context.getString(R.string.network_error))
+                                .addButton(context.getString(R.string.try_again), R.color.colorWhite, R.color.colorRed) {
+                                    d.dismiss()
+                                    getCustomerDetail(context, id, resultCode)
+                                }
+                                .show()
+                    }
+                }
+            }
 }
 
 fun parsDate(date: String): String{
@@ -130,7 +209,7 @@ fun decimalFormatCommafy(number: String): String {
         final = final.substring(0, final.length-4)
     }
 
-    return if (number.length >= 6){
+    return if (number.length >= 9){
         "$final میلیون تومان"
     }else{
         "$final هزارتومان"

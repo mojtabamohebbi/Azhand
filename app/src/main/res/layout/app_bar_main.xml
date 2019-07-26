@@ -29,9 +29,23 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 app:layout_collapseMode="parallax"
-                android:layout_height="200dp">
+                android:layout_height="wrap_content">
 
                 <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    app:srcCompat="@drawable/header_transparent"
+                    android:scaleType="centerInside"
+                    android:paddingTop="46dp"
+                    android:paddingBottom="30dp"
+                    android:background="#eeeeee"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:visibility="gone"
                     android:id="@+id/headerIv"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
@@ -39,11 +53,12 @@
                     app:srcCompat="@drawable/flower_and_pot"
                     android:scaleType="centerInside"
                     android:adjustViewBounds="true"
-                    android:background="#fff"
+                    android:background="#eeeeee"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"/>
 
                 <androidx.appcompat.widget.AppCompatImageView
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     app:layout_collapseMode="parallax"
@@ -53,8 +68,9 @@
                     app:layout_constraintTop_toTopOf="parent"/>
 
                 <androidx.appcompat.widget.AppCompatImageView
+                    android:visibility="gone"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="10dp"
                     app:layout_collapseMode="parallax"
                     app:srcCompat="@drawable/shadow_bottom"
                     android:scaleType="fitXY"

@@ -37,19 +37,19 @@ class OrderProductsAdapter(private val activity: FragmentActivity, private val i
     @SuppressLint("SetTextI18n", "RestrictedApi")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val data = items[position]
-        (holder as ProductsHolder).nameTv.text = data.name
-        holder.priceTv.text = decimalFormatCommafy("${data.price}")
-        holder.numTv.text = "${data.num} عدد"
-        holder.totalPriceTv.text = "کل: "+decimalFormatCommafy("${data.totalPrice}")
-
-        Picasso.get()
-                .load(data.image)
-                .placeholder(R.drawable.no_image)
-                .into(holder.imageIv)
-
-        holder.itemView.setOnClickListener {
-            getData(data.pid, holder.imageIv, holder.progressBar, holder.priceTv, holder.cardView)
-        }
+//        (holder as ProductsHolder).nameTv.text = data.name
+//        holder.priceTv.text = decimalFormatCommafy("${data.price}")
+//        holder.numTv.text = "${data.num} عدد"
+//        holder.totalPriceTv.text = "کل: "+decimalFormatCommafy("${data.totalPrice}")
+//
+//        Picasso.get()
+//                .load(data.image)
+//                .placeholder(R.drawable.no_image)
+//                .into(holder.imageIv)
+//
+//        holder.itemView.setOnClickListener {
+//            getData(data.pid, holder.imageIv, holder.progressBar, holder.priceTv, holder.cardView)
+//        }
 
     }
 

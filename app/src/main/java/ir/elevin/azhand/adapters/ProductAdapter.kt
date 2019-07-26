@@ -89,17 +89,17 @@ class ProductAdapter(private val activity: FragmentActivity, private val items: 
                 val intent = Intent(activity, ProductDetailActivity::class.java)
                 intent.putExtra("data", it)
                 intent.putExtra("images", it.images)
-                var des = it.description
-                des = des.replace("<p>", "", true)
-                des = des.replace("</p>", "", true)
-                intent.putExtra("description", des)
+//                var des = it.description
+//                des = des.replace("<p>", "", true)
+//                des = des.replace("</p>", "", true)
+                intent.putExtra("description", it.description)
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
                     val pair1 = Pair.create<View, String>(view, view.transitionName)
-                    val pair2 = Pair.create<View, String>(cardView, view.transitionName)
+//                    val pair2 = Pair.create<View, String>(cardView, view.transitionName)
                     val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                            activity, pair1, pair2)
+                            activity, pair1)
                     startActivity(activity, intent, options.toBundle())
                 } else {
                     startActivity(activity, intent, null)

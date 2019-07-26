@@ -14,7 +14,10 @@ import kotlinx.android.synthetic.main.content_main.pager
 import kotlin.collections.ArrayList
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
@@ -31,7 +34,6 @@ import com.github.kittinunf.fuel.livedata.liveDataObject
 import com.github.kittinunf.result.failure
 import com.github.kittinunf.result.success
 import ir.elevin.azhand.adapters.SupporterAdapter
-import ir.elevin.azhand.database.DatabaseHandler
 import ir.elevin.azhand.fragments.*
 import kotlinx.android.synthetic.main.content_main.rootView
 import kotlinx.android.synthetic.main.dialog_confirm.*
@@ -57,19 +59,12 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
     private val tabs = ArrayList<TabModel>()
 
     var headerLayoutHeight = 0
-    var transactionFormLayoutHeight = 0
     var toolbarHeight = 0
 
-    var isOpenTransactionForm = false
-    var db: DatabaseHandler? = null
-
-    @SuppressLint("RestrictedApi")
+    @SuppressLint("RestrictedApi", "CommitPrefEdits")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        db = DatabaseHandler(this)
-        account = db!!.getAccount()
 
         val fade = TransitionInflater.from(this).inflateTransition(R.transition.activity_slide)
 
@@ -120,7 +115,7 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
         }
 
         nav_view.setNavigationItemSelectedListener(this)
-        nav_view.menu.getItem(3).isVisible = account.id > 0
+        nav_view.menu.getItem(3).isVisible = sp.getInt("id", 0) != 0
 
         tabs.add(TabModel("کارت پستال", cardPostalFragment))
         tabs.add(TabModel("گلدان", potFragment))
@@ -181,6 +176,8 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
 
         })
 
+        headerIv.setColorFilter(resources.getColor(R.color.colorEEEEEE), PorterDuff.Mode.DARKEN)
+
         rootView.heightOfView {
             rootViewlHeight = it.toFloat()
         }
@@ -195,6 +192,12 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
 
         insertAccounts()
         checkVersions()
+        val userId = sp.getInt("id", 0)
+        Log.d("userid", ""+userId)
+        Log.d("token", ""+sp.getString("token", "null"))
+        if (userId != 0){
+            getCustomerDetail(this, userId, 0)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -364,8 +367,7 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
                 d.show()
             }
             R.id.nav_cart -> {
-                account = db!!.getAccount()
-                if (account.id != 0){
+                if (sp.getInt("id", 0) != 0){
                     startActivity(Intent(this, CartActivity::class.java))
                 }else{
                     val intent = Intent(this, SignUpActivity::class.java)
@@ -374,8 +376,7 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
                 }
             }
             R.id.nav_orders -> {
-                account = db!!.getAccount()
-                if (account.id != 0){
+                if (sp.getInt("id", 0) != 0){
                     startActivity(Intent(this, OrdersActivity::class.java))
                 }else{
                     val intent = Intent(this, SignUpActivity::class.java)
@@ -402,7 +403,7 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
                 d.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
                 d.yesButton.setOnClickListener {
-                    db!!.deleteAccount()
+                    editor.clear().commit()
                     nav_view.menu.getItem(3).isVisible = false
                     d.dismiss()
                 }
