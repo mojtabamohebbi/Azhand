@@ -38,13 +38,16 @@ import libs.mjn.prettydialog.PrettyDialog
 import java.util.*
 import kotlin.collections.ArrayList
 import com.google.gson.Gson
+import com.zarinpal.ewallets.purchase.OnCallbackVerificationPaymentListener
+import com.zarinpal.ewallets.purchase.PaymentRequest
+import ir.elevin.azhand.database.DatabaseHandler
 import ir.mjmim.woocommercehelper.enums.RequestMethod
 import ir.mjmim.woocommercehelper.enums.SigningMethod
 import ir.mjmim.woocommercehelper.helpers.OAuthSigner
 import ir.mjmim.woocommercehelper.main.WooBuilder
 import kotlinx.android.synthetic.main.dialog_confirm.*
 
-class CartActivity : CustomActivity(){
+class CartActivity : CustomActivity(), OnCallbackVerificationPaymentListener {
 
     private var totalPRICE = 0
 
@@ -78,19 +81,52 @@ class CartActivity : CustomActivity(){
         swipeRefreshLayout.isRefreshing = true
         getData()
 
-        topLayout.postDelayed({
-            topLayout.visibility = View.VISIBLE
-            topColorView.animate().alpha(1f).duration = 700
-            YoYo.with(Techniques.SlideInRight).duration(1000).playOn(topLayout)
-        }, 500)
-
         payBar.setOnClickListener {
+
+            val lineItems = ArrayList<line_items>()
+
+            for (product in productsArray){
+                lineItems.add(line_items(product_id = product.product_id, quantity = product.quantity, price = product.product_price, total = product.product_price*product.quantity))
+            }
+
+            account.billing_address.address_1 = ""
+            account.shipping_address.address_1 = ""
+
+            Log.d("wegwegeeeg", account.billing_address.address_1)
+
+            val data = MakeOrder(order(billing_address = account.billing_address, shipping_address = account.shipping_address, customer_id = account.id, line_items = lineItems))
+
+            val gson = Gson()
+            val jsonString = gson.toJson(data)
+
+            val db = DatabaseHandler(this)
+            db.insertFinalOrder(jsonString)
+
+            Log.d("wegere2rwgeg", jsonString)
+
             val intent = Intent(this, ChooseAddressAndPayActivity::class.java)
-            val json = Gson().toJson(productsArray)
-            intent.putExtra("products", json)
+//            val json = Gson().toJson(productsArray)
+
+//            intent.putParcelableArrayListExtra("products", productsArray)
             intent.putExtra("amount", totalPRICE)
             startActivity(intent)
         }
+    }
+
+    override fun onCallbackResultVerificationPayment(isPaymentSuccess: Boolean, refID: String?, paymentRequest: PaymentRequest?) {
+        Log.d("gwegeg3g3", "oncallbackckkkkkkkkkk  "+ refID!!)
+//        if (isPaymentSuccess){
+//            sendOrder(refID!!)
+//        }else{
+//            val dd = PrettyDialog(this)
+//            dd.setTitle("پرداخت ناموفق")
+//                    .setIcon(R.drawable.error)
+//                    .setMessage("")
+//                    .addButton("بستن", R.color.colorWhite, R.color.colorOrange) {
+//                        dd.dismiss()
+//                    }
+//                    .show()
+//        }
     }
     
     @SuppressLint("SetTextI18n")
@@ -272,6 +308,7 @@ class CartActivity : CustomActivity(){
 
         if (isFirst){
             productsArray.clear()
+            Log.d("ewgwegeg111", ""+account.id)
         }
 
         totalPRICE = 0
@@ -284,6 +321,13 @@ class CartActivity : CustomActivity(){
                         swipeRefreshLayout.isRefreshing = false
                         progressBar.visibility = View.INVISIBLE
                         if (it.isNotEmpty()){
+
+                            topLayout.postDelayed({
+                                topLayout.visibility = View.VISIBLE
+                                topColorView.animate().alpha(1f).duration = 700
+                                YoYo.with(Techniques.SlideInRight).duration(1000).playOn(topLayout)
+                            }, 500)
+
                             productsArray + it.toCollection(productsArray)
                             adapter?.notifyDataSetChanged()
                             recyclerview.scheduleLayoutAnimation()

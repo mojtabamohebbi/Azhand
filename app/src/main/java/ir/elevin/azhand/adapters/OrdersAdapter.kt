@@ -2,7 +2,6 @@ package ir.elevin.azhand.adapters
 
 import android.annotation.SuppressLint
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,13 +9,10 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.fasterxml.jackson.module.kotlin.readValue
-import com.github.kittinunf.fuel.jackson.mapper
-import com.squareup.picasso.Picasso
 import ir.elevin.azhand.*
 import kotlinx.android.synthetic.main.order_row.view.*
 
-class OrdersAdapter(private val activity: FragmentActivity, private val items: List<Order>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class OrdersAdapter(private val activity: FragmentActivity, private val items: List<OrderToShow>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): RecyclerView.ViewHolder {
         return OrderViewHolder(LayoutInflater.from(activity).inflate(R.layout.order_row, p0, false))
@@ -29,23 +25,24 @@ class OrdersAdapter(private val activity: FragmentActivity, private val items: L
     @SuppressLint("SetTextI18n", "RestrictedApi")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val data = items[position]
-        (holder as OrderViewHolder).orderNumberTv.text = "شماره سفارش: "+data.transCode
-        holder.orderAmountTv.text = "مبلغ کل: "+decimalFormatCommafy("${data.amount}")
-        val date = parsDateAndTime(data.dateCreate)
+        (holder as OrderViewHolder).orderNumberTv.text = "شماره سفارش: "+data.id
+        holder.orderAmountTv.text = "مبلغ کل: "+decimalFormatCommafy("${data.total}")
+        val date = parsDateAndTimeWooo(data.date_created)
         holder.orderDateCreateTv.text = "${date.first} - ${date.second}"
 
         when (data.status){
-            0 -> {holder.orderStatusTv.text = "تایید پرداخت"}
-            1 -> {holder.orderStatusTv.text = "در حال آماده سازی"}
-            2 -> {holder.orderStatusTv.text = "ارسال شده"}
-            3 -> {holder.orderStatusTv.text = "تحویل شده"}
+            "processing" -> {holder.orderStatusTv.text = "در حال انجام"}
+            "on-hold" -> {holder.orderStatusTv.text = "در انتظار تایید"}
+            "completed" -> {holder.orderStatusTv.text = "تحویل شده"}
+            "cancelled" -> {holder.orderStatusTv.text = "لغو شده"}
         }
 
-        holder.orderAddressTv.text = data.address
+        holder.orderAddressTv.text = data.shipping.address_1
 
-        Picasso.get().load(data.cardPoster).placeholder(R.drawable.no_image_wide).into(holder.giftCardIv)
+//        Picasso.get().load(data.cardPoster).placeholder(R.drawable.no_image_wide).into(holder.giftCardIv)
         holder.ordersRecyclerView.layoutManager = LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false)
-        holder.ordersRecyclerView.adapter = OrderProductsAdapter(activity, mapper.readValue<List<Cart>>(data.products))
+//        holder.ordersRecyclerView.adapter = OrderProductsAdapter(activity, mapper.readValue<List<line_items>>(data.line_items))
+        holder.ordersRecyclerView.adapter = OrderProductsAdapter(activity, data.line_items)
 
         if (data.isSelected){
             holder.detailsButton.setBackgroundColor(AppCompatResources.getColorStateList(activity, R.color.colorAccentDark).defaultColor)

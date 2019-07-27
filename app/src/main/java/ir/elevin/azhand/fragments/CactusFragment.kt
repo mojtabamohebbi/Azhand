@@ -95,6 +95,8 @@ class CactusFragment : androidx.fragment.app.Fragment() {
 
     fun getData(isFirst: Boolean){
 
+        Log.d("wegegewge23", "----")
+
         isErrorShowing = false
 
         if(isFirst){
@@ -107,6 +109,10 @@ class CactusFragment : androidx.fragment.app.Fragment() {
             put("category", "60")
             put("per_page", "10")
             put("page", "$page")
+            if (filterType > 0){
+                put("orderby", "price")
+                put("order", if(filterType == 1) "desc" else "asc")
+            }
         }
 
         val resultLink: String? = OAuthSigner(wooBuilder)

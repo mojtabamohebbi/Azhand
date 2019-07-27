@@ -101,13 +101,25 @@ class AppController : Application() {
 
 }
 
+fun checkCustomerAccount(activity: Activity){
+    val userId = sp.getInt("id", 0)
+    Log.d("userid", ""+userId)
+    Log.d("token", ""+sp.getString("token", "null"))
+    if (userId != 0){
+        getCustomerDetail(activity, userId, 0)
+    }
+}
+
 //resultCode == 0 means not showing dialog
 fun getCustomerDetail(context: Activity, id: Int, resultCode: Int){
 
     lateinit var progressDialog: Dialog
-    if (resultCode != 0){
-        progressDialog = progressDialog(context)
-    }
+    progressDialog = progressDialog(context)
+    progressDialog.setCancelable(false)
+    progressDialog.setCanceledOnTouchOutside(false)
+//    if (resultCode != 0){
+//        progressDialog = progressDialog(context)
+//    }
 
     val params = HashMap<String, String>().apply {}
 
@@ -133,8 +145,8 @@ fun getCustomerDetail(context: Activity, id: Int, resultCode: Int){
                     Log.d("accountttt", account.billing_address.address_1)
                     editor.putInt("id", id).commit()
 
+                    progressDialog.dismiss()
                     if (resultCode != 0){
-                        progressDialog.dismiss()
                         Toast.makeText(context, "به فلورال خوش آمدید", Toast.LENGTH_LONG).show()
                         context.setResult(resultCode)
                         context.finish()
@@ -142,7 +154,7 @@ fun getCustomerDetail(context: Activity, id: Int, resultCode: Int){
 
                 }
                 it?.failure {
-                    if (resultCode != 0){
+//                    if (resultCode != 0){
                         progressDialog.dismiss()
                         val d = PrettyDialog(context)
                         d.setTitle(context.getString(R.string.error))
@@ -153,7 +165,7 @@ fun getCustomerDetail(context: Activity, id: Int, resultCode: Int){
                                     getCustomerDetail(context, id, resultCode)
                                 }
                                 .show()
-                    }
+//                    }
                 }
             }
 }

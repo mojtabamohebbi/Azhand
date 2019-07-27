@@ -24,10 +24,17 @@ import com.github.kittinunf.fuel.livedata.liveDataObject
 import com.github.kittinunf.fuel.livedata.liveDataResponse
 import com.github.kittinunf.result.failure
 import com.github.kittinunf.result.success
+import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import com.zarinpal.ewallets.purchase.OnCallbackRequestPaymentListener
+import com.zarinpal.ewallets.purchase.OnCallbackVerificationPaymentListener
 import com.zarinpal.ewallets.purchase.PaymentRequest
 import com.zarinpal.ewallets.purchase.ZarinPal
+import ir.elevin.azhand.database.DatabaseHandler
+import ir.mjmim.woocommercehelper.enums.RequestMethod
+import ir.mjmim.woocommercehelper.enums.SigningMethod
+import ir.mjmim.woocommercehelper.helpers.OAuthSigner
+import ir.mjmim.woocommercehelper.main.WooBuilder
 import kotlinx.android.synthetic.main.activity_choose_address.*
 import kotlinx.android.synthetic.main.address_row.view.*
 import kotlinx.android.synthetic.main.card_row.view.*
@@ -39,7 +46,7 @@ import kotlin.collections.ArrayList
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class ChooseAddressAndPayActivity : CustomActivity(){
 
-    lateinit var products: String
+//    var products = ArrayList<Cart>()
     var cardId: Int = 0
     var amount: Int = 0
     var address = ""
@@ -54,8 +61,12 @@ class ChooseAddressAndPayActivity : CustomActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_choose_address)
 
-        products = intent.extras.getString("products")
-        amount = intent.extras.getInt("amount")
+        try {
+//            products = intent.extras.getParcelableArrayList("products")
+            amount = intent.extras.getInt("amount")
+        } catch (e: Exception) {
+            Log.d("egewgeg1212121", e.message)
+        }
 
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -74,62 +85,133 @@ class ChooseAddressAndPayActivity : CustomActivity(){
             addOrEditAddressDialog(false)
         }
 
-        payButton.setOnClickListener {
-            insertOrder()
-        }
-
         if (intent.data != null) {
-            ZarinPal.getPurchase(this).verificationPayment(intent.data) {
-                isPaymentSuccess, refID, paymentRequest -> Log.i("TAG", "onCallbackResultVerificationPayment: $refID")
-            }
-        }
 
-        payButton.setOnClickListener {
-            val payment: PaymentRequest = ZarinPal.getPaymentRequest()
+            ZarinPal.getPurchase(this).verificationPayment(intent.data) { isPaymentSuccess, refID, paymentRequest -> Log.i("TAG", "onCallbackResultVerificationPayment: $refID")
 
-            payment.merchantID = "43c2d9fa-990a-11e9-aaf8-000c29344814"
-            payment.amount = 100
-            payment.description = "پرداخت"
-            payment.setCallbackURL("app://app")
-            payment.mobile = account.billing_address.phone
-            payment.email = account.email
-
-
-            ZarinPal.getPurchase(applicationContext).startPayment(payment, object : OnCallbackRequestPaymentListener {
-                override fun onCallbackResultPaymentRequest(status: Int, authority: String, paymentGatewayUri: Uri, intent: Intent) {
-
-                    startActivity(intent)
-                }
-            })
-        }
-
-        getAddresses()
-    }
-
-    private fun insertOrder(){
-        if (address.isEmpty()){
-            Toast.makeText(this, "لطفا آدرس محل تحویل را وارد نمایید", Toast.LENGTH_LONG).show()
-        }else{
-            webserviceUrl.httpPost(listOf("func" to "insert_order",
-                    "uid" to account.id, "products" to products,
-                    "amount" to amount, "cardId" to cardId, "address" to address, "transcode" to "3423892")).liveDataResponse().observeForever {
-                Log.d("WEGweg", it.first.data.toString(Charsets.UTF_8))
-                if (it.first.data.toString(Charsets.UTF_8) == "1"){
-                    Toast.makeText(this, "با موفقیت ثبت شد", Toast.LENGTH_LONG).show()
+                Log.d("gwegeg3g3", "oncallbackckkkkkkkkkk")
+                if (isPaymentSuccess){
+                    sendOrder(refID!!)
                 }else{
                     val dd = PrettyDialog(this)
-                    dd.setTitle(this.getString(R.string.error))
+                    dd.setTitle("پرداخت ناموفق")
                             .setIcon(R.drawable.error)
-                            .setMessage(this.getString(R.string.network_error))
-                            .addButton(this.getString(R.string.try_again), R.color.colorWhite, R.color.colorRed) {
+                            .setMessage("")
+                            .addButton("بستن", R.color.colorWhite, R.color.colorOrange) {
                                 dd.dismiss()
-                                insertOrder()
                             }
                             .show()
                 }
             }
         }
+
+
+        payButton.setOnClickListener {
+
+            if (address.isEmpty()) {
+                Toast.makeText(this, "لطفا آدرس محل تحویل را وارد نمایید", Toast.LENGTH_LONG).show()
+            } else {
+                val db = DatabaseHandler(this)
+                db.addAddressToFinalOrder(address)
+
+                val payment: PaymentRequest = ZarinPal.getPaymentRequest()
+
+                payment.merchantID = "43c2d9fa-990a-11e9-aaf8-000c29344814"
+                payment.amount = 100
+                payment.description = "پرداخت صورتحساب"
+                payment.setCallbackURL("app://app")
+                payment.mobile = account.billing_address.phone
+                payment.email = account.email
+
+                ZarinPal.getPurchase(applicationContext).startPayment(payment, object : OnCallbackRequestPaymentListener {
+                    override fun onCallbackResultPaymentRequest(status: Int, authority: String, paymentGatewayUri: Uri, intent: Intent) {
+                        startActivity(intent)
+                    }
+                })
+            }
+        }
+
+        getAddresses()
     }
+
+    private fun sendOrder(transcode: String){
+
+        val db = DatabaseHandler(this)
+        val jsonString: String = db.getFinalOrder()
+
+        Log.d("wegwegegJSSSSONONONO", jsonString)
+        Log.d("wegwegegACCCounttt", ""+account.id)
+
+        val progressDialog = progressDialog(this)
+
+        val params = HashMap<String, String>().apply {}
+
+        val wooBuilderCustomer = WooBuilder().apply {
+            isHttps = false
+            baseUrl = "florals.ir/wc-api/v3"
+            signing_method = SigningMethod.HMACSHA1
+            wc_key = "ck_b89b3e5cd871e50755f2d021967aa903cf2839cc"
+            wc_secret = "cs_3c6fd6cfd5399a358f6ae285848829c7cc2cae88"
+        }
+
+        val resultLink: String? = OAuthSigner(wooBuilderCustomer)
+                .getSignature(RequestMethod.POST, "/orders", params)
+
+        resultLink!!.httpPost().body(jsonString, Charsets.UTF_8).liveDataResponse().observeForever {
+            Log.d("wgewgwegw333", it.toString())
+            if (it.first.statusCode == 201){
+                setDoneOrder()
+            }else{
+                progressDialog.dismiss()
+                val dd = PrettyDialog(this)
+                dd.setTitle("مشکل!")
+                        .setIcon(R.drawable.error)
+                        .setMessage("کد پیگیری: $transcode"+"\n"+getString(R.string.network_error))
+                        .addButton("تلاش دوباره", R.color.colorWhite, R.color.colorFlowerAndPotTabBar) {
+                            dd.dismiss()
+                            sendOrder(transcode)
+                        }
+                        .show()
+            }
+        }
+    }
+
+    private fun setDoneOrder(){
+        webserviceUrl.httpPost(listOf("func" to "ordered", "uid" to account.id)).liveDataResponse().observeForever {
+            Log.d("reegegerg", it.toString())
+            Toast.makeText(this, "سفارش شما با موفقیت ثبت شد", Toast.LENGTH_LONG).show()
+            val i = Intent(this, MainActivity::class.java)
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(i)
+            finish()
+        }
+    }
+
+//    private fun insertOrder(){
+//        if (address.isEmpty()){
+//            Toast.makeText(this, "لطفا آدرس محل تحویل را وارد نمایید", Toast.LENGTH_LONG).show()
+//        }else{
+//            webserviceUrl.httpPost(listOf("func" to "insert_order",
+//                    "uid" to account.id, "products" to products,
+//                    "amount" to amount, "cardId" to cardId, "address" to address, "transcode" to "3423892")).liveDataResponse().observeForever {
+//                Log.d("WEGweg", it.first.data.toString(Charsets.UTF_8))
+//                if (it.first.data.toString(Charsets.UTF_8) == "1"){
+//                    Toast.makeText(this, "با موفقیت ثبت شد", Toast.LENGTH_LONG).show()
+//                }else{
+//                    val dd = PrettyDialog(this)
+//                    dd.setTitle(this.getString(R.string.error))
+//                            .setIcon(R.drawable.error)
+//                            .setMessage(this.getString(R.string.network_error))
+//                            .addButton(this.getString(R.string.try_again), R.color.colorWhite, R.color.colorRed) {
+//                                dd.dismiss()
+//                                insertOrder()
+//                            }
+//                            .show()
+//                }
+//            }
+//        }
+//    }
 
     private fun getAddresses(){
         webserviceUrl.httpPost(listOf("func" to "get_addresses", "uid" to account.id))

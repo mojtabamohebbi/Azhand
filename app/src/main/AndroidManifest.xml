@@ -36,7 +36,17 @@
         <activity
             android:name=".ChooseAddressAndPayActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="app"/>
+            </intent-filter>
+
+        </activity>
         <activity
             android:name=".CartActivity"
             android:screenOrientation="portrait"
@@ -47,10 +57,6 @@
             android:theme="@style/AppTheme.NoActionBar" /> <!-- <activity -->
         <!-- android:name=".LoginActivity" -->
         <!-- android:theme="@style/Dialogam" /> -->
-        <activity
-            android:name=".UpgradeActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ImageViewerActivity"
             android:screenOrientation="portrait"

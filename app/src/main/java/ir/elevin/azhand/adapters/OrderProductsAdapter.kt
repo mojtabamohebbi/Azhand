@@ -15,16 +15,21 @@ import androidx.core.content.ContextCompat
 import androidx.core.util.Pair
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.fuel.httpPost
 import com.github.kittinunf.fuel.livedata.liveDataObject
 import com.github.kittinunf.result.failure
 import com.github.kittinunf.result.success
 import com.squareup.picasso.Picasso
 import ir.elevin.azhand.*
+import ir.mjmim.woocommercehelper.enums.RequestMethod
+import ir.mjmim.woocommercehelper.enums.SigningMethod
+import ir.mjmim.woocommercehelper.helpers.OAuthSigner
+import ir.mjmim.woocommercehelper.main.WooBuilder
 import kotlinx.android.synthetic.main.order_product_row.view.*
 import libs.mjn.prettydialog.PrettyDialog
 
-class OrderProductsAdapter(private val activity: FragmentActivity, private val items: List<Cart>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class OrderProductsAdapter(private val activity: FragmentActivity, private val items: List<line_items>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): RecyclerView.ViewHolder {
         return ProductsHolder(LayoutInflater.from(activity).inflate(R.layout.order_product_row, p0, false))
@@ -37,22 +42,21 @@ class OrderProductsAdapter(private val activity: FragmentActivity, private val i
     @SuppressLint("SetTextI18n", "RestrictedApi")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val data = items[position]
-//        (holder as ProductsHolder).nameTv.text = data.name
-//        holder.priceTv.text = decimalFormatCommafy("${data.price}")
-//        holder.numTv.text = "${data.num} عدد"
-//        holder.totalPriceTv.text = "کل: "+decimalFormatCommafy("${data.totalPrice}")
-//
+        (holder as ProductsHolder).nameTv.text = data.name
+        holder.priceTv.text = decimalFormatCommafy("${data.price}")
+        holder.numTv.text = "${data.quantity} عدد"
+        holder.totalPriceTv.text = "کل: "+decimalFormatCommafy("${data.total}")
+
 //        Picasso.get()
 //                .load(data.image)
 //                .placeholder(R.drawable.no_image)
 //                .into(holder.imageIv)
-//
-//        holder.itemView.setOnClickListener {
-//            getData(data.pid, holder.imageIv, holder.progressBar, holder.priceTv, holder.cardView)
-//        }
+
+        holder.itemView.setOnClickListener {
+            getData(data.product_id, holder.imageIv, holder.progressBar, holder.priceTv, holder.cardView)
+        }
 
     }
-
 
     @SuppressLint("SetTextI18n")
     private fun getData(pid: Int, view: View, progressBar: ProgressBar, priceTv: TextView, cardView: CardView){
@@ -60,20 +64,41 @@ class OrderProductsAdapter(private val activity: FragmentActivity, private val i
         progressBar.visibility = View.VISIBLE
         priceTv.visibility = View.GONE
         Log.d("gwegwe", "${account.id}")
-        val params = listOf("func" to "get_product", "pid" to pid)
-        webserviceUrl.httpPost(params).liveDataObject(Product.Deserializer()).observeForever {
+
+        val params = HashMap<String, String>().apply {}
+
+        val wooBuilder = WooBuilder().apply {
+            isHttps = false
+            baseUrl = "florals.ir/wp-json/wc/v3"
+            signing_method = SigningMethod.HMACSHA1
+            wc_key = "ck_b89b3e5cd871e50755f2d021967aa903cf2839cc"
+            wc_secret = "cs_3c6fd6cfd5399a358f6ae285848829c7cc2cae88"
+        }
+
+        val resultLink: String? = OAuthSigner(wooBuilder)
+                .getSignature(RequestMethod.GET, "/products/$pid", params)
+        Log.d("gwegewg", resultLink+"--")
+
+
+        resultLink!!.httpGet().liveDataObject(Product.Deserializer()).observeForever {
             Log.d("response", it.toString())
-            it.success { it ->
+            it.success {it ->
                 progressBar.visibility = View.GONE
                 priceTv.visibility = View.VISIBLE
                 val intent = Intent(activity, ProductDetailActivity::class.java)
                 intent.putExtra("data", it)
+                intent.putExtra("images", it.images)
+//                var des = it.description
+//                des = des.replace("<p>", "", true)
+//                des = des.replace("</p>", "", true)
+                intent.putExtra("description", it.description)
+
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
                     val pair1 = Pair.create<View, String>(view, view.transitionName)
-                    val pair2 = Pair.create<View, String>(cardView, view.transitionName)
+//                    val pair2 = Pair.create<View, String>(cardView, view.transitionName)
                     val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                            activity, pair1, pair2)
+                            activity, pair1)
                     ContextCompat.startActivity(activity, intent, options.toBundle())
                 } else {
                     ContextCompat.startActivity(activity, intent, null)

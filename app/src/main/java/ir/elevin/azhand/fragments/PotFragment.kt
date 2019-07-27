@@ -107,6 +107,10 @@ class PotFragment : androidx.fragment.app.Fragment() {
             put("category", "62")
             put("per_page", "10")
             put("page", "$page")
+            if (filterType > 0){
+                put("orderby", "price")
+                put("order", if(filterType == 1) "desc" else "asc")
+            }
         }
 
         val resultLink: String? = OAuthSigner(wooBuilder)

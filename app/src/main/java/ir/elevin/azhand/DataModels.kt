@@ -18,6 +18,8 @@ data class GetUser(val customer: Account) {
     }
 }
 
+data class FinalOrder(val order: String = "")
+
 data class LoginData(val token: String,
                      val user_id: Int,
                      val user_email: String,
@@ -71,8 +73,8 @@ data class LoginData(val token: String,
 data class billing_address(val first_name: String = "",
                            val last_name: String = "",
                            val company: String = "",
-                           val address_1: String = "",
-                           val address_2: String = "",
+                           var address_1: String = "",
+                           var address_2: String = "",
                            val city: String = "",
                            val state: String = "",
                            val postcode: String = "",
@@ -138,8 +140,8 @@ data class billing_address(val first_name: String = "",
 data class shipping_address(val first_name: String = "",
                             val last_name: String = "",
                             val company: String = "",
-                            val address_1: String = "",
-                            val address_2: String = "",
+                            var address_1: String = "",
+                            var address_2: String = "",
                             val city: String = "",
                             val state: String = "",
                             val postcode: String = "",
@@ -216,8 +218,8 @@ data class Account(val id: Int = 0,
                     val first_name: String = "",
                     val last_name: String = "",
                     val username: String = "",
-                    val billing_address: billing_address = billing_address(),
-                    val shipping_address: shipping_address = shipping_address()) {
+                    var billing_address: billing_address = billing_address(),
+                    var shipping_address: shipping_address = shipping_address()) {
 
     class Deserializer : ResponseDeserializable<Account> {
         override fun deserialize(reader: Reader) = Gson().fromJson(reader, Account::class.java)!!
@@ -383,6 +385,44 @@ data class Comment(
     }
 }
 
+data class MakeCarts(val carts: ArrayList<Cart>) : Parcelable {
+
+    class Deserializer : ResponseDeserializable<MakeCarts> {
+        override fun deserialize(reader: Reader) = Gson().fromJson(reader, MakeCarts::class.java)!!
+    }
+
+    class ListDeserializer : ResponseDeserializable<List<MakeCarts>> {
+
+        override fun deserialize(reader: Reader): List<MakeCarts> {
+            val type = object : TypeToken<List<MakeCarts>>() {}.type
+            return Gson().fromJson(reader, type)
+        }
+    }
+
+    constructor(parcel: Parcel) : this(
+            arrayListOf<Cart>().apply {
+                parcel.readArrayList(Cart::class.java.classLoader)
+            })
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeArray(arrayOf(carts))
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<MakeCarts> {
+        override fun createFromParcel(parcel: Parcel): MakeCarts {
+            return MakeCarts(parcel)
+        }
+
+        override fun newArray(size: Int): Array<MakeCarts?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
+
 data class Cart(
         val id: Int = 0,
         val product_id: Int = 0,
@@ -522,7 +562,7 @@ data class Card(
 }
 
 
-data class Order(
+data class GarbageOrder(
         val id: Int = 0,
         val transCode: String = "",
         val dateCreate: String = "",
@@ -534,14 +574,14 @@ data class Order(
         var isSelected: Boolean = false
 ) : Parcelable {
 
-    class Deserializer : ResponseDeserializable<Order> {
-        override fun deserialize(reader: Reader) = Gson().fromJson(reader, Order::class.java)!!
+    class Deserializer : ResponseDeserializable<GarbageOrder> {
+        override fun deserialize(reader: Reader) = Gson().fromJson(reader, GarbageOrder::class.java)!!
     }
 
-    class ListDeserializer : ResponseDeserializable<List<Order>> {
+    class ListDeserializer : ResponseDeserializable<List<GarbageOrder>> {
 
-        override fun deserialize(reader: Reader): List<Order> {
-            val type = object : TypeToken<List<Order>>() {}.type
+        override fun deserialize(reader: Reader): List<GarbageOrder> {
+            val type = object : TypeToken<List<GarbageOrder>>() {}.type
             return Gson().fromJson(reader, type)
         }
     }
@@ -571,12 +611,12 @@ data class Order(
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<Order> {
-        override fun createFromParcel(parcel: Parcel): Order {
-            return Order(parcel)
+    companion object CREATOR : Parcelable.Creator<GarbageOrder> {
+        override fun createFromParcel(parcel: Parcel): GarbageOrder {
+            return GarbageOrder(parcel)
         }
 
-        override fun newArray(size: Int): Array<Order?> {
+        override fun newArray(size: Int): Array<GarbageOrder?> {
             return arrayOfNulls(size)
         }
     }
@@ -637,4 +677,101 @@ data class Supporter(
             return arrayOfNulls(size)
         }
     }
+}
+
+data class MakeOrder(val order: order)
+
+data class payment_details(val method_id: String = "bacs",
+                           val method_title: String = "Direct Bank Transfer",
+                           val paid: Boolean = true) {
+    class Deserializer : ResponseDeserializable<payment_details> {
+        override fun deserialize(reader: Reader) = Gson().fromJson(reader, payment_details::class.java)!!
+    }
+
+    class ListDeserializer : ResponseDeserializable<List<payment_details>> {
+
+        override fun deserialize(reader: Reader): List<payment_details> {
+            val type = object : TypeToken<List<payment_details>>() {}.type
+            return Gson().fromJson(reader, type)
+        }
+    }
+}
+
+data class line_items(val product_id: Int = 0,
+                      val quantity: Int = 0,
+                      val name: String = "",
+                      val total: Int = 0,
+                      val price: Int = 0) {
+    class Deserializer : ResponseDeserializable<line_items> {
+        override fun deserialize(reader: Reader) = Gson().fromJson(reader, line_items::class.java)!!
+    }
+
+    class ListDeserializer : ResponseDeserializable<List<line_items>> {
+
+        override fun deserialize(reader: Reader): List<line_items> {
+            val type = object : TypeToken<List<line_items>>() {}.type
+            return Gson().fromJson(reader, type)
+        }
+    }
+}
+
+
+data class shipping_lines(val method_id: String = "flat_rate",
+                          val method_title: String = "Flat Rate",
+                          val total: Int = 10) {
+    class Deserializer : ResponseDeserializable<shipping_lines> {
+        override fun deserialize(reader: Reader) = Gson().fromJson(reader, shipping_lines::class.java)!!
+    }
+
+    class ListDeserializer : ResponseDeserializable<List<shipping_lines>> {
+
+        override fun deserialize(reader: Reader): List<shipping_lines> {
+            val type = object : TypeToken<List<shipping_lines>>() {}.type
+            return Gson().fromJson(reader, type)
+        }
+    }
+}
+
+data class order(var payment_details: payment_details = payment_details(),
+                 var billing_address: billing_address = billing_address(),
+                 var shipping_address: shipping_address = shipping_address(),
+                 val customer_id: Int = 0,
+                 val line_items: ArrayList<line_items> = ArrayList(),
+                 val shipping_lines: ArrayList<shipping_lines> = ArrayList()) {
+
+    class Deserializer : ResponseDeserializable<shipping_address> {
+        override fun deserialize(reader: Reader) = Gson().fromJson(reader, shipping_address::class.java)!!
+    }
+
+    class ListDeserializer : ResponseDeserializable<List<shipping_address>> {
+
+        override fun deserialize(reader: Reader): List<shipping_address> {
+            val type = object : TypeToken<List<shipping_address>>() {}.type
+            return Gson().fromJson(reader, type)
+        }
+    }
+}
+
+data class shipping(val address_1: String = "")
+
+data class OrderToShow(val id: Int = 0,
+                       val status: String = "",
+                       val date_created: String = "",
+                       val total: Int = 0,
+                       val shipping: shipping = shipping(),
+                       val line_items: ArrayList<line_items>,
+                       var isSelected: Boolean = false) {
+
+    class Deserializer : ResponseDeserializable<OrderToShow> {
+        override fun deserialize(reader: Reader) = Gson().fromJson(reader, OrderToShow::class.java)!!
+    }
+
+    class ListDeserializer : ResponseDeserializable<List<OrderToShow>> {
+
+        override fun deserialize(reader: Reader): List<OrderToShow> {
+            val type = object : TypeToken<List<OrderToShow>>() {}.type
+            return Gson().fromJson(reader, type)
+        }
+    }
+
 }

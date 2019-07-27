@@ -75,6 +75,14 @@
                 android:singleLine="true"
                 android:textSize="13sp"/>
 
+            <TextView
+                android:id="@+id/resetPasswordButton"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:gravity="center"
+                android:textSize="8sp"
+                android:text="بازیابی رمز عبور؟"/>
+
         </LinearLayout>
 
         <ScrollView

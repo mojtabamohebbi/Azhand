@@ -3,7 +3,9 @@ package ir.elevin.azhand.database
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import android.util.Log
 import ir.elevin.azhand.Address
+import ir.elevin.azhand.FinalOrder
 
 import org.jetbrains.anko.db.SqlOrderDirection
 import org.jetbrains.anko.db.delete
@@ -34,35 +36,47 @@ class DatabaseHandler(val context: Context){
 //        return data
 //    }
 
-    fun getAddresses(): ArrayList<Address> {
-        val addresses = ArrayList<Address>()
-        database.select("addresses", "id, address")
-                .orderBy("id", SqlOrderDirection.DESC)
+    fun getFinalOrder(): String {
+        var final = ""
+        database.select("finalOrder", "ord")
                 .exec {
                     this.moveToFirst()
                     if (count > 0){
-                        addresses.add(Address(getInt(0), getString(1), false))
+                        final = this.getString(0)
                     }
         }
-        return addresses
+        return final
     }
 //
     fun deleteAddresses(){
         database.delete("addresses")
     }
 //
-    fun insertAddress(address: String){
+    fun insertFinalOrder(orders: String){
+    database.execSQL("delete from finalOrder")
         val values = ContentValues()
-        values.put("address", address)
-        database.insert("addresses", null, values)
+        values.put("ord", orders)
+        database.insert("finalOrder", null, values)
     }
 
     fun deleteAddress(id: Int){
         database.delete("addresses", "id = $id")
     }
 
-    fun editAddress(address: String, id: Int){
-        database.execSQL("update addresses set address = '$address' where id = $id")
+    fun addAddressToFinalOrder(address: String){
+
+        var final = ""
+        database.select("finalOrder", "ord")
+                .exec {
+                    this.moveToFirst()
+                    if (count > 0){
+                        final = this.getString(0)
+                    }
+                }
+
+        final = final.replace("\"address_1\":\"\"", "\"address_1\":\""+address+"\"", true)
+        Log.d("wegewgewgeggwegwegewgeg", final)
+        database.execSQL("update finalOrder set ord = '$final'")
     }
 
 }

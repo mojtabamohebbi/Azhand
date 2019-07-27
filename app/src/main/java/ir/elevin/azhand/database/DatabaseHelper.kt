@@ -18,9 +18,8 @@ class DatabaseHelper private constructor(ctx: Context) : ManagedSQLiteOpenHelper
 
     override fun onCreate(db: SQLiteDatabase) {
         // Here you create tables
-        db.createTable("addresses", true,
-                "id" to INTEGER + PRIMARY_KEY + UNIQUE,
-                "address" to TEXT)
+        db.createTable("finalOrder", true,
+                "ord" to TEXT)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {

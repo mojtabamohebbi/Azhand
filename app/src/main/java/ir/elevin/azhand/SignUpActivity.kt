@@ -1,10 +1,14 @@
 package ir.elevin.azhand
 
+import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.Window
 import android.widget.Toast
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
@@ -21,6 +25,7 @@ import ir.mjmim.woocommercehelper.enums.SigningMethod
 import ir.mjmim.woocommercehelper.helpers.OAuthSigner
 import ir.mjmim.woocommercehelper.main.WooBuilder
 import kotlinx.android.synthetic.main.activity_sign_up.*
+import kotlinx.android.synthetic.main.dialog_reset_password.*
 import kotlinx.android.synthetic.main.recycler_fragment.*
 import libs.mjn.prettydialog.PrettyDialog
 import java.util.*
@@ -59,6 +64,50 @@ class SignUpActivity : CustomActivity() {
             }else{
                 login()
             }
+        }
+
+        resetPasswordButton.setOnClickListener {
+            val d = Dialog(this)
+            d.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            d.setContentView(R.layout.dialog_reset_password)
+            d.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            d.window?.decorView!!.layoutDirection = View.LAYOUT_DIRECTION_RTL
+
+            d.getResetLink.setOnClickListener {
+
+                val username = d.resetUsernameEt.text.toString()
+                if (username.isEmpty()){
+                    YoYo.with(Techniques.Shake).playOn(d.resetUsernameEt)
+                }else{
+                    val progressBar = progressDialog(this)
+                    val params = HashMap<String, String>().apply {
+                        put("username", d.resetUsernameEt.text.toString())
+                    }
+
+                    val wooBuilder = WooBuilder().apply {
+                        isHttps = false
+                        baseUrl = "florals.ir/wp-json/wp/v2"
+                        signing_method = SigningMethod.HMACSHA1
+                        wc_key = "ck_b89b3e5cd871e50755f2d021967aa903cf2839cc"
+                        wc_secret = "cs_3c6fd6cfd5399a358f6ae285848829c7cc2cae88"
+                    }
+
+                    val resultLink: String? = OAuthSigner(wooBuilder)
+                            .getSignature(RequestMethod.POST, "/m_users/password", params)
+                    Log.d("gwegewg33", resultLink+"--")
+
+                    resultLink!!.httpPost().liveDataResponse().observeForever {
+                        Log.d("WEGweg", it.first.data.toString(Charsets.UTF_8)+" --- "+it.toString())
+
+                        progressBar.dismiss()
+                        Toast.makeText(this, "لینک بازیابی به ایمیل شما ارسال شد", Toast.LENGTH_LONG).show()
+
+                    }
+                }
+
+            }
+
+            d.show()
         }
 
         backButton.setOnClickListener {

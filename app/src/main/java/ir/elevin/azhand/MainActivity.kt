@@ -52,7 +52,7 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
     private val cactusFragment = CactusFragment()
     private val boxFlowerFragment = BoxFlowerFragment()
     private val subscriptionFragment = SubscriptionFragment()
-    private val cardPostalFragment = CardPostalFragment()
+//    private val cardPostalFragment = CardPostalFragment()
     private val potFragment = PotFragment()
 
     private lateinit var pagerAdapter: TabsPagerAdapter
@@ -117,7 +117,7 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
         nav_view.setNavigationItemSelectedListener(this)
         nav_view.menu.getItem(3).isVisible = sp.getInt("id", 0) != 0
 
-        tabs.add(TabModel("کارت پستال", cardPostalFragment))
+//        tabs.add(TabModel("کارت پستال", cardPostalFragment))
         tabs.add(TabModel("گلدان", potFragment))
         tabs.add(TabModel("کاکتوس", cactusFragment))
         tabs.add(TabModel("اشتراک", subscriptionFragment))
@@ -128,10 +128,10 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
 
         pagerAdapter = TabsPagerAdapter(supportFragmentManager, tabs)
         pager.adapter = pagerAdapter
-        pager.offscreenPageLimit = 8
+        pager.offscreenPageLimit = 7
         tabLayout.setupWithViewPager(pager)
 
-        val tab = tabLayout.getTabAt(7)
+        val tab = tabLayout.getTabAt(6)
         tab!!.select()
 
         pager.addOnPageChangeListener(object: ViewPager.OnPageChangeListener{
@@ -146,28 +146,28 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
             override fun onPageSelected(position: Int) {
                 tabSelectedIndex = position
                 when (position) {
+//                    0 -> {
+//                        changeTabBar(R.color.colorGardeningTabBar, R.color.colorGardeningBackground, R.color.colorGardeningStatusBar, R.drawable.card_postal)
+//                    }
                     0 -> {
-                        changeTabBar(R.color.colorGardeningTabBar, R.color.colorGardeningBackground, R.color.colorGardeningStatusBar, R.drawable.card_postal)
-                    }
-                    1 -> {
                         changeTabBar(R.color.colorTreeTabBar, R.color.colorTreeBackground, R.color.colorTreeStatusBar, R.drawable.pot)
                     }
-                    2 -> {
+                    1 -> {
                         changeTabBar(R.color.colorPotTabBar, R.color.colorPotBackground, R.color.colorPotStatusBar, R.drawable.cactus)
                     }
-                    3 -> {
+                    2 -> {
                         changeTabBar(R.color.colorCactusTabBar, R.color.colorCactusBackground, R.color.colorCactusStatusBar, R.drawable.subscription)
                     }
-                    4 -> {
+                    3 -> {
                         changeTabBar(R.color.colorSingleFlowerTabBar, R.color.colorSingleFlowerBackground, R.color.colorSingleFlowerStatusBar, R.drawable.flowerbox)
                     }
-                    5 -> {
+                    4 -> {
                         changeTabBar(R.color.colorBunchFlowersTabBar, R.color.colorBunchFlowersBackground, R.color.colorBunchFlowersStatusBar, R.drawable.single_flower)
                     }
-                    6 -> {
+                    5 -> {
                         changeTabBar(R.color.colorFlowerAndPotTabBar, R.color.colorFlowerAndPotBackground, R.color.colorFlowerAndPotStatusBar, R.drawable.bunch_of_flowers)
                     }
-                    7 -> {
+                    6 -> {
                         changeTabBar(R.color.colorFlowerAndPotTabBar, R.color.colorFlowerAndPotBackground, R.color.colorFlowerAndPotStatusBar, R.drawable.flower_and_pot)
                     }
                 }
@@ -190,14 +190,8 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
             toolbarHeight = it
         }
 
-        insertAccounts()
+        checkCustomerAccount(this)
         checkVersions()
-        val userId = sp.getInt("id", 0)
-        Log.d("userid", ""+userId)
-        Log.d("token", ""+sp.getString("token", "null"))
-        if (userId != 0){
-            getCustomerDetail(this, userId, 0)
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -238,15 +232,16 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
     }
 
     private fun getDataForChangeSort(){
+        Log.d("wegegewge2", "--"+ tabSelectedIndex)
         when (tabSelectedIndex){
-            0 -> {flowerAndPotFragment.getData(true)}
-            1 -> {bunchOfFlowerFragment.getData(true)}
-            2 -> {singleFlowerFragment.getData(true)}
+            6 -> {flowerAndPotFragment.getData(true)}
+            5 -> {bunchOfFlowerFragment.getData(true)}
+            4 -> {singleFlowerFragment.getData(true)}
             3 -> {boxFlowerFragment.getData(true)}
-            4 -> {subscriptionFragment.getData(true)}
-            5 -> {cactusFragment.getData(true)}
-            6 -> {potFragment.getData(true)}
-            7 -> {cardPostalFragment.getData(true)}
+            2 -> {subscriptionFragment.getData(true)}
+            1 -> {cactusFragment.getData(true)}
+            0 -> {potFragment.getData(true)}
+//            7 -> {cardPostalFragment.getData(true)}
         }
     }
 
@@ -254,22 +249,12 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
 //        tabColor = colorTabBar
 //        backgroundColor = colorBackground
 //        Log.d("efwfwdqwdwf", ""+ backgroundColor)
-        headerIv.setImageResource(image)
+//        headerIv.setImageResource(image)
 //        rootView.setBackgroundColor(AppCompatResources.getColorStateList(this, colorBackground).defaultColor)
 //        tabLayout.setBackgroundColor(AppCompatResources.getColorStateList(this, colorTabBar).defaultColor)
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //            window.statusBarColor = AppCompatResources.getColorStateList(this, colorStatusBar).defaultColor
 //        }
-    }
-
-    private fun insertAccounts(){
-//        val db = DatabaseHandler(this)
-//        for (i in 0..5){
-//            db.insertAccounts(i, "عنوان حساب $i", "توضیحات حساب را در این قسمت مشاهده می کنید.", "http://andreirobu.com/wp-content/uploads/2016/01/intypewetrust-031.png")
-//            db.insertAccounts(i, "عنوان حساب $i", "توضیحات حساب را در این قسمت مشاهده می کنید.", "https://mir-s3-cdn-cf.behance.net/project_modules/disp/8dc7bb18709591.562cdfa74d2b8.jpg")
-//            db.insertAccounts(i, "عنوان حساب $i", "توضیحات حساب را در این قسمت مشاهده می کنید.", "https://cdn.dribbble.com/users/874922/screenshots/5135135/untitled-2.jpg")
-//        }
-//        db.close()
     }
 
     class TabsPagerAdapter(fragmentManager: androidx.fragment.app.FragmentManager, val tabs: ArrayList<TabModel>) :
@@ -278,7 +263,7 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
         // 2
         override fun getItem(position: Int): androidx.fragment.app.Fragment {
             return when (position) {
-                7 -> tabs[7].fragment
+//                7 -> tabs[7].fragment
                 6 -> tabs[6].fragment
                 5 -> tabs[5].fragment
                 4 -> tabs[4].fragment
@@ -425,6 +410,7 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
                 .liveDataObject(Version.Deserializer())
                 .observeForever { res ->
                     res.success {it ->
+
                         Log.d("update", "available")
                         val d = Dialog(this)
                         d.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -451,6 +437,7 @@ class MainActivity : CustomActivity(), NavigationView.OnNavigationItemSelectedLi
                         d.show()
                     }
                     res.failure {
+
                         Log.d("update", "not available")
                     }
                 }

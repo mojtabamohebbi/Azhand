@@ -5,18 +5,21 @@ import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.fuel.httpPost
 import com.github.kittinunf.fuel.livedata.liveDataObject
 import com.github.kittinunf.result.failure
 import com.github.kittinunf.result.success
 import ir.elevin.azhand.adapters.OrdersAdapter
+import ir.mjmim.woocommercehelper.enums.RequestMethod
+import ir.mjmim.woocommercehelper.helpers.OAuthSigner
 import kotlinx.android.synthetic.main.activity_orders.*
 import libs.mjn.prettydialog.PrettyDialog
 
 class OrdersActivity : CustomActivity() {
 
     var page = 1
-    private var array = ArrayList<Order>()
+    private var array = ArrayList<OrderToShow>()
     private var adapter: OrdersAdapter? = null
 
     private var mIsLoading = true
@@ -76,10 +79,19 @@ class OrdersActivity : CustomActivity() {
             swipeRefreshLayout.isRefreshing = true
         }
 
-        val params: List<Pair<String, Any?>> = listOf("func" to "get_orders", "page" to page, "uid" to "1")
-        webserviceUrl
-                .httpPost(params)
-                .liveDataObject(Order.ListDeserializer())
+        val params = HashMap<String, String>().apply {
+            put("customer", "${account.id}")
+            put("per_page", "10")
+            put("page", "$page")
+        }
+
+        val resultLink: String? = OAuthSigner(wooBuilder)
+                .getSignature(RequestMethod.GET, "/orders", params)
+        Log.d("gwegewg", resultLink+"--")
+
+        resultLink!!
+                .httpGet()
+                .liveDataObject(OrderToShow.ListDeserializer())
                 .observeForever { it ->
                     Log.d("wegweb", it.toString())
                     it?.success {
@@ -89,8 +101,8 @@ class OrdersActivity : CustomActivity() {
                             page += 1
                             it.toCollection(array)
                             Log.d("gwegweg", ""+array.size)
-
-                            Log.d("afvavwvbw", ""+array[0].products)
+                            Log.d("afvavwvbw", ""+array[0].line_items)
+                            Log.d("efgrgre", ""+array[0])
 //                            Log.d("afvavwvbw", "kjhkjh"+Cart.ListDeserializer().deserialize(""+array[0].products))
 
                             adapter?.notifyDataSetChanged()

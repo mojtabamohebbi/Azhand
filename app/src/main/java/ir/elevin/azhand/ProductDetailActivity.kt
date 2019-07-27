@@ -215,6 +215,8 @@ class ProductDetailActivity : CustomActivity() {
 
             d.show()
         }
+
+        checkCustomerAccount(this)
     }
 
     var addToCartState = 1 //1=normal, 2=loading, 3=done
