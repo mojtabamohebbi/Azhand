@@ -12,8 +12,10 @@ import android.view.Window
 import android.widget.Toast
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.fuel.httpPost
+import com.github.kittinunf.fuel.jackson.mapper
 import com.github.kittinunf.fuel.livedata.liveDataObject
 import com.github.kittinunf.fuel.livedata.liveDataResponse
 import com.github.kittinunf.result.failure
@@ -98,7 +100,7 @@ class SignUpActivity : CustomActivity() {
 
                     resultLink!!.httpPost().liveDataResponse().observeForever {
                         Log.d("WEGweg", it.first.data.toString(Charsets.UTF_8)+" --- "+it.toString())
-
+                        d.dismiss()
                         progressBar.dismiss()
                         Toast.makeText(this, "لینک بازیابی به ایمیل شما ارسال شد", Toast.LENGTH_LONG).show()
 
@@ -161,15 +163,22 @@ class SignUpActivity : CustomActivity() {
                         .getSignature(RequestMethod.POST, "/customers", params)
 
                 resultLink!!.httpPost().body(jsonString, Charsets.UTF_8).liveDataResponse().observeForever {
+                    Log.d("egwegewg", it.toString())
                     if (it.first.statusCode == 201){
                         progressDialog.dismiss()
-                        Toast.makeText(this, "به فلورال خوش آمدید", Toast.LENGTH_LONG).show()
+                        usernameEt.setText(data.customer.username)
+                        passwordEt.setText(data.customer.password)
+                        signUpLayout.visibility = View.GONE
+                        loginLayout.visibility = View.VISIBLE
+                        loginButton.performClick()
+                        isLoginViewShowing = true
+                        Toast.makeText(this, "ثبت نام با موفقیت انجام شد", Toast.LENGTH_LONG).show()
                     }else{
                         progressDialog.dismiss()
                         val dd = PrettyDialog(this)
                         dd.setTitle("بررسی اطلاعات")
                                 .setIcon(R.drawable.error)
-                                .setMessage("لطفا اطلاعات وارد شده را بررسی نمایید و سپس دوباره تلاش کنید")
+                                .setMessage("با این نام کاربری یا ایمیل قبلا ثبت نام انجام شده است.")
                                 .addButton("بستن", R.color.colorWhite, R.color.colorFlowerAndPotTabBar) {
                                     dd.dismiss()
                                 }

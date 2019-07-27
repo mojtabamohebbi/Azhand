@@ -94,8 +94,6 @@ class ApartmentFlowerFragment : androidx.fragment.app.Fragment() {
 
     }
 
-    private var isFirstOpenAppTryingToLoadData = true
-
     fun getData(isFirst: Boolean){
 
         isErrorShowing = false
@@ -103,11 +101,7 @@ class ApartmentFlowerFragment : androidx.fragment.app.Fragment() {
         if(isFirst){
             page = 1
             array.clear()
-            if (isFirstOpenAppTryingToLoadData){
-                isFirstOpenAppTryingToLoadData = false
-            }else{
-                swipeRefreshLayout.isRefreshing = true
-            }
+            swipeRefreshLayout.isRefreshing = true
         }
 
         val params = HashMap<String, String>().apply {

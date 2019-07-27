@@ -18,6 +18,7 @@ import android.graphics.Point
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import android.os.Handler
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
@@ -114,9 +115,16 @@ fun checkCustomerAccount(activity: Activity){
 fun getCustomerDetail(context: Activity, id: Int, resultCode: Int){
 
     lateinit var progressDialog: Dialog
+
     progressDialog = progressDialog(context)
     progressDialog.setCancelable(false)
     progressDialog.setCanceledOnTouchOutside(false)
+
+    if (resultCode == 0){
+        progressDialog.window?.setBackgroundDrawable(ColorDrawable(context.resources.getColor(R.color.colorEEEEEE)))
+    }else{
+        progressDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    }
 //    if (resultCode != 0){
 //        progressDialog = progressDialog(context)
 //    }
@@ -145,12 +153,15 @@ fun getCustomerDetail(context: Activity, id: Int, resultCode: Int){
                     Log.d("accountttt", account.billing_address.address_1)
                     editor.putInt("id", id).commit()
 
-                    progressDialog.dismiss()
-                    if (resultCode != 0){
-                        Toast.makeText(context, "به فلورال خوش آمدید", Toast.LENGTH_LONG).show()
-                        context.setResult(resultCode)
-                        context.finish()
-                    }
+                    val handler = Handler()
+                    handler.postDelayed({
+                        progressDialog.dismiss()
+                        if (resultCode != 0){
+                            Toast.makeText(context, "به فلورال خوش آمدید", Toast.LENGTH_LONG).show()
+                            context.setResult(resultCode)
+                            context.finish()
+                        }
+                    }, 2000)
 
                 }
                 it?.failure {

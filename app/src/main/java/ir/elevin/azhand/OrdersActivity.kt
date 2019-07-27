@@ -110,6 +110,8 @@ class OrdersActivity : CustomActivity() {
                             if (isFirst){
                                 recyclerview.scheduleLayoutAnimation()
                             }
+                        }else if(array.size == 0){
+                            notFoundTv.visibility = View.VISIBLE
                         }
                     }
                     it?.failure {
